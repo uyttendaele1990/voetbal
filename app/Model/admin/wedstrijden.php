@@ -18,4 +18,9 @@ class wedstrijden extends Model
 	{
 		return $this->BelongsTo('App\Model\admin\teams');
 	}
+	
+	public function opmerkingen()
+	{
+		return $this->hasMany('App\Model\admin\opmerkingen');
+	}
 }

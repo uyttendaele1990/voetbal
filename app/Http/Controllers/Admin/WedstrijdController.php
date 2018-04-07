@@ -288,6 +288,7 @@ class WedstrijdController extends Controller
         
         $team1 = teams::where('id', $request->team1_id)->first();
         $team2 = teams::where('id', $request->team2_id)->first();
+        wedstrijden::where('id', $id)->delete();
         if($request->status == 1){
 
         $team1->goalen_voor = $team1->goalen_voor - $request->team1_score;
@@ -321,8 +322,7 @@ class WedstrijdController extends Controller
         $team2->save();
         } 
 
-        opmerkingen::where('wedstrijdens_id', $id)->delete();
-        wedstrijden::where('id', $id)->delete();
+        // opmerkingen::where('wedstrijdens_id', $id)->delete();
         return redirect()->back();
     }
 

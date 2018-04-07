@@ -13,7 +13,7 @@
      <br>
      <br>
      <div class="box-body">
-     @if(App\Model\admin\opmerkingen::where('wedstrijden_id', $wedstrijden->id)->first())
+     @if(App\Model\admin\opmerkingen::where('wedstrijdens_id', $wedstrijden->id)->first())
       <div class="row">
         <div class='col-md-6'>
            <img src="/storage/{{ $team1->logo }}" style='width:100px; height:100px; margin-bottom: 15px;'>

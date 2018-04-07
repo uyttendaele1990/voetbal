@@ -81,7 +81,7 @@ class TeamController extends Controller
         $team = teams::where('id', $id)->first();
         Storage::delete($team->logo);
         teams::where('id', $id)->delete();
-        spelers::where('teams_id', $id)->delete();
+        // spelers::where('teams_id', $id)->delete();
         return redirect()->back();
     }
 }
