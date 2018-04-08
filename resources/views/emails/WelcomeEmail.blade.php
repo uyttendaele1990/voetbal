@@ -1,5 +1,6 @@
 @component('mail::message')
-Welkom bij VoetbalTracker.be {{$data['name']}}
+Hey {{$data['name']}} <br>
+Welkom bij VoetbalTracker.be, 
 
 Onderstaande gegevens goed bijhouden, dit zijn je login-gegevens.
 

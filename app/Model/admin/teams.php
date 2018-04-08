@@ -18,7 +18,7 @@ class teams extends Model
     ];
     public function wedstrijden()
     {
-    	return $this->hasMany('App\Model\admin\wedstrijden\team1_id');
+    	return $this->belongsToMany('App\Model\admin\wedstrijden');
     }
     public function spelers()
     {

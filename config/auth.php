@@ -40,7 +40,7 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
+        // guard voor admin aangemaakt
          'admin' => [
             'driver' => 'session',
             'provider' => 'admins',
@@ -74,7 +74,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Model\user\User::class,
         ],
-
+        // provider voor de admin aangemaakt
          'admins' => [
              'driver' => 'eloquent',
              'model' => App\Model\admin\admin::class,

@@ -21,14 +21,6 @@ class WedstrijdController extends Controller
         return view('user/wedstrijden/wedstrijden', compact('wedstrijden', 'teams'));
     }
 
-    public function personal($id)
-    {
-        $team = teams::where('id', $id)->first();
-        $teams = teams::all();
-        $wedstrijden = wedstrijden::all();
-        return view('user/teams/personal', compact('team', 'wedstrijden', 'teams'));
-    }
-
     public function show($id)
     {
         $geel = opmerkingen::where('wedstrijdens_id', $id)->pluck('gele_kaarten');

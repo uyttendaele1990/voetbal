@@ -1,9 +1,7 @@
-<!-- bron: https://www.5balloons.info/send-email-registration-laravel-authentication/ -->
-
 <?php
 
 namespace App\Mail;
-
+// bron: https://www.5balloons.info/send-email-registration-laravel-authentication/ 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;

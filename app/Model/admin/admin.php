@@ -9,3 +9,4 @@ class admin extends Authenticatable
 {
     use Notifiable;
 }
+// beste tutorial die ik gevonden heb over de relationships https://hackernoon.com/eloquent-relationships-cheat-sheet-5155498c209

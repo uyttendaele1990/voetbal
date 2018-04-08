@@ -55,18 +55,19 @@ class Handler extends ExceptionHandler
     }
 
     // deze functie verplaatsts van Illuminate\Foundation\Exceptions\handler zodat dit niet overschreven word als we composer updaten
-
+    // dit zorgt ervoor dat je word geredirect naar de correcte login pagina als je een pagina wilt zien die beveiligd is en je bent nog niet ingelogd
      protected function unauthenticated($request, AuthenticationException $exception)
     {
         if ($request->expectsJson()){
             return response()->json(['message' => $exception->getMessage()], 401);
         }
         $guard = array_get($exception->guards(),0);
+        // admin side
         switch ($guard) {
             case 'admin':
                 return redirect()->guest(route('admin.login'));
                 break;
-            
+        // user side
             default:
                 return redirect()->guest(route('login'));
                 break;

@@ -8,15 +8,17 @@ use App\Http\Controllers\Controller;
 use App\Model\admin\wedstrijden;
 use App\Model\admin\spelers;
 use App\Model\admin\teams;
+use App\Model\user\Email;
 use App\Model\admin\opmerkingen;
-
-
+use App\Model\user\User;
+use App\Mail\WedstrijdEmail;
+use Illuminate\Support\Facades\Mail;
 
 class WedstrijdController extends Controller
 {
     
     public function index()
-    {
+    {   
         $opmerkingen = opmerkingen::all();
         $wedstrijden = wedstrijden::all();
         $teams = teams::all();
@@ -81,12 +83,57 @@ class WedstrijdController extends Controller
                 $wedstrijd->team2_score = $request->team2_score;  
                 $wedstrijd->team1_score = $request->team1_score;  
             }
-            $wedstrijd->team1_id    = $request->team1;
-            $wedstrijd->team2_id    = $request->team2;
             $wedstrijd->gespeeld_op = $request->gespeeld_op;
             $wedstrijd->status      = $status;
             $wedstrijd->save();
+            // pivot tabel
+            $wedstrijd->teams()->sync([
+               $request->team1,
+               $request->team2
+            ]);
 
+            // email shit
+           $email = Email::where('teams_id', $request->team1)->get();
+           $emails = Email::where('teams_id', $request->team2)->get();
+           $users = User::all();
+           $team1 = teams::where('id', $request->team1)->first();
+           $team2 = teams::where('id', $request->team2)->first();
+           
+           $match = $request;
+           $match['team1'] = $team1->naam;
+           $match['team2'] = $team2->naam; 
+           if(count($emails) > count($email)){
+            $max = count($emails);
+           } else {
+            $max = count('$email');
+           }
+           for ($i=0; $i < $max  ; $i++) { 
+               foreach ($users as $user){
+                if(isset($email[$i])){
+                    if(($email[$i]->users_id == $emails[$i]->users_id)){
+                
+                    if($email[$i]->users_id == $user->id){
+                    $match['user'] = $user->name;
+                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
+                    }
+                }
+                } else 
+                {
+                if(isset($email[$i])){
+                    if($email[$i]->users_id == $user->id){
+                    $match['user'] = $user->name;
+                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
+                    }
+                }
+                if(isset($emails[$i])){
+                    if(($emails[$i]->users_id == $user->id)){
+                    $match['user'] = $user->name;
+                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
+                    }
+                }
+               }
+             }
+            }
             return redirect(route('wedstrijden.index'));
         
        
@@ -101,16 +148,20 @@ class WedstrijdController extends Controller
 
         $wedstrijd              = new wedstrijden;
         $wedstrijd->id          = $request->id;
-        $wedstrijd->team1_id    = $request->team1;
         if($request->team1_score !== ""){
         $wedstrijd->team2_score = $request->team2_score;  
         $wedstrijd->team1_score = $request->team1_score;  
         }
-        $wedstrijd->team2_id    = $request->team2;
         $wedstrijd->gespeeld_op = $request->gespeeld_op;
         $wedstrijd->status      = $status;
 
         $wedstrijd->save();
+        // pivot tabel
+        $wedstrijd->teams()->sync([
+           $request->team1,
+           $request->team2
+        ]);
+
         return redirect(route('wedstrijden.index'));
     }
 
@@ -203,13 +254,59 @@ class WedstrijdController extends Controller
                 $wedstrijd->team2_score = $request->team2_score;  
                 $wedstrijd->team1_score = $request->team1_score;  
             }
-            $wedstrijd->team1_id    = $request->team1;
-            $wedstrijd->team2_id    = $request->team2;
             $wedstrijd->gespeeld_op = $request->gespeeld_op;
             $wedstrijd->status      = $status;
             $wedstrijd->save();
+
+            // pivot tabel
+            $wedstrijd->teams()->sync([
+               $request->team1,
+               $request->team2
+            ]);
             
-                opmerkingen::where('wedstrijdens_id', $id)->delete();
+            opmerkingen::where('wedstrijden_id', $id)->delete();
+             // email shit
+           $email = Email::where('teams_id', $request->team1)->get();
+           $emails = Email::where('teams_id', $request->team2)->get();
+           $users = User::all();
+           $team1 = teams::where('id', $request->team1)->first();
+           $team2 = teams::where('id', $request->team2)->first();
+           
+           $match = $request;
+           $match['team1'] = $team1->naam;
+           $match['team2'] = $team2->naam; 
+           if(count($emails) > count($email)){
+            $max = count($emails);
+           } else {
+            $max = count('$email');
+           }
+           for ($i=0; $i < $max  ; $i++) { 
+               foreach ($users as $user){
+                if(isset($email[$i])){
+                    if(($email[$i]->users_id == $emails[$i]->users_id)){
+                
+                    if($email[$i]->users_id == $user->id){
+                    $match['user'] = $user->name;
+                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
+                    }
+                }
+                } else 
+                {
+                if(isset($email[$i])){
+                    if($email[$i]->users_id == $user->id){
+                    $match['user'] = $user->name;
+                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
+                    }
+                }
+                if(isset($emails[$i])){
+                    if(($emails[$i]->users_id == $user->id)){
+                    $match['user'] = $user->name;
+                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
+                    }
+                }
+               }
+             }
+            }
 
             return redirect(route('wedstrijden.index'));
         
@@ -228,7 +325,7 @@ class WedstrijdController extends Controller
      
         if ($wedstrijd->status == 1){
 
-            opmerkingen::where('wedstrijdens_id', $id)->delete();
+            opmerkingen::where('wedstrijden_id', $id)->delete();
             if( $wedstrijd->team2_score < $wedstrijd->team1_score ){
                 $team1->punten = $team1->punten - 3;
                 $team1->wedstrijden_gewonnen = $team1->wedstrijden_gewonnen - 1;
@@ -258,11 +355,15 @@ class WedstrijdController extends Controller
         $wedstrijd->team2_score = $request->team2_score;  
         $wedstrijd->team1_score = $request->team1_score;  
         }
-        $wedstrijd->team1_id    = $request->team1;
-        $wedstrijd->team2_id    = $request->team2;
         $wedstrijd->gespeeld_op = $request->gespeeld_op;
         $wedstrijd->status      = $status;
         $wedstrijd->save();
+
+        // pivot tabel
+            $wedstrijd->teams()->sync([
+               $request->team1,
+               $request->team2
+            ]);
 
         return redirect(route('wedstrijden.index'));
     }
@@ -270,8 +371,8 @@ class WedstrijdController extends Controller
 
     public function destroy($id)
     {
-        // if(opmerkingen::where('wedstrijdens_id', $id)){
-        //         $opm = opmerkingen::where('wedstrijdens_id', $id)->get();
+        // if(opmerkingen::where('wedstrijden_id', $id)){
+        //         $opm = opmerkingen::where('wedstrijden_id', $id)->get();
         //         $spelers = spelers::all();
         //         return $opm; dd();
         //         foreach($opm as $om){ 
@@ -286,9 +387,9 @@ class WedstrijdController extends Controller
         //     }  
         $request = wedstrijden::where('id', $id)->first();
         
-        $team1 = teams::where('id', $request->team1_id)->first();
-        $team2 = teams::where('id', $request->team2_id)->first();
-        wedstrijden::where('id', $id)->delete();
+        $team1 = teams::where('id', $request->teams[0]->id)->first();
+        $team2 = teams::where('id', $request->teams[1]->id)->first();
+        
         if($request->status == 1){
 
         $team1->goalen_voor = $team1->goalen_voor - $request->team1_score;
@@ -321,16 +422,17 @@ class WedstrijdController extends Controller
         $team2->aantal_wedstrijden = $team2->aantal_wedstrijden - 1;
         $team2->save();
         } 
+        wedstrijden::find($id)->delete();
 
-        // opmerkingen::where('wedstrijdens_id', $id)->delete();
         return redirect()->back();
     }
 
     public function opmerkingen($id)
     {
        $wedstrijd = wedstrijden::where('id', $id)->first();
-       $spelers1 = spelers::where('teams_id', $wedstrijd->team1_id)->get();
-       $spelers2 = spelers::where('teams_id', $wedstrijd->team2_id)->get();
+       $spelers1 = spelers::where('teams_id', $wedstrijd->teams[0]->id)->get();
+       $spelers2 = spelers::where('teams_id', $wedstrijd->teams[1]->id)->get();
+     
        return view('admin/wedstrijden/opmerkingen', compact('wedstrijd', 'spelers1', 'spelers2'));
     }
 }

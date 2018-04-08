@@ -35,13 +35,13 @@
                   @if ($wedstrijd->status == 1)
                   <tr>
                     <td>{{ $loop->index+1 }}</td>
-                    <td>{{ $teams->where('id', $wedstrijd->team1_id)->first()->naam }}</td>
+                    <td>{{ $wedstrijd->teams[0]->naam }}</td>
                     <td style='text-align:center;'>{{ $wedstrijd->team1_score }}</td>
                     <td style='text-align:center;'>vs</td>
                     <td style='text-align:center;'>{{ $wedstrijd->team2_score }}</td>
-                    <td>{{ $teams->where('id', $wedstrijd->team2_id)->first()->naam }}</td>
+                    <td>{{ $wedstrijd->teams[1]->naam }}</td>
                     <td>
-                     @if(App\Model\admin\opmerkingen::where('wedstrijdens_id', $wedstrijd->id)->first())
+                     @if(App\Model\admin\opmerkingen::where('wedstrijden_id', $wedstrijd->id)->first())
                         <form id='delete-form-{{$wedstrijd->id}}' action="{{ route('opmerkingen.destroy', $wedstrijd->id) }}" method='post' style='display:none;'>
                         {{ csrf_field() }}
                         {{ method_field('DELETE')}}
@@ -68,7 +68,7 @@
                       <a href="{{ route('wedstrijden.edit', $wedstrijd->id) }}">
                         <span class="glyphicon glyphicon-edit"></span>
                       </a>
-                      <form id='delete-form-{{$wedstrijd->id}}' action="{{ route('wedstrijden.destroy', $wedstrijd->id) }}" method='post' style='display:none;'>
+                      <form id='delete-form2-{{$wedstrijd->id}}' action="{{ route('wedstrijden.destroy', $wedstrijd->id) }}" method='post' style='display:none;'>
                         {{ csrf_field() }}
                         {{ method_field('DELETE')}}
                       </form>
@@ -77,7 +77,7 @@
                           {
                             event.preventDefault();
                             // het id meegeven
-                            document.getElementById('delete-form-{{$wedstrijd->id }}').submit();
+                            document.getElementById('delete-form2-{{$wedstrijd->id }}').submit();
                           }
                           else{
                             event.preventDefault();
@@ -117,9 +117,9 @@
                   @if ($wedstrijd->status == 0)
                   <tr>
                     <td>{{ $loop->index+1 }}</td>
-                    <td style='text-align:right'>{{ $teams->where('id', $wedstrijd->team1_id)->first()->naam }}</td>
+                    <td>{{ $wedstrijd->teams[0]->naam }}</td>
                     <td style='text-align:center;'>vs</td>
-                    <td>{{ $teams->where('id', $wedstrijd->team2_id)->first()->naam }}</td>
+                    <td>{{ $wedstrijd->teams[1]->naam }}</td>
                     <td>
                       <a href="{{ route('wedstrijden.edit', $wedstrijd->id) }}">
                         <span class="glyphicon glyphicon-edit"></span>

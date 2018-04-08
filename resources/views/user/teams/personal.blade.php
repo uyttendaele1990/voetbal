@@ -8,10 +8,12 @@
 @section('headSection')
 <!-- css styling voor de tooltip -->
 <style>
+    /*Tooltip zichtbaar maken als je over de wedstrijd hovered*/
     .lol1:hover .lol {
         display: inline-block;
 
     }
+    /*styling voor de tooltip zelf*/
     .lol {
         border-radius: 15px;
         text-align:center;
@@ -40,26 +42,51 @@
         <div class="col-md-offset-3 col-md-6" >
            <div = class="lol1" style='color:black'> 
             @if($wedstrijd->status == 1)
-                @if( ($team->id == $wedstrijd->team1_id) AND ($wedstrijd->team1_score > $wedstrijd->team2_score) )
-                    <span class="lol" style='background: green;padding-top:14px;'>{{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}</span><a href="/wedstrijden/{{$wedstrijd->id}}" style='color: green;'>
-                @elseif( ($team->id == $wedstrijd->team1_id) AND ($wedstrijd->team1_score < $wedstrijd->team2_score) )
-                    <span class="lol" style='background: red;padding-top:14px;'>{{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}</span><a href="/wedstrijden/{{$wedstrijd->id}}" style='color: red;'>
-                @elseif( ($team->id == $wedstrijd->team2_id) AND ($wedstrijd->team2_score > $wedstrijd->team1_score) )
-                    <span class="lol" style='background: green;padding-top:14px;'>{{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}</span><a href="/wedstrijden/{{$wedstrijd->id}}" style='color: green;'>
-                @elseif( ($team->id == $wedstrijd->team2_id) AND ($wedstrijd->team1_score > $wedstrijd->team2_score) )
-                    <span class="lol" style='background: red;padding-top:14px;'>{{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}</span><a href="/wedstrijden/{{$wedstrijd->id}}" style='color: red;'>
-                @elseif( ($team->id == $wedstrijd->team2_id) AND ($wedstrijd->team1_score == $wedstrijd->team2_score) )
-                    <span class="lol" style='background: orange;padding-top:14px;'>{{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}</span><a href="/wedstrijden/{{$wedstrijd->id}}" style='color: orange;'>
-                @elseif( ($team->id == $wedstrijd->team1_id) AND ($wedstrijd->team1_score == $wedstrijd->team2_score) )
-                    <span class="lol" style='background: orange;padding-top:14px;'>{{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}</span><a href="/wedstrijden/{{$wedstrijd->id}}" style='color: orange;'>
+                @if(($team->id == $wedstrijd->team1_id) AND ($wedstrijd->team1_score > $wedstrijd->team2_score))
+                    <span class="lol" style='background: green;padding-top:14px;'>
+                        {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
+                    </span>
+                    <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: green;'>
+                @elseif(($team->id == $wedstrijd->team1_id) AND ($wedstrijd->team1_score < $wedstrijd->team2_score))
+                    <span class="lol" style='background: red;padding-top:14px;'>
+                        {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
+                    </span>
+                    <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: red;'>
+                @elseif(($team->id == $wedstrijd->team2_id) AND ($wedstrijd->team2_score > $wedstrijd->team1_score))
+                    <span class="lol" style='background: green;padding-top:14px;'>
+                        {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
+                    </span>
+                    <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: green;'>
+                @elseif(($team->id == $wedstrijd->team2_id) AND ($wedstrijd->team1_score > $wedstrijd->team2_score))
+                    <span class="lol" style='background: red;padding-top:14px;'>
+                        {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
+                    </span>
+                    <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: red;'>
+                @elseif(($team->id == $wedstrijd->team2_id) AND ($wedstrijd->team1_score == $wedstrijd->team2_score))
+                    <span class="lol" style='background: orange;padding-top:14px;'>
+                        {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
+                    </span>
+                    <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: orange;'>
+                @elseif(($team->id == $wedstrijd->team1_id) AND ($wedstrijd->team1_score == $wedstrijd->team2_score))
+                    <span class="lol" style='background: orange;padding-top:14px;'>
+                        {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
+                    </span>
+                    <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: orange;'>
                 @endif
             @else
-                <span class="lol" style='background: black;padding-top:3px;'>Wedstrijd nog niet gespeeld</span>
+                <span class="lol" style='background: black;padding-top:3px;'>
+                    Wedstrijd nog niet gespeeld
+                </span>
             @endif                 
-            
-                <div class='col-md-5' style="float: left; text-align:right;">{{ $teams->where('id', $wedstrijd->team1_id)->first()->naam }}</div>
-                <div class='col-md-5' style="float: right; text-align:left;">{{ $teams->where('id', $wedstrijd->team2_id)->first()->naam }}</div>
-                <div class='col-md-2' style="float: none;overflow: hidden;"><center> vs </center></div>
+                <div class='col-md-5' style="float: left; text-align:right;">
+                    {{ $teams->where('id', $wedstrijd->team1_id)->first()->naam }}
+                </div>
+                <div class='col-md-5' style="float: right; text-align:left;">
+                    {{ $teams->where('id', $wedstrijd->team2_id)->first()->naam }}
+                </div>
+                <div class='col-md-2' style="float: none;overflow: hidden;">
+                    <center> vs </center>
+                </div>
             @if($wedstrijd->status == 1)</a>@endif
            </div>
         </div>           

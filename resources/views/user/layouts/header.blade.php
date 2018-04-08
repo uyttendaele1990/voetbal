@@ -13,9 +13,6 @@
             <li class="nav-item">
               <a class="nav-link" href="/wedstrijden">Wedstrijden</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/teams">Teams</a>
-            </li>
             @guest
               <li class="nav-item">
                 <a class="nav-link" href="{{ route('login') }}">Login</a>
@@ -25,7 +22,10 @@
               </li>
             @else
              <li class="nav-item">
-                <a class="nav-link" href="{{ route('profile') }}">{{ Auth::user()->name }}</a>
+              <a class="nav-link" href="/teams">Teams</a>
+             </li>
+             <li class="nav-item">
+                <a class="nav-link" href="/home">{{ Auth::user()->name }}</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>

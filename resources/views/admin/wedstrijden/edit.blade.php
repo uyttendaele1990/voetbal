@@ -58,8 +58,8 @@
               <span>
                 <div class="col-md-8">
                   <!-- readonly ipv disabled zodat de value nog word verzonden -->
-                    <input hidden readonly name='team1' value='{{ $wedstrijd->team1_id }}' style="width: 100%;">
-                    <input class="form-control" disabled value='{{ $teams->where("id", $wedstrijd->team1_id)->first()->naam }}' style="width: 100%;">
+                    <input hidden readonly name='team1' value='{{ $wedstrijd->teams[0]->id }}' style="width: 100%;">
+                    <input class="form-control" disabled value='{{ $wedstrijd->teams[0]->naam }}' style="width: 100%;">
                 </div>
                 <div class='col-md-4'>
                   <input class="form-control" id="team1_score" name='team1_score' value='{{ $wedstrijd->team1_score }}' min='0' type="number" 
@@ -83,8 +83,8 @@
                   @endif 
                 </div>
                 <div class="col-md-8">
-                  <input class="form-control" disabled value='{{ $teams->where("id", $wedstrijd->team2_id)->first()->naam }}' style="width: 100%;">
-                  <input hidden readonly name='team2' value='{{ $wedstrijd->team2_id }}' style="width: 100%;">
+                  <input class="form-control" disabled value='{{ $wedstrijd->teams[1]->naam }}' style="width: 100%;">
+                  <input hidden readonly name='team2' value='{{ $wedstrijd->teams[1]->id }}' style="width: 100%;">
                 </div>
               </span>
             </div>

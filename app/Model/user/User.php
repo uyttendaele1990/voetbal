@@ -27,8 +27,4 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function email()
-    {
-        return $this->hasMany('App\Model\admin\emails');
-    }
 }

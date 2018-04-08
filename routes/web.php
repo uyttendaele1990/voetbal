@@ -1,50 +1,86 @@
 <?php
+							
+								//Guest routes
 
-//user routes
-// de namespace rogt ervoor dat je niet elke keer User/ voor je controller moet zetten
-// de resource heeft ingebouwde routes, thanks laravel :)
+// De namespace rogt ervoor dat je niet elke keer User/ voor je controller moet zetten
 Route::group(['namespace' => 'User'], function(){
-		// dit is de homepage
-	    // forwardslashes zijn optioneel bij het begin van uw route
-	    // Route::get('/', 'controller@functie'); = Route::get('', 'controller@functie');
+		// De homepage
 		Route::get('', 'HomeController@index');
-		Route::get('/teams/personal/{id}', 'WedstrijdController@personal');
-		Route::resource('teams', 'TeamController');
+		// De statistieken pagina
 		Route::get('stats', 'StatController@index');
-		Route::resource('wedstrijden', 'WedstrijdController');
-		Route::get('login', 'HomeController@login');
-		Route::put('profile/update/{id}', 'HomeController@update')->name('profile.update');
-		Route::get('profile/edit/{id}', 'HomeController@edit')->name('profile.edit');
-		Route::get('profile', 'HomeController@profile')->name('profile');
+		// De wedstrijden pagina met alle wedstrijden opgelijst
+		Route::get('wedstrijden', 'WedstrijdController@index');
+		// De pagina met de details over de wedtrijd
+		Route::get('wedstrijden/{id}', 'WedstrijdController@show');		
 });
+							
+								//User routes
 
+// Gebruik gemaakt van de standaard middleware zodat deze paginas enkel zichtbaar zijn voor mensen die ingelogd zijn als user	
 Route::group(['namespace' => 'User', 'middleware' => 'auth:web'], function(){
+		// Profiel pagina
 		Route::get('/home', 'HomeController@profile');
+		// Emailadress in de lijst zetten voor het volgen van een team
+		Route::get('email/{id}', 'MailController@show');
+		// Emailadress uit de lijst halen
+		Route::delete('email/{id}', 'MailController@destroy')->name('email.destroy');
+		// Pagina met alle wedstrijden van 1 team
+		Route::get('teams/personal/{id}', 'TeamController@personal');
+		// Pagina met alle Teams uit de competitie
+		Route::get('teams', 'TeamController@index');
+		// Teampagina van gekozen team
+		Route::get('teams/{id}', 'TeamController@show');
+		// Profiel update
+		Route::put('profile/update/{id}', 'HomeController@update')->name('profile.update');
+		// Profiel edit pagina
+		Route::get('profile/edit/{id}', 'HomeController@edit')->name('profile.edit');
 });
 
+								//Admin routes
 
-//admin routes
-// je kan je routes ook een naam megeven dan kan je later  via {{ route('naamroute') }} gebruiken de resource routes hebben dit standaard meegekregen
+// Middleware custom gemaakt voor de admins
 Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function(){
+		// Alle routes mbt de teams
 		Route::resource('admin/teams', 'TeamController');
+		// Opmerkingen opslaan
 		Route::post('admin/opmerkingen/create/', 'OpmerkingenController@store')->name('opmerkingen.store');
+		// Opmerkingen pagina
 		Route::get('admin/wedstrijden/opmerkingen/{id}', 'WedstrijdController@opmerkingen');
+		// Alle routes mbt de wedstrijden
 		Route::resource('admin/wedstrijden', 'WedstrijdController');
-		Route::resource('admin/stats', 'StatController');
-		Route::resource('admin/user', 'UserController');
+		// De statistieken pagina, mss overbodig voor de adminside?
+		Route::get('admin/stats', 'StatController@index')->name('stats.index');
+		// Overzicht van alle users
+		Route::get('admin/user', 'UserController@index')->name('user.index');
+		// Edit pagina van de user
+		Route::get('admin/user/{id}/edit', 'UserController@edit')->name('user.edit');
+		// Userdetails updaten
+		Route::put('admin/user/update/{id}', 'UserController@update')->name('user.update');
+		// User deleten
+		Route::delete('admin/user/{id}', 'UserController@destroy')->name('user.destroy');
+		// Alle routes mbt de spelers
 		Route::resource('admin/spelers', 'SpelerController');
+		// Homepagina voor de admins
 		Route::get('admin/home', 'HomeController@index')->name('admin.home');
-		Route::resource('admin/opmerkingen', 'OpmerkingenController');
+		// Opmerkingen maken
+		Route::get('admin/opmerkingen/create', 'OpmerkingenController@create')->name('opmerkingen.create');
+		// Opmerkingen opslaan
+		Route::post('admin/opmerkingen', 'OpmerkingenController@store')->name('opmerkingen.store');
+		// Opmerkingen deleten
+		Route::delete('admin/opmerkingen/{id}', 'OpmerkingenController@destroy')->name('opmerkingen.destroy');
+		// Alle routes mbt de admins
 		Route::resource('admin/admin', 'AdminController');
-		//admin auth routes
+		// admin logout
 		Route::post('admin/logout', 'Auth\LoginController@logout')->name('admin.logout');
 });
-//deze moeten buiten de group namespace staan omdat die ook de auth:admin middleware gebruikt en anders zou je nooit kunnen inloggen op de admin pagina je zou er enkel naartoe kunnen gaan als je al ingelogd bent als admin
+// Deze moeten buiten de group namespace staan omdat die ook de auth:admin middleware gebruikt
+// Admin login
 Route::get('admin/login', 'Admin\Auth\LoginController@showLoginForm')->name('admin.login');
 Route::post('admin/login', 'Admin\Auth\LoginController@login');
-// deze route staat appart zodat ik deze pagina rap kan verwijderen indien nodig :P
+
+// De auth routes voor de user side (login registrer, ...)
+Auth::routes();
+
 Route::get('/index', function(){
 	return view('user/index');
 });
-// de auth routes
-Auth::routes();

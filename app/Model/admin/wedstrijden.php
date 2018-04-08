@@ -14,13 +14,14 @@ class wedstrijden extends Model
 		'status',
 
 	]; 
-	public function team1()
-	{
-		return $this->BelongsTo('App\Model\admin\teams');
-	}
 	
 	public function opmerkingen()
 	{
 		return $this->hasMany('App\Model\admin\opmerkingen');
+	}
+
+	public function teams()
+	{
+		return $this->belongsToMany('App\Model\admin\teams');
 	}
 }

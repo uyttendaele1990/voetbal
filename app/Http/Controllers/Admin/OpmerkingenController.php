@@ -16,8 +16,8 @@ class OpmerkingenController extends Controller
     public function create($id)
     { 
        $wedstrijd = wedstrijden::where('id', $id)->first();
-       $spelers1 = spelers::where('teams_id', $wedstrijd->team1_id)->get();
-       $spelers2 = spelers::where('teams_id', $wedstrijd->team2_id)->get();
+       $spelers1 = spelers::where('teams_id', $wedstrijd->teams[0]->id)->get();
+       $spelers2 = spelers::where('teams_id', $wedstrijd->teams[1]->id)->get();
 
        return view('admin/wedstrijden/opmerkingen', compact('wedstrijd', 'spelers1', 'spelers2'));
     }
@@ -47,13 +47,15 @@ class OpmerkingenController extends Controller
        for ($i=0; $i < $max  ; $i++) { 
             $spelers= spelers::all();
             foreach($spelers as $speler){
+                if (isset($request->gescoord_door[$i]) && (isset($request->aantal_gescoord[$i]))){
                 if($speler->naam == $request->gescoord_door[$i] ){
                 $speler->doelpunten_saldo = $speler->doelpunten_saldo + $request->aantal_gescoord[$i];
                 $speler->save();
                 }
             }
+            }
             $opmerkingen = new opmerkingen;
-            $opmerkingen->wedstrijdens_id = $request->id;
+            $opmerkingen->wedstrijden_id = $request->id;
             if (isset($request->gele_kaarten[$i]) && (isset($request->aantal_geel[$i]))){
                 $opmerkingen->gele_kaarten = $request->gele_kaarten[$i];
                 $opmerkingen->aantal_geel  = $request->aantal_geel[$i];
@@ -75,60 +77,9 @@ class OpmerkingenController extends Controller
         return redirect(route('wedstrijden.index'));
     }
 
-    // public function edit($id)
-    // {
-    //    $wedstrijd = wedstrijden::where('id', $id)->first();
-    //    $spelers1 = spelers::where('ploeg_naam', $wedstrijd->team1_id)->get();
-    //    $spelers2 = spelers::where('ploeg_naam', $wedstrijd->team2_id)->get();
-    //    $opmerkingen = opmerkingen::where('wedstrijden_id', $wedstrijd->id)->get();
-      
-    //    return view('admin/wedstrijden/opmerkingenedit', compact('wedstrijd', 'spelers1', 'spelers2', 'opmerkingen'));
-    // }
-
-    // public function update(Request $request, $id)
-    // {
-    //     if(((count($request->wissel)) >= (count($request->gele_kaarten))) && ((count($request->wissel)) >= (count($request->rode_kaarten))) && ((count($request->wissel)) >= (count($request->gescoord_door))) ){
-    //         $max = count($request->wissel);
-    //     } elseif (((count($request->gele_kaarten)) >= (count($request->wissel))) && ((count($request->gele_kaarten)) >= (count($request->rode_kaarten))) && ((count($request->gele_kaarten)) >= (count($request->gescoord_door))) ){
-    //         $max= count($request->gele_kaarten);
-    //     } elseif(((count($request->gescoord_door)) >= (count($request->wissel))) && ((count($request->gescoord_door)) >= (count($request->rode_kaarten))) && ((count($request->gescoord_door)) >= (count($request->gele_kaarten))) ){
-    //         $max= count($request->gescoord_door);
-    //     } else {
-    //         $max = count($request->rode_kaarten);
-    //     }
-
-    //    for ($i=0; $i < $max  ; $i++) { 
-    //         opmerkingen::where('wedstrijden_id', $id)->delete();
-    //         $opmerkingen = new opmerkingen;
-    //         $opmerkingen->wedstrijden_id = $request->id;
-    //         if (($request->gele_kaarten[$i] !== null) && ($request->aantal_geel[$i] !== null) ){
-    //             $opmerkingen->gele_kaarten = $request->gele_kaarten[$i];
-    //             $opmerkingen->aantal_geel  = $request->aantal_geel[$i];
-    //         }
-    //         if (($request->gescoord_door[$i] !== null) && ($request->aantal_gescoord[$i] !== null) ){
-    //             $opmerkingen->gescoord_door = $request->gescoord_door[$i];
-    //             $opmerkingen->aantal_gescoord  = $request->aantal_gescoord[$i];
-    //         }
-    //         if ($request->rode_kaarten[$i] !== null){
-    //             $opmerkingen->rode_kaarten = $request->rode_kaarten[$i];
-    //         }
-    //         if (($request->wissel[$i] !== null) && ($request->wissel_speler[$i] !== null) ){
-    //             $opmerkingen->wissel = $request->wissel[$i];
-    //             $opmerkingen->wissel_speler  = $request->wissel_speler[$i];
-    //         }
-    //         $opmerkingen->save();
-    //     }       
-
-    //     // voor de view
-    //     //foreach (wedstrijd->id == $opmerkingen->wedstrijd_id) en (dit word eigenlijk al opgevangen voor de store) if(value !== null)   { echo data }
-        
-        
-    //     return redirect(route('wedstrijden.index'));
-    // }
-
     public function destroy($id)
     {   
-        $opm = opmerkingen::where('wedstrijdens_id', $id)->get();
+        $opm = opmerkingen::where('wedstrijden_id', $id)->get();
         foreach($opm as $om){ 
         $spelers = spelers::all();
         foreach($spelers as $speler){
@@ -138,7 +89,7 @@ class OpmerkingenController extends Controller
             }
         }    
         }           
-        opmerkingen::where('wedstrijdens_id', $id)->delete();
+        opmerkingen::where('wedstrijden_id', $id)->delete();
         return redirect()->back();
     }
 }
