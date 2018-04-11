@@ -13,7 +13,7 @@
      <br>
      <br>
      <div class="box-body">
-     @if(App\Model\admin\opmerkingen::where('wedstrijdens_id', $wedstrijden->id)->first())
+     @if(App\Model\admin\opmerkingen::where('wedstrijden_id', $wedstrijden->id)->first())
       <div class="row">
         <div class='col-md-6'>
            <img src="/storage/{{ $team1->logo }}" style='width:100px; height:100px; margin-bottom: 15px;'>
@@ -41,16 +41,16 @@
                 <br>
             @endfor
           </div>
-          <div class='well col-md-offset-2 col-md-4' style='text-align: center;'>
+          <div class='well col-md-offset-2 col-md-4' style='text-align: center;''>
             <h3>{{$spelers2[0]->teams->naam}}</h3>
             <hr>
             @for ($i = 0; $i < count($goal); $i++)
-                @if(!($goal[$i] == null))
+              @if(!($goal[$i] == null))
                 @foreach($spelers2 as $speler)
-                  @if($speler->naam == $goal[$i]) 
-                  <h3>{{$gnr[$i]}} * {{$goal[$i]}}</h3>
-                  <img src="/storage/{{ $speler->foto }}" style='width:45px; height:45px; float:left;border-radius:50%;margin-bottom: 15px;margin-left: 150px;'>
-                  <br>
+                  @if($speler->naam == $goal[$i])
+                    <h3>{{$gnr[$i]}} * {{$goal[$i]}}</h3>
+                    <img src="/storage/{{ $speler->foto }}" style='width:45px; height:45px; float:left;border-radius:50%;margin-bottom: 15px;margin-left: 150px;'>
+                    <br>
                   @endif
                 @endforeach
                 @endif

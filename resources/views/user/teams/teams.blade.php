@@ -57,7 +57,7 @@
                       <td><a href="/teams/{{ $team->id }}">{{ $team->naam }}</a></td>
                       <td><img src="/storage/{{ $team->logo }}" style='width:40px; height:40px; float:left;'></td>
                       @for ($i=0; $i < count($users) ; $i++)
-                      @if($users[$i]->teams_id == $team->id)
+                      @if($users[$i]->team_id == $team->id)
                        <td>
                        <form id='delete-form-{{$team->id}}' action="{{ route('email.destroy', $team->id) }}" method='post' style='display:none;'>
                         {{ csrf_field() }}
@@ -94,8 +94,8 @@
 @section('footerSection')
 
 @endsection
- <!--  @if(App\Model\user\Email::where('users_id', Auth::user()->id)->first())
-                        @if(App\Model\user\Email::where('teams_id', $team->id)->first())                   
+ <!--  @if(App\Model\user\Email::where('user_id', Auth::user()->id)->first())
+                        @if(App\Model\user\Email::where('team_id', $team->id)->first())                   
                       
 
                       @else

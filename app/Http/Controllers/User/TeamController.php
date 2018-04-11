@@ -16,7 +16,7 @@ class TeamController extends Controller
 
     public function index()
     {
-        $users = Email::where('users_id', Auth::user()->id)->get();
+        $users = Email::where('user_id', Auth::user()->id)->get();
         $teams = DB::select('select * from teams ORDER BY punten DESC, aantal_wedstrijden DESC,wedstrijden_gewonnen DESC, doelsaldo DESC');
         return view('user/teams/teams', compact('teams', 'users'));
     }

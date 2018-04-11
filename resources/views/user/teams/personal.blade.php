@@ -37,37 +37,37 @@
     <center><h1>Wedstrijden</h1></center>
     <br>
     @foreach ($wedstrijden as $wedstrijd)
-      @if(($wedstrijd->team1_id == $team->id) OR ($wedstrijd->team2_id == $team->id))
+      @if(($wedstrijd->teams[0]->id == $team->id) OR ($wedstrijd->teams[1]->id == $team->id))
      <div class='row'>
         <div class="col-md-offset-3 col-md-6" >
            <div = class="lol1" style='color:black'> 
             @if($wedstrijd->status == 1)
-                @if(($team->id == $wedstrijd->team1_id) AND ($wedstrijd->team1_score > $wedstrijd->team2_score))
+                @if(($team->id == $wedstrijd->teams[0]->id) AND ($wedstrijd->team1_score > $wedstrijd->team2_score))
                     <span class="lol" style='background: green;padding-top:14px;'>
                         {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
                     </span>
                     <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: green;'>
-                @elseif(($team->id == $wedstrijd->team1_id) AND ($wedstrijd->team1_score < $wedstrijd->team2_score))
+                @elseif(($team->id == $wedstrijd->teams[0]->id) AND ($wedstrijd->team1_score < $wedstrijd->team2_score))
                     <span class="lol" style='background: red;padding-top:14px;'>
                         {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
                     </span>
                     <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: red;'>
-                @elseif(($team->id == $wedstrijd->team2_id) AND ($wedstrijd->team2_score > $wedstrijd->team1_score))
+                @elseif(($team->id == $wedstrijd->teams[1]->id) AND ($wedstrijd->team2_score > $wedstrijd->team1_score))
                     <span class="lol" style='background: green;padding-top:14px;'>
                         {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
                     </span>
                     <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: green;'>
-                @elseif(($team->id == $wedstrijd->team2_id) AND ($wedstrijd->team1_score > $wedstrijd->team2_score))
+                @elseif(($team->id == $wedstrijd->teams[1]->id) AND ($wedstrijd->team1_score > $wedstrijd->team2_score))
                     <span class="lol" style='background: red;padding-top:14px;'>
                         {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
                     </span>
                     <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: red;'>
-                @elseif(($team->id == $wedstrijd->team2_id) AND ($wedstrijd->team1_score == $wedstrijd->team2_score))
+                @elseif(($team->id == $wedstrijd->teams[1]->id) AND ($wedstrijd->team1_score == $wedstrijd->team2_score))
                     <span class="lol" style='background: orange;padding-top:14px;'>
                         {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
                     </span>
                     <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: orange;'>
-                @elseif(($team->id == $wedstrijd->team1_id) AND ($wedstrijd->team1_score == $wedstrijd->team2_score))
+                @elseif(($team->id == $wedstrijd->teams[0]->id) AND ($wedstrijd->team1_score == $wedstrijd->team2_score))
                     <span class="lol" style='background: orange;padding-top:14px;'>
                         {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
                     </span>
@@ -79,10 +79,10 @@
                 </span>
             @endif                 
                 <div class='col-md-5' style="float: left; text-align:right;">
-                    {{ $teams->where('id', $wedstrijd->team1_id)->first()->naam }}
+                    {{ $wedstrijd->teams[0]->naam }}
                 </div>
                 <div class='col-md-5' style="float: right; text-align:left;">
-                    {{ $teams->where('id', $wedstrijd->team2_id)->first()->naam }}
+                    {{ $wedstrijd->teams[1]->naam }}
                 </div>
                 <div class='col-md-2' style="float: none;overflow: hidden;">
                     <center> vs </center>

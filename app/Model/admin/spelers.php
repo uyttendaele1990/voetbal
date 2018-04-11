@@ -15,6 +15,6 @@ class spelers extends Model
     ];
     public function teams()
     {
-    	return $this->belongsTo('App\Model\admin\teams');
+    	return $this->belongsTo('App\Model\admin\teams', 'teams_id');
     }
 }

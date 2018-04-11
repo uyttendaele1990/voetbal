@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\admin\admin;
 use Illuminate\Support\Facades\Storage;
+use App\Model\admin\wedstrijden;
 
 class AdminController extends Controller
 {
@@ -76,17 +77,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -134,5 +124,9 @@ class AdminController extends Controller
     {
         admin::where('id', $id)->delete();
         return redirect()->back();
+    }
+    public function seizoen(){
+        wedstrijden::where('id', '>', 0)->delete();
+        return 'work in progress';
     }
 }

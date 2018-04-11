@@ -95,6 +95,9 @@
                             </div>
                         </div>
                     </form>
+                     <div>
+                        <a href="/login/google" class='btn btn-default' style='background-color:lightblue; width: 100%;'><i class="fa fa-google-plus" style='margin-right:15px;'></i>registreer Via Google+</a>
+                    </div>
 
   </div>
   <!-- /.login-box-body -->

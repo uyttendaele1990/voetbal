@@ -75,7 +75,10 @@
                             </div>
                         </div>
                     </form>
-    <a href="{{ route('register')}}" >Registreer</a>
+                    <div>
+                        <a href="/login/google" class='btn btn-default' style='background-color:lightblue; width: 100%;'><i class="fa fa-google-plus" style='margin-right:15px;'></i> Log in / registreer Via Google+</a>
+                    </div>
+    <a class='btn btn-default' style='background-color:orange; width: 100%;' href="{{ route('register')}}" >Registreer</a>
 
   </div>
   <!-- /.login-box-body -->

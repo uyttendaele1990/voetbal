@@ -12,6 +12,7 @@ use App\Model\user\Email;
 use App\Model\admin\opmerkingen;
 use App\Model\user\User;
 use App\Mail\WedstrijdEmail;
+use App\Mail\WedstrijdUpdateEmail;
 use Illuminate\Support\Facades\Mail;
 
 class WedstrijdController extends Controller
@@ -93,8 +94,8 @@ class WedstrijdController extends Controller
             ]);
 
             // email shit
-           $email = Email::where('teams_id', $request->team1)->get();
-           $emails = Email::where('teams_id', $request->team2)->get();
+           $email = Email::where('team_id', $request->team1)->get();
+           $emails = Email::where('team_id', $request->team2)->get();
            $users = User::all();
            $team1 = teams::where('id', $request->team1)->first();
            $team2 = teams::where('id', $request->team2)->first();
@@ -105,35 +106,70 @@ class WedstrijdController extends Controller
            if(count($emails) > count($email)){
             $max = count($emails);
            } else {
-            $max = count('$email');
+            $max = count($email);
            }
+            // for ($i=0; $i < $max  ; $i++) { 
+            //     foreach ($users as $user){
+            //         if((isset($email[$i])) && (isset($emails[$i])) ){
+            //             if(($email[$i]->user_id == $emails[$i]->user_id)){
+            //                 if($email[$i]->user_id == $user->id){
+            //                     $match['user'] = $user->name;
+            //                     Mail::to($user['email'])->send(new WedstrijdEmail($match));
+            //                 }
+            //             } elseif($email[$i]->user_id == $user->id){
+            //                     $match['user'] = $user->name;
+            //                     Mail::to($user['email'])->send(new WedstrijdEmail($match));
+
+            //             } elseif($emails[$i]->user_id == $user->id) {
+            //                     $match['user'] = $user->name;
+            //                     Mail::to($user['email'])->send(new WedstrijdEmail($match));
+            //             }
+            //         } else  {
+            //             if(isset($email[$i])){
+            //                 if($email[$i]->user_id == $user->id){
+            //                 $match['user'] = $user->name;
+            //                 Mail::to($user['email'])->send(new WedstrijdEmail($match));
+            //                 }
+            //             }
+            //             if(isset($emails[$i])){
+            //                 if(($emails[$i]->user_id == $user->id)){
+            //                 $match['user'] = $user->name;
+            //                     Mail::to($user['email'])->send(new WedstrijdEmail($match));
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
            for ($i=0; $i < $max  ; $i++) { 
-               foreach ($users as $user){
-                if(isset($email[$i])){
-                    if(($email[$i]->users_id == $emails[$i]->users_id)){
-                
-                    if($email[$i]->users_id == $user->id){
-                    $match['user'] = $user->name;
+                foreach ($users as $user){
+                    if(isset($email[$i])){
+                        if($email[$i]->user_id == $user->id){
+                        $match['user'] = $user->name;
                         Mail::to($user['email'])->send(new WedstrijdEmail($match));
+                            foreach($emails as $mail){
+                                if($email[$i]->user_id == $mail->user_id){
+                                    $mail->user_id = null;
+                                }
+                            }
+                            $email[$i]->user_id = null;
+                        }
+                    }
+                    if(isset($emails[$i])){
+                        if(($emails[$i]->user_id == $user->id)){
+                            $match['user'] = $user->name;
+                            Mail::to($user['email'])->send(new WedstrijdEmail($match));
+                            foreach($email as $mail){
+                                if($emails[$i]->user_id == $mail->user_id){
+                                    $mail->user_id = null;
+                                }
+                            }
+                            $emails[$i]->user_id = null;
+                        }
                     }
                 }
-                } else 
-                {
-                if(isset($email[$i])){
-                    if($email[$i]->users_id == $user->id){
-                    $match['user'] = $user->name;
-                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
-                    }
-                }
-                if(isset($emails[$i])){
-                    if(($emails[$i]->users_id == $user->id)){
-                    $match['user'] = $user->name;
-                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
-                    }
-                }
-               }
-             }
             }
+          
+
             return redirect(route('wedstrijden.index'));
         
        
@@ -202,7 +238,19 @@ class WedstrijdController extends Controller
                 $team2->aantal_wedstrijden = $team2->aantal_wedstrijden + 1;
             } 
                 
-            
+            if($wedstrijd->status == 1){
+                $opm = opmerkingen::where('wedstrijden_id', $id)->get();
+                foreach($opm as $om){ 
+                    $spelers = spelers::all();
+                    foreach($spelers as $speler){
+                        if($speler->naam == $om->gescoord_door ){
+                        $speler->doelpunten_saldo = $speler->doelpunten_saldo - $om->aantal_gescoord;
+                        $speler->save();
+                        }
+                    }    
+                }
+            }
+
             $team1->goalen_voor  = $team1->goalen_voor - $wedstrijd->team1_score;
             $team1->goalen_voor  = $team1->goalen_voor + $request->team1_score;
             $team1->goalen_tegen = $team1->goalen_tegen - $wedstrijd->team2_score;
@@ -264,10 +312,11 @@ class WedstrijdController extends Controller
                $request->team2
             ]);
             
-            opmerkingen::where('wedstrijden_id', $id)->delete();
-             // email shit
-           $email = Email::where('teams_id', $request->team1)->get();
-           $emails = Email::where('teams_id', $request->team2)->get();
+           opmerkingen::where('wedstrijden_id', $id)->delete();
+           
+            // email shit
+           $email = Email::where('team_id', $request->team1)->get();
+           $emails = Email::where('team_id', $request->team2)->get();
            $users = User::all();
            $team1 = teams::where('id', $request->team1)->first();
            $team2 = teams::where('id', $request->team2)->first();
@@ -278,34 +327,39 @@ class WedstrijdController extends Controller
            if(count($emails) > count($email)){
             $max = count($emails);
            } else {
-            $max = count('$email');
+            $max = count($email);
            }
-           for ($i=0; $i < $max  ; $i++) { 
-               foreach ($users as $user){
-                if(isset($email[$i])){
-                    if(($email[$i]->users_id == $emails[$i]->users_id)){
-                
-                    if($email[$i]->users_id == $user->id){
-                    $match['user'] = $user->name;
-                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
+            for ($i=0; $i < $max  ; $i++) { 
+                foreach ($users as $user){
+                    if((isset($email[$i])) && (isset($emails[$i])) ){
+                        if(($email[$i]->user_id == $emails[$i]->user_id)){
+                            if($email[$i]->user_id == $user->id){
+                                $match['user'] = $user->name;
+                                Mail::to($user['email'])->send(new WedstrijdUpdateEmail($match));
+                            }
+                        } elseif($email[$i]->user_id == $user->id){
+                                $match['user'] = $user->name;
+                                Mail::to($user['email'])->send(new WedstrijdUpdateEmail($match));
+
+                        } elseif($email[$i]->user_id == $user->id) {
+                                $match['user'] = $user->name;
+                                Mail::to($user['email'])->send(new WedstrijdUpdateEmail($match));
+                        }
+                    } else  {
+                        if(isset($email[$i])){
+                            if($email[$i]->user_id == $user->id){
+                            $match['user'] = $user->name;
+                            Mail::to($user['email'])->send(new WedstrijdUpdateEmail($match));
+                            }
+                        }
+                        if(isset($emails[$i])){
+                            if(($emails[$i]->user_id == $user->id)){
+                            $match['user'] = $user->name;
+                                Mail::to($user['email'])->send(new WedstrijdUpdateEmail($match));
+                            }
+                        }
                     }
                 }
-                } else 
-                {
-                if(isset($email[$i])){
-                    if($email[$i]->users_id == $user->id){
-                    $match['user'] = $user->name;
-                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
-                    }
-                }
-                if(isset($emails[$i])){
-                    if(($emails[$i]->users_id == $user->id)){
-                    $match['user'] = $user->name;
-                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
-                    }
-                }
-               }
-             }
             }
 
             return redirect(route('wedstrijden.index'));
@@ -324,6 +378,17 @@ class WedstrijdController extends Controller
         $wedstrijd = wedstrijden::where('id', $id)->first();
      
         if ($wedstrijd->status == 1){
+
+            $opm = opmerkingen::where('wedstrijden_id', $id)->get();
+            foreach($opm as $om){ 
+                $spelers = spelers::all();
+                foreach($spelers as $speler){
+                    if($speler->naam == $om->gescoord_door ){
+                    $speler->doelpunten_saldo = $speler->doelpunten_saldo - $om->aantal_gescoord;
+                    $speler->save();
+                    }
+                }    
+            }
 
             opmerkingen::where('wedstrijden_id', $id)->delete();
             if( $wedstrijd->team2_score < $wedstrijd->team1_score ){
@@ -370,21 +435,7 @@ class WedstrijdController extends Controller
     }
 
     public function destroy($id)
-    {
-        // if(opmerkingen::where('wedstrijden_id', $id)){
-        //         $opm = opmerkingen::where('wedstrijden_id', $id)->get();
-        //         $spelers = spelers::all();
-        //         return $opm; dd();
-        //         foreach($opm as $om){ 
-                    
-        //             foreach($spelers as $speler){
-        //                 if($speler->naam == $om->gescoord_door ){
-        //                 $speler->doelpunten_saldo = $speler->doelpunten_saldo - $om->aantal_gescoord;
-        //                 $speler->save();
-        //                 }
-        //             }    
-        //         }
-        //     }  
+    { 
         $request = wedstrijden::where('id', $id)->first();
         
         $team1 = teams::where('id', $request->teams[0]->id)->first();
@@ -392,35 +443,50 @@ class WedstrijdController extends Controller
         
         if($request->status == 1){
 
-        $team1->goalen_voor = $team1->goalen_voor - $request->team1_score;
-        $team1->goalen_tegen = $team1->goalen_tegen - $request->team2_score;
-        if($request->team1_score > $request->team2_score){
-            $team1->wedstrijden_gewonnen = $team1->wedstrijden_gewonnen - 1;
-            $team1->punten = $team1->punten - 3;
-        } elseif ($request->team1_score < $request->team2_score) {
-            $team1->wedstrijden_verloren =  $team1->wedstrijden_verloren - 1;
-        } else {
-            $team1->wedstrijden_gelijk = $team1->wedstrijden_gelijk - 1;
-            $team1->punten = $team1->punten - 1;
-        }
-        $team1->doelsaldo = $team1->goalen_voor - $team1->goalen_tegen;
-        $team1->aantal_wedstrijden = $team1->aantal_wedstrijden - 1;
-        $team1->save();
+            $team1->goalen_voor = $team1->goalen_voor - $request->team1_score;
+            $team1->goalen_tegen = $team1->goalen_tegen - $request->team2_score;
 
-        $team2->goalen_voor = $team2->goalen_voor - $request->team2_score;
-        $team2->goalen_tegen = $team2->goalen_tegen - $request->team1_score;
-        if($request->team2_score > $request->team1_score){
-            $team2->wedstrijden_gewonnen = $team2->wedstrijden_gewonnen - 1;
-            $team2->punten = $team2->punten - 3;
-        } elseif ($request->team2_score < $request->team1_score) {
-            $team2->wedstrijden_verloren =  $team2->wedstrijden_verloren - 1;
-        } else {
-            $team2->wedstrijden_gelijk = $team2->wedstrijden_gelijk - 1;
-            $team2->punten = $team2->punten - 1;
-        }
-        $team2->doelsaldo = $team2->goalen_voor - $team2->goalen_tegen;
-        $team2->aantal_wedstrijden = $team2->aantal_wedstrijden - 1;
-        $team2->save();
+            if($request->team1_score > $request->team2_score){
+                $team1->wedstrijden_gewonnen = $team1->wedstrijden_gewonnen - 1;
+                $team1->punten = $team1->punten - 3;
+            } elseif ($request->team1_score < $request->team2_score) {
+                $team1->wedstrijden_verloren =  $team1->wedstrijden_verloren - 1;
+            } else {
+                $team1->wedstrijden_gelijk = $team1->wedstrijden_gelijk - 1;
+                $team1->punten = $team1->punten - 1;
+            }
+
+            $team1->doelsaldo = $team1->goalen_voor - $team1->goalen_tegen;
+            $team1->aantal_wedstrijden = $team1->aantal_wedstrijden - 1;
+            $team1->save();
+
+            $team2->goalen_voor = $team2->goalen_voor - $request->team2_score;
+            $team2->goalen_tegen = $team2->goalen_tegen - $request->team1_score;
+            
+            if($request->team2_score > $request->team1_score){
+                $team2->wedstrijden_gewonnen = $team2->wedstrijden_gewonnen - 1;
+                $team2->punten = $team2->punten - 3;
+            } elseif ($request->team2_score < $request->team1_score) {
+                $team2->wedstrijden_verloren =  $team2->wedstrijden_verloren - 1;
+            } else {
+                $team2->wedstrijden_gelijk = $team2->wedstrijden_gelijk - 1;
+                $team2->punten = $team2->punten - 1;
+            }
+
+            $team2->doelsaldo = $team2->goalen_voor - $team2->goalen_tegen;
+            $team2->aantal_wedstrijden = $team2->aantal_wedstrijden - 1;
+            $team2->save();
+
+            $opm = opmerkingen::where('wedstrijden_id', $id)->get();
+            foreach($opm as $om){ 
+                $spelers = spelers::all();
+                foreach($spelers as $speler){
+                    if($speler->naam == $om->gescoord_door ){
+                    $speler->doelpunten_saldo = $speler->doelpunten_saldo - $om->aantal_gescoord;
+                    $speler->save();
+                    }
+                }    
+            }   
         } 
         wedstrijden::find($id)->delete();
 

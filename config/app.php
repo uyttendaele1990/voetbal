@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'VoetbalTracker.be'),
+    'name' => env('APP_NAME', 'VoetbalTracker'),
 
     /*
     |--------------------------------------------------------------------------
@@ -176,6 +176,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        // socialite
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
     ],
 
@@ -225,6 +227,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        // socialite
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 

@@ -2,7 +2,7 @@
 							
 								//Guest routes
 
-// De namespace rogt ervoor dat je niet elke keer User/ voor je controller moet zetten
+// De namespace zogt ervoor dat je niet elke keer User/ voor je controller moet zetten
 Route::group(['namespace' => 'User'], function(){
 		// De homepage
 		Route::get('', 'HomeController@index');
@@ -16,10 +16,10 @@ Route::group(['namespace' => 'User'], function(){
 							
 								//User routes
 
-// Gebruik gemaakt van de standaard middleware zodat deze paginas enkel zichtbaar zijn voor mensen die ingelogd zijn als user	
+// Gebruik gemaakt van de standaard middleware zodat deze paginas enkel zichtbaar zijn voor mensen die ingelogd zijn als user 
 Route::group(['namespace' => 'User', 'middleware' => 'auth:web'], function(){
 		// Profiel pagina
-		Route::get('/home', 'HomeController@profile');
+		Route::get('/home', 'HomeController@profile')->name('home');
 		// Emailadress in de lijst zetten voor het volgen van een team
 		Route::get('email/{id}', 'MailController@show');
 		// Emailadress uit de lijst halen
@@ -40,6 +40,8 @@ Route::group(['namespace' => 'User', 'middleware' => 'auth:web'], function(){
 
 // Middleware custom gemaakt voor de admins
 Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function(){
+		// Homepagina voor de admins
+		Route::get('admin/home', 'HomeController@index')->name('admin.home');
 		// Alle routes mbt de teams
 		Route::resource('admin/teams', 'TeamController');
 		// Opmerkingen opslaan
@@ -60,8 +62,6 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function(){
 		Route::delete('admin/user/{id}', 'UserController@destroy')->name('user.destroy');
 		// Alle routes mbt de spelers
 		Route::resource('admin/spelers', 'SpelerController');
-		// Homepagina voor de admins
-		Route::get('admin/home', 'HomeController@index')->name('admin.home');
 		// Opmerkingen maken
 		Route::get('admin/opmerkingen/create', 'OpmerkingenController@create')->name('opmerkingen.create');
 		// Opmerkingen opslaan
@@ -70,6 +70,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function(){
 		Route::delete('admin/opmerkingen/{id}', 'OpmerkingenController@destroy')->name('opmerkingen.destroy');
 		// Alle routes mbt de admins
 		Route::resource('admin/admin', 'AdminController');
+		Route::get('admin.seizoen', 'AdminController@seizoen')->name('admin.seizoen');
 		// admin logout
 		Route::post('admin/logout', 'Auth\LoginController@logout')->name('admin.logout');
 });
@@ -80,6 +81,9 @@ Route::post('admin/login', 'Admin\Auth\LoginController@login');
 
 // De auth routes voor de user side (login registrer, ...)
 Auth::routes();
+
+Route::get('login/google', 'Auth\LoginController@redirectToProvider');
+Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::get('/index', function(){
 	return view('user/index');

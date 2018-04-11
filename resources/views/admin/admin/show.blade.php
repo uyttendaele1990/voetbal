@@ -68,9 +68,16 @@
                 @endforeach
                 </tbody>
               </table>
-            </div>
+            </div>            
             <!-- /.box-body -->
           </div>
+          <center>
+            <a href='{{ route("admin.seizoen")}}' class='btn btn-danger' onclick='if(confirm("Ben je zeker dat het seizoen is afgelopen?")){
+                                                      } else {
+                                                            event.preventDefault();
+                                                      }'>
+            Seizoen beindigen</a>
+          </center>
     </div>
 </div>
 @endsection

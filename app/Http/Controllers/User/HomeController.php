@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Model\user\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\UpdateEmail;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -22,37 +24,48 @@ class HomeController extends Controller
 
     public function update(Request $request, $id)
     {
-            $user = User::where('id', $id)->first();
+          //niewe array maken die we in de db kunnen steken onder de tbl spelers
+          $user = User::where('id', $id)->first();
+          $this->validate($request, [
+                'avatar'   => 'mimes:jpeg,bmp,png'
+            ]);
+          
+          if($request->check){
+              $this->validate($request, [
+                'password'   => 'required | confirmed | min:6'
+            ]);
+            $pass= $request->password;
+            $request->password = bcrypt($request->password);
+            $user->password   = $request->password;
+            $user->google= null;
+          }
+          
+          if($request->name !== $user->name){
             $this->validate($request, [
-                  'avatar'   => 'mimes:jpeg,bmp,png'
-              ]);
-            
-            if($request->check){
-                $this->validate($request, [
-                  'password'   => 'required | confirmed | min:6'
-              ]);
-              $request->password = bcrypt($request->password);
-              $user->password   = $request->password;
-            }
-            
-            if($request->name !== $user->name){
-              $this->validate($request, [
-                  'name'       => 'required | unique:users'
-              ]);
-              $user->name       = $request->name;
-            }
-            
-            if($request->email !== $user->email){
-              $this->validate($request, [
-                  'email'       => 'required | email | unique:users'
-              ]);
-              $user->email       = $request->email;
-            }
-            //niewe array maken die we in de db kunnen steken onder de tbl spelers
-        
+                'name'       => 'required | unique:users'
+            ]);
+            $user->name       = $request->name;
+          }
+          
+          if($request->email !== $user->email){
+            $this->validate($request, [
+                'email'       => 'required | email | unique:users'
+            ]);
+            $user->email       = $request->email;
+          }
+
+          if(($request->check) or ($request->email !== $user->email)){
+             if($pass){
+              $user->password = $pass;
+             }
+            Mail::to($user['email'])->send(new UpdateEmail($user));
+            if($pass){
+              $user->password = bcrypt($pass);
+             }
+          }
+
          //indien er een foto is geüpload
          if($request->hasFile('avatar')){
-
            // Het pad van de avatar die overschreven word opslaan in var
            // $avatar = 'voetbal/storage/app'.url($speler->avatar); 
            //de avatar die overschreven word unlinken
@@ -73,14 +86,12 @@ class HomeController extends Controller
            $user->avatar = $avatar;
            // de if beïndigen
            }
-        
-        
-
+           
         $user->save();
         
-        return redirect(route('profile'));
-        
+        return redirect(route('home'));
     }   
+
     public function edit($id)
     {
             $user = Auth::user();

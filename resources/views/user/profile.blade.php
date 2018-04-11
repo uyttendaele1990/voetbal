@@ -14,26 +14,15 @@
 <!--[if IE]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<!-- <script>
-       function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#test')
-                        .attr('src', e.target.result)
-                        .width(150)
-                        .height(150);
-                };
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-</script> -->
 @endsection
 @section('main-content')
 <div class="container" style='text-align:center;'>
-  {{ Auth::user()->name }}
+ <label> {{ Auth::user()->name }}</label>
+  <br>
+  <br>
+  @if(Auth::user()->google)
+  <div class="well" style='color:red'> Gelieve uw wachtwoord aan te passen, u hebt een random wachtwoord gekregen</div>
+  @endif
   <div>
     <a class='btn btn-primary' href='{{route("profile.edit", Auth::user()->id)}}'>Profiel aanpassen </a>
   </div>

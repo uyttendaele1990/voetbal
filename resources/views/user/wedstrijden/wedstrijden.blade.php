@@ -10,7 +10,6 @@
 <style>
     .lol1:hover .lol {
         display: inline-block;
-
     }
     .lol {
         border-radius: 15px;
@@ -38,15 +37,20 @@
      @if($wedstrijd->status == 1)
         <div class='row'>
             <div class="col-md-offset-3 col-md-6" >
-                <!-- ik kon de class "col-md-offset-3 col-md-6" niet oproepen in css dus heb ik erin nog een divje gemaakt om dit probleem te bypassen anders was mijn hitbox voor de trigger de breedte van de pagina wat ik wat veel vond-->
                 <div = class="lol1"> 
-
-                    <!-- ik kreeg mijn inhoud van de "tooltip" (lol) niet gecentered dus heb ik voor de 2 opties een andere padding gebruikt die dan het gewenste resultaat gaf -->
-                    <span class="lol" style='background: green;padding-top:14px;'>{{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}</span><a href="/wedstrijden/{{$wedstrijd->id}}" style='color: green;'>                
-
-                    <div class='col-md-5' style="float: left; text-align:right;">{{ $teams->where('id', $wedstrijd->team1_id)->first()->naam }}</div>
-                    <div class='col-md-5' style="float: right; text-align:left;">{{ $teams->where('id', $wedstrijd->team2_id)->first()->naam }}</div>
-                    <div class='col-md-2' style="float: none;overflow: hidden;"><center> vs </center></div>
+                    <span class="lol" style='background: green;padding-top:14px;'>
+                        {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
+                    </span>
+                    <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: green;'>                
+                    <div class='col-md-5' style="float: left; text-align:right;">
+                        {{ App\Model\admin\wedstrijden::find($wedstrijd->id)->teams[0]->naam }}
+                    </div>
+                    <div class='col-md-5' style="float: right; text-align:left;">
+                        {{ App\Model\admin\wedstrijden::find($wedstrijd->id)->teams[1]->naam }}
+                    </div>
+                    <div class='col-md-2' style="float: none;overflow: hidden;">
+                        <center> vs </center>
+                    </div>
                     </a>
                 </div>
             </div>           
@@ -58,16 +62,11 @@
      @if($wedstrijd->status == 0)
         <div class='row'>
             <div class="col-md-offset-3 col-md-6" >
-                <!-- ik kon de class "col-md-offset-3 col-md-6" niet oproepen in css dus heb ik erin nog een divje gemaakt om dit probleem te bypassen anders was mijn hitbox voor de trigger de breedte van de pagina wat ik wat veel vond-->
                 <div = class="lol1"> 
-
-                    <!-- ik kreeg mijn inhoud van de "tooltip" (lol) niet gecentered dus heb ik voor de 2 opties een andere padding gebruikt die dan het gewenste resultaat gaf -->
                     <span class="lol" style='background: black;padding-top:3px;'>Wedstrijd nog niet gespeeld</span>         
-
-                    <div class='col-md-5' style="float: left; text-align:right;">{{ $teams->where('id', $wedstrijd->team1_id)->first()->naam }}</div>
-                    <div class='col-md-5' style="float: right; text-align:left;">{{ $teams->where('id', $wedstrijd->team2_id)->first()->naam }}</div>
+                    <div class='col-md-5' style="float: left; text-align:right;">{{ App\Model\admin\wedstrijden::find($wedstrijd->id)->teams[0]->naam }}</div>
+                    <div class='col-md-5' style="float: right; text-align:left;">{{ App\Model\admin\wedstrijden::find($wedstrijd->id)->teams[1]->naam }}</div>
                     <div class='col-md-2' style="float: none;overflow: hidden;"><center> vs </center></div>
-
                 </div>
             </div>           
         </div>  

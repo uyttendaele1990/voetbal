@@ -35,4 +35,9 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'google' => [
+        'client_id' => '829269267078-t8l78nphpcbaufq64jl0dqp6e4p98pcn.apps.googleusercontent.com',         
+        'client_secret' => 'C8elRnOFB5lPdkt63MD5Bf18', 
+        'redirect' => 'https://voetbal.be/login/google/callback',
+    ],
 ];
