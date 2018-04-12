@@ -125,8 +125,4 @@ class AdminController extends Controller
         admin::where('id', $id)->delete();
         return redirect()->back();
     }
-    public function seizoen(){
-        wedstrijden::where('id', '>', 0)->delete();
-        return 'work in progress';
-    }
 }

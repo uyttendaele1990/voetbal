@@ -200,7 +200,7 @@ function remove_random_functie_naam(rid) {
           </div>
           <div class="col-sm-3 nopadding" >
             <div class="input-group">
-              <input type="number" class="score form-control" name="aantal_gescoord[]" onchange='checkScore()'  min="0" placeholder="aantal" value= >
+              <input type="number" class="score form-control" name="aantal_gescoord[]" min="0" placeholder="aantal" value= >
               <div class="input-group-btn">
                 <button class="btn btn-success" type="button"  onclick="education_magic(); showHide();">
                   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>

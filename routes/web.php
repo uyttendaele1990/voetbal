@@ -70,7 +70,6 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function(){
 		Route::delete('admin/opmerkingen/{id}', 'OpmerkingenController@destroy')->name('opmerkingen.destroy');
 		// Alle routes mbt de admins
 		Route::resource('admin/admin', 'AdminController');
-		Route::get('admin.seizoen', 'AdminController@seizoen')->name('admin.seizoen');
 		// admin logout
 		Route::post('admin/logout', 'Auth\LoginController@logout')->name('admin.logout');
 });

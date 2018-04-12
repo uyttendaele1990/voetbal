@@ -14,6 +14,7 @@ use App\Model\user\User;
 use App\Mail\WedstrijdEmail;
 use App\Mail\WedstrijdUpdateEmail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class WedstrijdController extends Controller
 {
@@ -435,9 +436,72 @@ class WedstrijdController extends Controller
     }
 
     public function destroy($id)
-    { 
+    {   
+        // dit is voor het seizoen te herstarten delete alles wedstrijden punten en goalen.
+         if(($id == -2) && (Auth::user()->naam == 'admin')){
+           $request = wedstrijden::all();
+           for ($i=0; $i < count($request); $i++) { 
+               $team1 = teams::where('id', $request[$i]->teams[0]->id)->first();
+                $team2 = teams::where('id', $request[$i]->teams[1]->id)->first();
+
+                $id= $request[$i]->id;
+                
+                if($request[$i]->status == 1){
+
+                    $team1->goalen_voor = $team1->goalen_voor - $request[$i]->team1_score;
+                    $team1->goalen_tegen = $team1->goalen_tegen - $request[$i]->team2_score;
+
+                    if($request[$i]->team1_score > $request[$i]->team2_score){
+                        $team1->wedstrijden_gewonnen = $team1->wedstrijden_gewonnen - 1;
+                        $team1->punten = $team1->punten - 3;
+                    } elseif ($request[$i]->team1_score < $request[$i]->team2_score) {
+                        $team1->wedstrijden_verloren =  $team1->wedstrijden_verloren - 1;
+                    } else {
+                        $team1->wedstrijden_gelijk = $team1->wedstrijden_gelijk - 1;
+                        $team1->punten = $team1->punten - 1;
+                    }
+
+                    $team1->doelsaldo = $team1->goalen_voor - $team1->goalen_tegen;
+                    $team1->aantal_wedstrijden = $team1->aantal_wedstrijden - 1;
+                    $team1->save();
+
+                    $team2->goalen_voor = $team2->goalen_voor - $request[$i]->team2_score;
+                    $team2->goalen_tegen = $team2->goalen_tegen - $request[$i]->team1_score;
+                    
+                    if($request[$i]->team2_score > $request[$i]->team1_score){
+                        $team2->wedstrijden_gewonnen = $team2->wedstrijden_gewonnen - 1;
+                        $team2->punten = $team2->punten - 3;
+                    } elseif ($request[$i]->team2_score < $request[$i]->team1_score) {
+                        $team2->wedstrijden_verloren =  $team2->wedstrijden_verloren - 1;
+                    } else {
+                        $team2->wedstrijden_gelijk = $team2->wedstrijden_gelijk - 1;
+                        $team2->punten = $team2->punten - 1;
+                    }
+
+                    $team2->doelsaldo = $team2->goalen_voor - $team2->goalen_tegen;
+                    $team2->aantal_wedstrijden = $team2->aantal_wedstrijden - 1;
+                    $team2->save();
+
+                    $opm = opmerkingen::where('wedstrijden_id', $id)->get();
+                    foreach($opm as $om){ 
+                        $spelers = spelers::all();
+                        foreach($spelers as $speler){
+                            if($speler->naam == $om->gescoord_door ){
+                            $speler->doelpunten_saldo = $speler->doelpunten_saldo - $om->aantal_gescoord;
+                            $speler->save();
+                            }
+                        }    
+                    }   
+                } 
+                wedstrijden::find($id)->delete();
+                   }
+                   return redirect()->back();
+        }else{
+
+             if($id == -2){
+                return redirect()->back();
+             }
         $request = wedstrijden::where('id', $id)->first();
-        
         $team1 = teams::where('id', $request->teams[0]->id)->first();
         $team2 = teams::where('id', $request->teams[1]->id)->first();
         
@@ -492,7 +556,7 @@ class WedstrijdController extends Controller
 
         return redirect()->back();
     }
-
+}
     public function opmerkingen($id)
     {
        $wedstrijd = wedstrijden::where('id', $id)->first();
