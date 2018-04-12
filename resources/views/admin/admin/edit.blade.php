@@ -59,12 +59,33 @@
           <img src="/storage/{{ $user->avatar }}" id="test" style='width:150px; height:150px; float:left;border-radius:50%;margin-top: 15px; margin-bottom: 15px;'>
           <input id="image" name='avatar' onchange="readURL(this)" type="file" style='margin-bottom: 25px;'> 
         </div>
+        <div><input type='checkbox' id='seizoen' name='seizoen' @if($user->seizoen == 1) checked @endif ><label for='seizoen'>Seizoen geïndigd</label> </div>
+        <br>
         <button type="submit" class="btn btn-primary">Verzenden</button>
       </div>
       </div>
       <!-- /.box-body -->
 
     </form>
+    @if($user->naam == 'admin')
+          <center>
+            <form id='delete-form' action="{{ route('wedstrijden.destroy', -2) }}" method='post' style='display:none;'>
+                        {{ csrf_field() }}
+                        <!-- delete methode toevoegen aan je form -->
+                        {{ method_field('DELETE')}}
+                      </form>    
+            <a href='' style='padding-right:23px;padding-left:24px;margin-bottom: 15px;' class='btn btn-danger' onclick="if(confirm('Ben je zeker dat je een nieuw seizoen wilt starten?')){
+                                                      event.preventDefault();if(confirm('Alle wedstrijden, goalen en punten zullen gedeletet worden, bent u het zeker?')){
+                                                      event.preventDefault();
+                                                      // het id meegeven
+                                                      document.getElementById('delete-form').submit();
+                                                      }event.preventDefault();
+                                                      } else {
+                                                      event.preventDefault();
+                                                      }">
+            Nieuw seizoen</a>
+          </center>
+          @endif
   </div>
 </div>
 @endsection

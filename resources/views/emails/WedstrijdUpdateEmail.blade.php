@@ -5,7 +5,7 @@ Onze vorige email over de wedstrijd tussen {{$match['team1']}} en {{$match['team
 Voor meer details over de wedstrijd kan je altijd bij ons terecht!<br>
 
 
-@component('mail::button', ['url' => 'voetbal.be/wedstrijden'])
+@component('mail::button', ['url' => 'https://voetbal.be/wedstrijden'])
 wedstrijden
 @endcomponent
 

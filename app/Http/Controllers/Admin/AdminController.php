@@ -97,7 +97,6 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-
          $this->validate($request, [
             'naam' => 'required | string',
             'email' => 'required | email',
@@ -113,6 +112,11 @@ class AdminController extends Controller
             $avatar = $request->avatar->store('avatar');
             $admin->avatar               = $avatar;
             }      
+            if($request->seizoen){
+                $admin->seizoen = 1;
+            } else {
+                $admin->seizoen = 0;
+            }
            $admin->naam = $request->naam;
            $admin->email = $request->email;
            $admin->save();

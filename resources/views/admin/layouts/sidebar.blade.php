@@ -37,12 +37,14 @@
             <i class="fa fa-user"></i> <span>Spelers</span>
           </a>
         </li>
+        @if(!(App\Model\admin\admin::where('seizoen', 1)->first()))
         <li class="treeview">
           <a href="{{ route('wedstrijden.index') }}">
             <i class="fa fa-futbol-o"></i>
             <span>Wedstrijden</span>
           </a>
         </li>
+        @endif
         <li>
           <a href="{{ route('stats.index') }}">
             <i class="fa fa-bar-chart"></i> <span>Statistieken</span>

@@ -71,26 +71,6 @@
             </div>            
             <!-- /.box-body -->
           </div>
-          <center>
-            <a href='' class='btn btn-success' style='margin-bottom: 10px;margin-right:62px;background-color:orange'>seizoen beïndigen</a>
-          </center>
-          <center>
-            <form id='delete-form' action="{{ route('wedstrijden.destroy', -2) }}" method='post' style='display:none;'>
-                        {{ csrf_field() }}
-                        <!-- delete methode toevoegen aan je form -->
-                        {{ method_field('DELETE')}}
-                      </form>    
-            <a href='' style='padding-right:23px;padding-left:24px;margin-bottom: 15px;margin-right:62px;' class='btn btn-danger' onclick="if(confirm('Ben je zeker dat je een nieuw seizoen wilt starten?')){
-                                                      event.preventDefault();if(confirm('Alle wedstrijden, goalen en punten zullen gedeletet worden, bent u het zeker?')){
-                                                      event.preventDefault();
-                                                      // het id meegeven
-                                                      document.getElementById('delete-form').submit();
-                                                      }event.preventDefault();
-                                                      } else {
-                                                      event.preventDefault();
-                                                      }">
-            Nieuw seizoen</a>
-          </center>
     </div>
 </div>
 @endsection

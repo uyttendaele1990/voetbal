@@ -6,7 +6,9 @@
 @section('subtitle', $spelers1[0]->teams->naam.' vs '.$spelers2[0]->teams->naam)
 @section('main-content')
 <!-- {{$wedstrijden}} -->
+<a href="" id="return-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
 <div class="content-wrapper" style='text-align: center;'>
+
   <!-- general form elements -->
   <div class='container'>
      <h3>Opmerkingen bij de wedstrijd</h3>

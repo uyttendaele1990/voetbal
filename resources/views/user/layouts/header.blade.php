@@ -1,4 +1,4 @@
-    <!-- Navigation -->
+   <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav" >
       <div class="container">
         <a class="navbar-brand" href="/index">Voetbal Tracker</a>
@@ -25,7 +25,7 @@
               <a class="nav-link" href="/teams">Teams</a>
              </li>
              <li class="nav-item">
-                <a class="nav-link" href="/home">{{ Auth::user()->name }}</a>
+                <a class="nav-link" href="{{ route('profile.edit', Auth::user()->id)}}">{{ Auth::user()->name }}</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>

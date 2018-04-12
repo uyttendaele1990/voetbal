@@ -9,17 +9,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\UpdateEmail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('user/home');
-    }
-     public function profile()
-    {
-    	$user = Auth::user();
-        return view('user/profile', compact('user'));
+        $topscorers= DB::table('spelers')
+                    ->select('naam', 'foto', 'doelpunten_saldo')
+                    ->orderBy('doelpunten_saldo', 'desc')
+                    ->leftJoin('teams', 'spelers.teams_id', '=', 'teams.id')
+                    ->select('spelers.*', 'teams.naam as team')
+                    ->limit(3)
+                    ->get();
+                    
+        $winnaar = DB::select('select * from teams ORDER BY punten DESC, aantal_wedstrijden DESC,wedstrijden_gewonnen DESC, doelsaldo DESC');
+        return view('user/home', compact('winnaar', 'topscorers'));
     }
 
     public function update(Request $request, $id)
@@ -96,6 +101,10 @@ class HomeController extends Controller
     {
             $user = Auth::user();
         return view('user/edit', compact('user'));
+    }
+
+    public function terms(){
+      return view('terms');
     }
 
 }

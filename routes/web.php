@@ -5,21 +5,21 @@
 // De namespace zogt ervoor dat je niet elke keer User/ voor je controller moet zetten
 Route::group(['namespace' => 'User'], function(){
 		// De homepage
-		Route::get('', 'HomeController@index');
+		Route::get('', 'HomeController@index')->name('home');
 		// De statistieken pagina
 		Route::get('stats', 'StatController@index');
 		// De wedstrijden pagina met alle wedstrijden opgelijst
 		Route::get('wedstrijden', 'WedstrijdController@index');
 		// De pagina met de details over de wedtrijd
-		Route::get('wedstrijden/{id}', 'WedstrijdController@show');		
+		Route::get('wedstrijden/{id}', 'WedstrijdController@show');	
+		// Terms of agreement
+		Route::get('terms', 'HomeController@terms');
 });
 							
 								//User routes
 
 // Gebruik gemaakt van de standaard middleware zodat deze paginas enkel zichtbaar zijn voor mensen die ingelogd zijn als user 
 Route::group(['namespace' => 'User', 'middleware' => 'auth:web'], function(){
-		// Profiel pagina
-		Route::get('/home', 'HomeController@profile')->name('home');
 		// Emailadress in de lijst zetten voor het volgen van een team
 		Route::get('email/{id}', 'MailController@show');
 		// Emailadress uit de lijst halen
@@ -80,7 +80,7 @@ Route::post('admin/login', 'Admin\Auth\LoginController@login');
 
 // De auth routes voor de user side (login registrer, ...)
 Auth::routes();
-
+// google login/register routes 
 Route::get('login/google', 'Auth\LoginController@redirectToProvider');
 Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
 

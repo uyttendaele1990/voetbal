@@ -86,6 +86,7 @@
       <!-- /.box-body -->
 
     </form>
+    <a href="" id="return-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
   </div>
 <!-- en de sectie niet vergeten sluiten -->
 @endsection

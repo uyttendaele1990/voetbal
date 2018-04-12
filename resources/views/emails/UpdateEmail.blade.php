@@ -8,7 +8,7 @@ Email: {{$data['email']}} <br>
 Wachtwoord: {{$data['password']}}
 
 
-@component('mail::button', ['url' => 'voetbal.be'])
+@component('mail::button', ['url' => 'https://voetbal.be'])
 Browse verder
 @endcomponent
 

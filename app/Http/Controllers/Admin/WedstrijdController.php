@@ -15,6 +15,7 @@ use App\Mail\WedstrijdEmail;
 use App\Mail\WedstrijdUpdateEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+use App\Model\admin\admin;
 
 class WedstrijdController extends Controller
 {
@@ -109,38 +110,6 @@ class WedstrijdController extends Controller
            } else {
             $max = count($email);
            }
-            // for ($i=0; $i < $max  ; $i++) { 
-            //     foreach ($users as $user){
-            //         if((isset($email[$i])) && (isset($emails[$i])) ){
-            //             if(($email[$i]->user_id == $emails[$i]->user_id)){
-            //                 if($email[$i]->user_id == $user->id){
-            //                     $match['user'] = $user->name;
-            //                     Mail::to($user['email'])->send(new WedstrijdEmail($match));
-            //                 }
-            //             } elseif($email[$i]->user_id == $user->id){
-            //                     $match['user'] = $user->name;
-            //                     Mail::to($user['email'])->send(new WedstrijdEmail($match));
-
-            //             } elseif($emails[$i]->user_id == $user->id) {
-            //                     $match['user'] = $user->name;
-            //                     Mail::to($user['email'])->send(new WedstrijdEmail($match));
-            //             }
-            //         } else  {
-            //             if(isset($email[$i])){
-            //                 if($email[$i]->user_id == $user->id){
-            //                 $match['user'] = $user->name;
-            //                 Mail::to($user['email'])->send(new WedstrijdEmail($match));
-            //                 }
-            //             }
-            //             if(isset($emails[$i])){
-            //                 if(($emails[$i]->user_id == $user->id)){
-            //                 $match['user'] = $user->name;
-            //                     Mail::to($user['email'])->send(new WedstrijdEmail($match));
-            //                 }
-            //             }
-            //         }
-            //     }
-            // }
            for ($i=0; $i < $max  ; $i++) { 
                 foreach ($users as $user){
                     if(isset($email[$i])){
@@ -169,11 +138,8 @@ class WedstrijdController extends Controller
                     }
                 }
             }
-          
-
             return redirect(route('wedstrijden.index'));
-        
-       
+
         } else {
             $this->validate($request, [
                 'team1'=> 'required | different:team2',
@@ -200,14 +166,6 @@ class WedstrijdController extends Controller
         ]);
 
         return redirect(route('wedstrijden.index'));
-    }
-
-    public function show($id)
-    {
-
-        $wedstrijd = wedstrijden::find($id);
-        $teams = teams::all();
-        return view('admin.wedstrijden.edit', compact('wedstrijd', 'teams'));
     }
 
     public function edit($id)
@@ -432,13 +390,16 @@ class WedstrijdController extends Controller
             ]);
 
         return redirect(route('wedstrijden.index'));
-    }
+        }
     }
 
     public function destroy($id)
     {   
         // dit is voor het seizoen te herstarten delete alles wedstrijden punten en goalen.
          if(($id == -2) && (Auth::user()->naam == 'admin')){
+           $admin = admin::where('naam', 'admin')->first();
+           $admin->seizoen = 0;
+           $admin->save();
            $request = wedstrijden::all();
            for ($i=0; $i < count($request); $i++) { 
                $team1 = teams::where('id', $request[$i]->teams[0]->id)->first();
@@ -498,9 +459,6 @@ class WedstrijdController extends Controller
                    return redirect()->back();
         }else{
 
-             if($id == -2){
-                return redirect()->back();
-             }
         $request = wedstrijden::where('id', $id)->first();
         $team1 = teams::where('id', $request->teams[0]->id)->first();
         $team2 = teams::where('id', $request->teams[1]->id)->first();
@@ -536,7 +494,6 @@ class WedstrijdController extends Controller
                 $team2->wedstrijden_gelijk = $team2->wedstrijden_gelijk - 1;
                 $team2->punten = $team2->punten - 1;
             }
-
             $team2->doelsaldo = $team2->goalen_voor - $team2->goalen_tegen;
             $team2->aantal_wedstrijden = $team2->aantal_wedstrijden - 1;
             $team2->save();
@@ -553,7 +510,6 @@ class WedstrijdController extends Controller
             }   
         } 
         wedstrijden::find($id)->delete();
-
         return redirect()->back();
     }
 }
@@ -562,7 +518,6 @@ class WedstrijdController extends Controller
        $wedstrijd = wedstrijden::where('id', $id)->first();
        $spelers1 = spelers::where('teams_id', $wedstrijd->teams[0]->id)->get();
        $spelers2 = spelers::where('teams_id', $wedstrijd->teams[1]->id)->get();
-     
        return view('admin/wedstrijden/opmerkingen', compact('wedstrijd', 'spelers1', 'spelers2'));
     }
 }

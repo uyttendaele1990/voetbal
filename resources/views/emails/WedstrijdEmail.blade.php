@@ -5,7 +5,7 @@ Jouw team heeft een wedstrijd gespeeld,<br>
 Voor meer details over de wedstrijd kan je altijd bij ons terecht!<br>
 
 
-@component('mail::button', ['url' => 'voetbal.be/wedstrijden'])
+@component('mail::button', ['url' => 'https://voetbal.be/wedstrijden'])
 wedstrijden
 @endcomponent
 

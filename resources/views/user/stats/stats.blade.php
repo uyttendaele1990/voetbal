@@ -73,7 +73,7 @@
                 </div>
                 <div class="col-md-3">
                   @foreach($spelers as $speler)
-                    <small class="pull-left" style='margin-left: 15px;'>{{ App\Model\admin\spelers::find($speler->id)->teams->slug }}</small><br>
+                    <small class="pull-left" style='margin-left: 15px;'>{{ $speler->teams->slug }}</small><br>
                   @endforeach
                 </div>
               </div>
@@ -83,5 +83,6 @@
       </div>
     </div>
   </div>
+  <a href="" id="return-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
 </div>
 @endsection
