@@ -8,6 +8,11 @@ class Email extends Model
 {
 	public function user()
 	{
-		// return $this->belongsTo('App\Model\user\User');
+		return $this->belongsTo('App\Model\user\User');
 	}
+	public function team()
+	{
+		return $this->belongsTo('App\Model\admin\teams');
+	}
+	
 }

@@ -40,4 +40,9 @@ return [
         'client_secret' => 'C8elRnOFB5lPdkt63MD5Bf18', 
         'redirect' => 'https://voetbal.be/login/google/callback',
     ],
+    'facebook' => [
+        'client_id' => '212454416177213',         
+        'client_secret' => 'dce0953416d3476789c8706b3917f8bf', 
+        'redirect' => 'https://voetbal.be/login/facebook/callback',
+    ],
 ];

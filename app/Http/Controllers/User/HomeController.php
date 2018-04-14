@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Mail\UpdateEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
+use App\Model\admin\spelers;
 
 class HomeController extends Controller
 {
@@ -22,8 +23,11 @@ class HomeController extends Controller
                     ->select('spelers.*', 'teams.naam as team')
                     ->limit(3)
                     ->get();
-                    
-        $winnaar = DB::select('select * from teams ORDER BY punten DESC, aantal_wedstrijden DESC,wedstrijden_gewonnen DESC, doelsaldo DESC');
+        // $spelers = spelers::select(['naam','foto','doelpunten_saldo', 'teams_id'])->with('teams')->orderBy('doelpunten_saldo','desc')->take(3)->get();
+        // foreach($spelers as $speler){
+        //   return $speler->teams->wedstrijden;dd(); 
+        // }
+        $winnaar = DB::select('select * from teams ORDER BY punten DESC, aantal_wedstrijden DESC,wedstrijden_gewonnen DESC, doelsaldo DESC LIMIT 1');
         return view('user/home', compact('winnaar', 'topscorers'));
     }
 

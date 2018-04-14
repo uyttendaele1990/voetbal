@@ -397,10 +397,13 @@ class WedstrijdController extends Controller
     {   
         // dit is voor het seizoen te herstarten delete alles wedstrijden punten en goalen.
          if(($id == -2) && (Auth::user()->naam == 'admin')){
+            // niew seizoen starten
            $admin = admin::where('naam', 'admin')->first();
            $admin->seizoen = 0;
            $admin->save();
            $request = wedstrijden::all();
+           
+           // het oude seizoen verwijderen
            for ($i=0; $i < count($request); $i++) { 
                $team1 = teams::where('id', $request[$i]->teams[0]->id)->first();
                 $team2 = teams::where('id', $request[$i]->teams[1]->id)->first();

@@ -49,7 +49,7 @@ class LoginController extends Controller
          */
         public function redirectToProvider()
         {
-            return Socialite::driver('google')->redirect();
+            return Socialite::driver('google')->stateless()->redirect();
         }
 
         /**
@@ -71,10 +71,11 @@ class LoginController extends Controller
                 $user = new User;
                 $user->name = $loginUser->name;
                 $user->email = $loginUser->email;
-                $user->password = 123456;
+                $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
+                $user->password = $randomString;
                 $user->google = 1;
                 Mail::to($user['email'])->send(new WelcomeEmail($user));
-                $user->password = bcrypt(123456);
+                $user->password = bcrypt($randomString);
                 $user->save();
                 Auth::login($user);
                 
