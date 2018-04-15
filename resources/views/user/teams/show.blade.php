@@ -45,6 +45,6 @@
   <div class="box-footer" style='text-align: center;'>
     <a type="button" href="/teams" class="btn btn-danger">Terug</a>
   </div>
-  <a href="" id="return-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
+  <a href="#" class="back-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
 </div>
 @endsection

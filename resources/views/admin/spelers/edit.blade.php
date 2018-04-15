@@ -2,9 +2,9 @@
 @extends('admin/layouts/app2')
 <!-- de main content sectie openen en erin zetten wat je wil tonen op deze pagina -->
 @section('headSection')
-<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<link class="jsbin" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/html" />
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
 <meta charset=utf-8 />
 <!--[if IE]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -56,7 +56,7 @@
         <div class="form-group">
           <label>Foto</label>
           <br>
-          <img src="/storage/{{ $spelers->foto }}" id="test" style='width:150px; height:150px; float:left;border-radius:50%;margin-top: 15px; margin-bottom: 15px;'>
+          <img src="/storage/{{ $spelers->foto }}" alt='{{ $spelers->naam }}' id="test" style='width:150px; height:150px; float:left;border-radius:50%;margin-top: 15px; margin-bottom: 15px;'>
           <input id="image" name='foto' onchange="readURL(this)" type="file"> 
         </div>
         <div class="form-group">

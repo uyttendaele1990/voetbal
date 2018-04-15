@@ -38,7 +38,7 @@
                   <tr>
                     <td>{{ $loop->index+1 }}</td>
                     <td>{{ $speler->naam }}</td>
-                    <td><img src="/storage/{{ $speler->foto }}" style='width:75px; height:75px; float:left;border-radius:50%;'></td>
+                    <td><img src="/storage/{{ $speler->foto }}" alt='{{ $speler->naam }}' style='width:75px; height:75px; float:left;border-radius:50%;'></td>
                     <td>{{ $speler->teams->naam }}</td>
                     <td>
                       <!-- de edit button -->

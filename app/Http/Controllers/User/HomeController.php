@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Mail\UpdateEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
-use App\Model\admin\spelers;
+// use App\Model\admin\spelers;
 
 class HomeController extends Controller
 {
@@ -56,17 +56,16 @@ class HomeController extends Controller
             $user->name       = $request->name;
           }
           
-          if($request->email !== $user->email){
-            $this->validate($request, [
-                'email'       => 'required | email | unique:users'
-            ]);
-            $user->email       = $request->email;
-          }
-
           if(($request->check) or ($request->email !== $user->email)){
              if($pass){
               $user->password = $pass;
              }
+             if($request->email !== $user->email){
+                $this->validate($request, [
+                    'email'       => 'required | email | unique:users'
+                ]);
+                $user->email       = $request->email;
+              }
             Mail::to($user['email'])->send(new UpdateEmail($user));
             if($pass){
               $user->password = bcrypt($pass);

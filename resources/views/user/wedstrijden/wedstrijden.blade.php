@@ -43,10 +43,10 @@
                     </span>
                     <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: green;'>                
                     <div class='col-md-5' style="float: left; text-align:right;">
-                        {{ App\Model\admin\wedstrijden::find($wedstrijd->id)->teams[0]->naam }}
+                        {{ $wedstrijd->teams[0]->naam }}
                     </div>
                     <div class='col-md-5' style="float: right; text-align:left;">
-                        {{ App\Model\admin\wedstrijden::find($wedstrijd->id)->teams[1]->naam }}
+                        {{ $wedstrijd->teams[1]->naam }}
                     </div>
                     <div class='col-md-2' style="float: none;overflow: hidden;">
                         <center> vs </center>
@@ -64,8 +64,8 @@
             <div class="col-md-offset-3 col-md-6" >
                 <div = class="lol1"> 
                     <span class="lol" style='background: black;padding-top:3px;'>Wedstrijd nog niet gespeeld</span>         
-                    <div class='col-md-5' style="float: left; text-align:right;">{{ App\Model\admin\wedstrijden::find($wedstrijd->id)->teams[0]->naam }}</div>
-                    <div class='col-md-5' style="float: right; text-align:left;">{{ App\Model\admin\wedstrijden::find($wedstrijd->id)->teams[1]->naam }}</div>
+                    <div class='col-md-5' style="float: left; text-align:right;">{{ $wedstrijd->teams[0]->naam }}</div>
+                    <div class='col-md-5' style="float: right; text-align:left;">{{ $wedstrijd->teams[1]->naam }}</div>
                     <div class='col-md-2' style="float: none;overflow: hidden;"><center> vs </center></div>
                 </div>
             </div>           
@@ -74,6 +74,6 @@
      @endif        
     @endforeach
   </div>
-  <a href="" id="return-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
+  <a href="#" class="back-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
 </div>  
 @endsection

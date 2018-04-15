@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\admin\admin;
 use Illuminate\Support\Facades\Storage;
-use App\Model\admin\wedstrijden;
+use Illuminate\Support\Facades\Auth;
+use App\Mail\UpdateEmail;
+use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
@@ -42,7 +44,7 @@ class AdminController extends Controller
         //eerst valideren zodat de verplichte velden zeker ingevuld zijn voordt ze worden opgeslaan
         //foto validatie zorgt er voor dat je enkel een jpeg, bmp, png bestand kunt uploaden
          $this->validate($request, [
-            'naam'       => 'required | unique:admins',
+            'name'       => 'required | unique:admins',
             'email'      => 'required | email | unique:admins',
             'password'   => 'required | confirmed | min:6',
             'avatar'     => 'mimes:jpeg,bmp,png'
@@ -68,7 +70,7 @@ class AdminController extends Controller
         //variabelen opslaan
         $admin->remember_token   = $request->_token;
         $admin->password         = $request->password;
-        $admin->naam             = $request->naam;
+        $admin->name             = $request->name;
         $admin->email            = $request->email;
         $admin->avatar           = $avatar;
         //de data in de db opslaan
@@ -97,31 +99,73 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(Auth::user()->name == 'admin' || Auth::user()->id == $id){
          $this->validate($request, [
-            'naam' => 'required | string',
-            'email' => 'required | email',
+            'name' => 'required | string ',
+            'email' => 'required | email ',
             'avatar' => 'mimes:jpeg,bmp,png'
            ]); 
-           $admin = admin::where('id', $id)->first();
+            $user = admin::find($id);
+            if($request->check){
+              $this->validate($request, [
+                'password'   => 'required | confirmed | min:6'
+                ]);
+                $pass= $request->password;
+                $request->password = bcrypt($request->password);
+                $user->password   = $request->password;
+            }
+            if(($request->name !== $user->name) && ($user->name)){
+                $this->validate($request, [
+                    'name'       => 'required | unique:admins'
+                ]);
+                $user->name       = $request->name;
+              }
+
             if($request->hasFile('avatar')){
                 $request->avatar->store('public/avatar');
-                if($admin->avatar !== null ){
+                if($user->avatar !== null ){
                     //de oude foto deleten
-                   Storage::delete($admin->avatar);
+                   Storage::delete($user->avatar);
                }
             $avatar = $request->avatar->store('avatar');
-            $admin->avatar               = $avatar;
-            }      
-            if($request->seizoen){
-                $admin->seizoen = 1;
-            } else {
-                $admin->seizoen = 0;
-            }
-           $admin->naam = $request->naam;
-           $admin->email = $request->email;
-           $admin->save();
+            $user->avatar               = $avatar;
+            } 
 
+            if($request->seizoen){
+                $user->seizoen = 1;
+            } else {
+                $user->seizoen = 0;
+            }
+
+            if(($request->check) || ($request->email !== $user->email)){
+             if(isset($pass)){
+              $user->password = $pass;
+             }else{
+                $pas =$user->password;
+                $user->password = '';
+             }
+             if($request->email !== $user->email){
+                $this->validate($request, [
+                    'email'       => 'required | email | unique:admins'
+                ]);
+                $user->email       = $request->email;
+              }
+            Mail::to($user['email'])->send(new UpdateEmail($user));
+            if(isset($pass)){
+              $user->password = bcrypt($pass);
+             } else {
+                $user->password = $pas;
+             }
+            }
+           $user->save();
+           if(Auth::user()->name == 'admin'){
            return redirect(route('admin.index'));
+            }else {
+                return redirect(route('admin.home'));
+            }
+        } else {
+            return redirect()->back();
+        }
     }
 
     public function destroy($id)

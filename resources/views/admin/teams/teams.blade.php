@@ -1,13 +1,9 @@
 
 @extends('admin/layouts/app2')
 @section('headSection')
-<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
-<meta charset=utf-8 />
-<!--[if IE]>
-  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
+<link class="jsbin" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/html" />
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
 <style>
   #test{
     display: none;
@@ -56,7 +52,7 @@
           </div>
           <div class="form-group">
             <label for="exampleInputFile">Logo</label>
-            <img src="" id="test" style='width:150px; height:150px; float:center;margin-top: 15px; margin-bottom: 15px;'>
+            <img src="" id="test" alt='Logo' style='width:150px; height:150px; float:center;margin-top: 15px; margin-bottom: 15px;'>
             <input id="image" name='image' onchange="readURL(this)" type="file"> 
           </div>
         </div>

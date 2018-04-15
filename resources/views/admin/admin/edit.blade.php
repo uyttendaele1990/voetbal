@@ -1,4 +1,4 @@
-@if(Auth::user()->naam == "admin")
+@if(Auth::user()->name == "admin" || Auth::user()->id == $user->id )
 @extends('admin/layouts/app2')
 @section('headSection')
 <link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -24,6 +24,16 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        function wachtwoord(){
+            if(document.getElementById('check').checked){
+                  document.getElementById('pw1').disabled = false;
+                  document.getElementById('pw2').disabled = false;
+            }  else  {
+                  document.getElementById('pw1').disabled = true;
+                  document.getElementById('pw2').disabled = true;
+            }
+        }
 </script>
 @endsection
 @section('main-content')
@@ -46,7 +56,7 @@
         <div class="form-group">
           <label for="team">Naam</label>
           <br>
-          <input class="form-control" value='{{$user->naam}}'  name='naam' type="text">
+          <input class="form-control" @if($user->name == 'admin') readonly @endif value='{{$user->name}}'  name='name' type="text">
         </div>
         <div class="form-group">
           <label for="team">Email</label>
@@ -59,6 +69,17 @@
           <img src="/storage/{{ $user->avatar }}" id="test" style='width:150px; height:150px; float:left;border-radius:50%;margin-top: 15px; margin-bottom: 15px;'>
           <input id="image" name='avatar' onchange="readURL(this)" type="file" style='margin-bottom: 25px;'> 
         </div>
+        <input type='checkbox' id='check' name="check" value='1' onclick='wachtwoord()'><small>Wachtwoord veranderen</small>
+        <div class="form-group">
+          <label for="team">Wachtwoord</label>
+          <br>
+          <input class="form-control" id='pw1' disabled name='password' placeholder="wachtwoord" type="password">
+        </div> 
+        <div class="form-group">
+          <label for="team">wachtwoord herhalen </label>
+          <br>
+          <input class="form-control" id='pw2' disabled name='password_confirmation' placeholder="wachtwoord" type="password">
+        </div>
         <div><input type='checkbox' id='seizoen' name='seizoen' @if($user->seizoen == 1) checked @endif ><label for='seizoen'>Seizoen geïndigd</label> </div>
         <br>
         <button type="submit" class="btn btn-primary">Verzenden</button>
@@ -67,7 +88,7 @@
       <!-- /.box-body -->
 
     </form>
-    @if($user->naam == 'admin')
+    @if($user->name == 'admin')
           <center>
             <form id='delete-form' action="{{ route('wedstrijden.destroy', -2) }}" method='post' style='display:none;'>
                         {{ csrf_field() }}

@@ -7,13 +7,6 @@
 @extends('user/layouts/app')
 <!-- de main content sectie openen en erin zetten wat je wil tonen op deze pagina -->
 @section('headSection')
-<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
-<meta charset=utf-8 />
-<!--[if IE]>
-  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
 <script>
        function readURL(input) {
             if (input.files && input.files[0]) {
@@ -77,7 +70,7 @@
         <div class="form-group">
           <label>Foto</label>
           <br>
-          <img src="/storage/{{ $user->avatar }}" id="test" style='width:150px; height:150px; float:left;border-radius:50%;margin-top: 15px; margin-bottom: 15px;'>
+          <img src="/storage/{{ $user->avatar }}" alt='{{ $user->name }}' id="test" style='width:150px; height:150px; float:left;border-radius:50%;margin-top: 15px; margin-bottom: 15px;'>
           <input id="image" name='avatar'  value='{{ $user->avatar }' onchange="readURL(this)" type="file" style='margin-bottom: 25px;'> 
         </div>
         <button type="submit" class="btn btn-primary">Verzenden</button>
@@ -86,7 +79,7 @@
       <!-- /.box-body -->
 
     </form>
-    <a href="" id="return-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
+    <a href="#" class="back-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
   </div>
 <!-- en de sectie niet vergeten sluiten -->
 @endsection

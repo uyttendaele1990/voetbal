@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class MailController extends Controller
 {
-    public function show($id)
+    public function store($id)
     {
         $team = teams::where('id', $id)->first();
         $user = Auth::user();

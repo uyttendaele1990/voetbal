@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\admin\wedstrijden;
@@ -15,17 +14,14 @@ use App\Mail\WedstrijdEmail;
 use App\Mail\WedstrijdUpdateEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
-use App\Model\admin\admin;
 
 class WedstrijdController extends Controller
 {
     
     public function index()
     {   
-        $opmerkingen = opmerkingen::all();
         $wedstrijden = wedstrijden::all();
-        $teams = teams::all();
-        return view('admin/wedstrijden/show', compact('wedstrijden', 'opmerkingen', 'teams'));
+        return view('admin/wedstrijden/show', compact('wedstrijden'));
     }
 
     public function create()
@@ -95,12 +91,10 @@ class WedstrijdController extends Controller
                $request->team2
             ]);
 
-            // email shit
+            // email
            $email = Email::where('team_id', $request->team1)->get();
            $emails = Email::where('team_id', $request->team2)->get();
            $users = User::all();
-           $team1 = teams::where('id', $request->team1)->first();
-           $team2 = teams::where('id', $request->team2)->first();
            
            $match = $request;
            $match['team1'] = $team1->naam;
@@ -170,9 +164,8 @@ class WedstrijdController extends Controller
 
     public function edit($id)
     {
-        $teams = teams::all();
         $wedstrijd = wedstrijden::where('id', $id)->first();
-        return view('admin.wedstrijden.edit', compact('wedstrijd', 'teams'));
+        return view('admin.wedstrijden.edit', compact('wedstrijd'));
     }
 
     public function update(Request $request, $id)
@@ -187,11 +180,11 @@ class WedstrijdController extends Controller
                     'gespeeld_op' => 'required | date | before:tomorrow'
                     ]);
                 $status = 1;                               
-
-           $team1 = teams::where('id', $request->team1)->first();
-           $team2 = teams::where('id', $request->team2)->first();
-
             $wedstrijd = wedstrijden::where('id', $id)->first();
+             $team1 = $wedstrijd->teams[0];
+             $team2 = $wedstrijd->teams[1];
+
+            
             if($wedstrijd->status == 0){
                 $team1->aantal_wedstrijden = $team1->aantal_wedstrijden + 1;
                 $team2->aantal_wedstrijden = $team2->aantal_wedstrijden + 1;
@@ -256,7 +249,6 @@ class WedstrijdController extends Controller
             $team2->doelsaldo = $team2->goalen_voor - $team2->goalen_tegen;
             $team2->save();
 
-            $wedstrijd = wedstrijden::where('id', $id)->first();
             if($request->team1_score !== ""){
                 $wedstrijd->team2_score = $request->team2_score;  
                 $wedstrijd->team1_score = $request->team1_score;  
@@ -273,12 +265,10 @@ class WedstrijdController extends Controller
             
            opmerkingen::where('wedstrijden_id', $id)->delete();
            
-            // email shit
+            // email
            $email = Email::where('team_id', $request->team1)->get();
            $emails = Email::where('team_id', $request->team2)->get();
            $users = User::all();
-           $team1 = teams::where('id', $request->team1)->first();
-           $team2 = teams::where('id', $request->team2)->first();
            
            $match = $request;
            $match['team1'] = $team1->naam;
@@ -288,34 +278,30 @@ class WedstrijdController extends Controller
            } else {
             $max = count($email);
            }
-            for ($i=0; $i < $max  ; $i++) { 
+           for ($i=0; $i < $max  ; $i++) { 
                 foreach ($users as $user){
-                    if((isset($email[$i])) && (isset($emails[$i])) ){
-                        if(($email[$i]->user_id == $emails[$i]->user_id)){
-                            if($email[$i]->user_id == $user->id){
-                                $match['user'] = $user->name;
-                                Mail::to($user['email'])->send(new WedstrijdUpdateEmail($match));
+                    if(isset($email[$i])){
+                        if($email[$i]->user_id == $user->id){
+                        $match['user'] = $user->name;
+                        Mail::to($user['email'])->send(new WedstrijdEmail($match));
+                            foreach($emails as $mail){
+                                if($email[$i]->user_id == $mail->user_id){
+                                    $mail->user_id = null;
+                                }
                             }
-                        } elseif($email[$i]->user_id == $user->id){
-                                $match['user'] = $user->name;
-                                Mail::to($user['email'])->send(new WedstrijdUpdateEmail($match));
-
-                        } elseif($email[$i]->user_id == $user->id) {
-                                $match['user'] = $user->name;
-                                Mail::to($user['email'])->send(new WedstrijdUpdateEmail($match));
+                            $email[$i]->user_id = null;
                         }
-                    } else  {
-                        if(isset($email[$i])){
-                            if($email[$i]->user_id == $user->id){
+                    }
+                    if(isset($emails[$i])){
+                        if(($emails[$i]->user_id == $user->id)){
                             $match['user'] = $user->name;
-                            Mail::to($user['email'])->send(new WedstrijdUpdateEmail($match));
+                            Mail::to($user['email'])->send(new WedstrijdEmail($match));
+                            foreach($email as $mail){
+                                if($emails[$i]->user_id == $mail->user_id){
+                                    $mail->user_id = null;
+                                }
                             }
-                        }
-                        if(isset($emails[$i])){
-                            if(($emails[$i]->user_id == $user->id)){
-                            $match['user'] = $user->name;
-                                Mail::to($user['email'])->send(new WedstrijdUpdateEmail($match));
-                            }
+                            $emails[$i]->user_id = null;
                         }
                     }
                 }
@@ -331,10 +317,10 @@ class WedstrijdController extends Controller
                 'gespeeld_op' => 'required | date | after:yesterday'
                 ]);
             $status = 0;
-
-        $team1 = teams::where('id', $request->team1)->first();
-        $team2 = teams::where('id', $request->team2)->first();        
+       
         $wedstrijd = wedstrijden::where('id', $id)->first();
+        $team1 = $wedstrijd->teams[0];
+        $team2 = $wedstrijd->teams[1];
      
         if ($wedstrijd->status == 1){
 
@@ -396,17 +382,17 @@ class WedstrijdController extends Controller
     public function destroy($id)
     {   
         // dit is voor het seizoen te herstarten delete alles wedstrijden punten en goalen.
-         if(($id == -2) && (Auth::user()->naam == 'admin')){
+         if(($id == -2) && (Auth::user()->name == 'admin')){
             // niew seizoen starten
-           $admin = admin::where('naam', 'admin')->first();
+           $admin = Auth::user()->first();
            $admin->seizoen = 0;
            $admin->save();
            $request = wedstrijden::all();
            
            // het oude seizoen verwijderen
            for ($i=0; $i < count($request); $i++) { 
-               $team1 = teams::where('id', $request[$i]->teams[0]->id)->first();
-                $team2 = teams::where('id', $request[$i]->teams[1]->id)->first();
+               $team1 = $request[$i]->teams[0];
+               $team2 = $request[$i]->teams[1];
 
                 $id= $request[$i]->id;
                 
@@ -463,8 +449,8 @@ class WedstrijdController extends Controller
         }else{
 
         $request = wedstrijden::where('id', $id)->first();
-        $team1 = teams::where('id', $request->teams[0]->id)->first();
-        $team2 = teams::where('id', $request->teams[1]->id)->first();
+        $team1 = $request->teams[0];
+        $team2 = $request->teams[1];
         
         if($request->status == 1){
 
@@ -519,8 +505,6 @@ class WedstrijdController extends Controller
     public function opmerkingen($id)
     {
        $wedstrijd = wedstrijden::where('id', $id)->first();
-       $spelers1 = spelers::where('teams_id', $wedstrijd->teams[0]->id)->get();
-       $spelers2 = spelers::where('teams_id', $wedstrijd->teams[1]->id)->get();
-       return view('admin/wedstrijden/opmerkingen', compact('wedstrijd', 'spelers1', 'spelers2'));
+       return view('admin/wedstrijden/opmerkingen', compact('wedstrijd'));
     }
 }

@@ -21,7 +21,7 @@ Route::group(['namespace' => 'User'], function(){
 // Gebruik gemaakt van de standaard middleware zodat deze paginas enkel zichtbaar zijn voor mensen die ingelogd zijn als user 
 Route::group(['namespace' => 'User', 'middleware' => 'auth:web'], function(){
 		// Emailadress in de lijst zetten voor het volgen van een team
-		Route::get('email/{id}', 'MailController@show');
+		Route::get('email/{id}', 'MailController@store');
 		// Emailadress uit de lijst halen
 		Route::delete('email/{id}', 'MailController@destroy')->name('email.destroy');
 		// Pagina met alle wedstrijden van 1 team

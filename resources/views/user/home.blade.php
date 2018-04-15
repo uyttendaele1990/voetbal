@@ -69,13 +69,14 @@
 @endsection
 @section('main-content')
 <div class='container'> 
-	<a href="" id="return-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
-	<div id="cookieConsent">
-    <div id="closeCookieConsent">x</div>
-    This website is using cookies. <a target="_blank" href="/terms">Terms of agreement</a>. <a class="cookieConsentOK">That's Fine</a>
-</div>
+	<a href="#" class="back-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
+	
+
 	<h2 style='text-align: center;'>
 	@guest
+	<div id="cookieConsent">
+    <div id="closeCookieConsent">x</div>
+    Deze website gebruikt cookies. <a target="_blank" href="/terms">Terms of agreement</a>. <a class="cookieConsentOK">Ik ga ermee akkoord</a></div>
  	  	Bezoek onze site als:
  	</h2>
  	<br>
@@ -101,7 +102,7 @@
 		</span>
 	</div>
 	@else
-	<div style='font-size: 250%;'>
+	<div style='font-size: 250%;margin-bottom:25px;'>
 	 Welkom {{ Auth::user()->name }}
 	</div>
 	 @if(Auth::user()->google)

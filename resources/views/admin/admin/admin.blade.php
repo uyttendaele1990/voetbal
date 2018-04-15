@@ -1,9 +1,9 @@
-@if(Auth::user()->naam == "admin")
+@if(Auth::user()->name == "admin")
 @extends('admin/layouts/app2')
 @section('headSection')
-<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<link class="jsbin" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/html" />
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
 <meta charset=utf-8 />
 <!--[if IE]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -46,7 +46,7 @@
         <div class="form-group">
           <label for="team">Naam</label>
           <br>
-          <input class="form-control" placeholder='naam'  name='naam' type="text">
+          <input class="form-control" placeholder='name'  name='name' type="text">
         </div>
         <div class="form-group">
           <label for="team">Email</label>
@@ -66,7 +66,7 @@
         <div class="form-group">
           <label>Foto</label>
           <br>
-          <img src="/storage/avatar/default.png" id="test" style='width:150px; height:150px; float:left;border-radius:50%;margin-top: 15px; margin-bottom: 15px;'>
+          <img src="/storage/avatar/default.png" id="test" alt='Avatar' style='width:150px; height:150px; float:left;border-radius:50%;margin-top: 15px; margin-bottom: 15px;'>
           <input id="image" name='avatar' onchange="readURL(this)" type="file" style='margin-bottom: 25px;'> 
         </div>
         <button type="submit" class="btn btn-primary">Verzenden</button>

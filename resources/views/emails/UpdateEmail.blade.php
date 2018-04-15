@@ -5,8 +5,7 @@ U hebt uw gegevens aangepast,
 Onderstaande gegevens goed bijhouden, dit zijn je login-gegevens.
 
 Email: {{$data['email']}} <br>
-Wachtwoord: {{$data['password']}}
-
+Wachtwoord: @if($data['password'] == '') wachtwoord niet vernieuwd @else {{$data['password']}} @endif
 
 @component('mail::button', ['url' => 'https://voetbal.be'])
 Browse verder

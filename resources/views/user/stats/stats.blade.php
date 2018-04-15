@@ -83,6 +83,6 @@
       </div>
     </div>
   </div>
-  <a href="" id="return-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
+  <a href="#" class="back-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
 </div>
 @endsection

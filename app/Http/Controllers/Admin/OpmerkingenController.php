@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Model\admin\teams;
 use Illuminate\Support\Facades\Storage;
 use App\Model\admin\opmerkingen;
 use App\Model\admin\wedstrijden;
@@ -16,10 +15,7 @@ class OpmerkingenController extends Controller
     public function create($id)
     { 
        $wedstrijd = wedstrijden::where('id', $id)->first();
-       $spelers1 = spelers::where('teams_id', $wedstrijd->teams[0]->id)->get();
-       $spelers2 = spelers::where('teams_id', $wedstrijd->teams[1]->id)->get();
-
-       return view('admin/wedstrijden/opmerkingen', compact('wedstrijd', 'spelers1', 'spelers2'));
+       return view('admin/wedstrijden/opmerkingen', compact('wedstrijd'));
     }
 
     public function store(Request $request)

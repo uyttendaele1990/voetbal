@@ -1,4 +1,4 @@
-@if(Auth::user()->naam == "admin")
+@if(Auth::user()->name == "admin")
 @extends('admin/layouts/app')
 <!-- deze head section word enkel geladen voor deze pagina in de head -->
 @section('headSection')
@@ -26,7 +26,7 @@
                 <tr>
                   <!-- table headers -->
                   <th>Nr</th>
-                  <th>naam</th>
+                  <th>Naam</th>
                   <th>Email</th>
                   <th>Avatar</th>
                   <th>Acties</th>
@@ -37,7 +37,7 @@
                 @foreach ($users as $user)
                   <tr>
                     <td>{{ $loop->index+1 }}</td>
-                    <td>{{ $user->naam }}</td>
+                    <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td><img src="/storage/{{ $user->avatar }}" style='width:75px; height:75px; float:left;border-radius:50%;'></td>
                     
@@ -46,6 +46,7 @@
                       <a href="{{ route('admin.edit', $user->id) }}">
                         <span class="glyphicon glyphicon-edit"></span>
                       </a>
+                      @if($user->name !== 'admin')
                       <form id='delete-form-{{$user->id}}' action="{{ route('admin.destroy', $user->id) }}" method='post' style='display:none;'>
                         {{ csrf_field() }}
                         <!-- delete methode toevoegen aan je form -->
@@ -63,6 +64,7 @@
                           }">
                         <span class="glyphicon glyphicon-trash"></span>
                       </a>
+                      @endif
                     </td>  
                   </tr>
                 @endforeach

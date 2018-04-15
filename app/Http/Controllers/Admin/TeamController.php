@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\admin\teams;
-use App\Model\admin\spelers;
 use Illuminate\Support\Facades\Storage;
 
 class TeamController extends Controller
@@ -81,7 +80,6 @@ class TeamController extends Controller
         $team = teams::where('id', $id)->first();
         Storage::delete($team->logo);
         teams::where('id', $id)->delete();
-        // spelers::where('teams_id', $id)->delete();
         return redirect()->back();
     }
 }

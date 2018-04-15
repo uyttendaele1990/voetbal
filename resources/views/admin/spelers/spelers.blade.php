@@ -1,8 +1,8 @@
 @extends('admin/layouts/app2')
 @section('headSection')
-<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<link class="jsbin" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/html" />
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
 <meta charset=utf-8 />
 <title>JS Bin</title>
 <!--[if IE]>
@@ -52,7 +52,7 @@
         <div class="form-group">
           <label for="exampleInputFile">Foto</label>
           <br>
-          <img src="/storage/foto/user-default.png" id="test" style='width:150px; height:150px; float:left;border-radius:50%;margin-top: 15px; margin-bottom: 15px;'>
+          <img src="/storage/foto/user-default.png" id="test" alt='Foto' style='width:150px; height:150px; float:left;border-radius:50%;margin-top: 15px; margin-bottom: 15px;'>
           <input id="image" name='foto' onchange="readURL(this)" type="file"> 
         </div>
         <br>
