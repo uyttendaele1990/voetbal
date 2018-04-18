@@ -1,7 +1,7 @@
    <!-- Navigation -->
     <nav class="navbar navbar-expand-sm navbar-light fixed-top" id="mainNav" >
       <div class="container">
-        <a class="navbar-brand" href="/index">Voetbal Tracker</a>
+        <a class="navbar-brand" href="/index"><img src="{{asset('user/img/vt.png')}}" style='height:65px; width:65px'></a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fa fa-bars"></i>

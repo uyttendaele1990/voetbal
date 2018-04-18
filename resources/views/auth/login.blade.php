@@ -48,6 +48,7 @@
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <div class="col-md-offset-1 col-md-10">
                                 <input id="email" type="email" class="form-control" name="email" placeholder='E-Mail' value="{{ old('email') }}" required autofocus>
+                                <span class="glyphicon glyphicon-envelope form-control-feedback" style='margin-right:20px'></span>
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -59,6 +60,7 @@
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <div class="col-md-offset-1 col-md-10">
                                 <input id="password" type="password" class="form-control" placeholder='Wachtwoord' name="password" required>
+                                <span class="fa fa-lock form-control-feedback" style='margin-right:20px'></span>
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>

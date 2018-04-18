@@ -8,7 +8,7 @@
 @section('headSection')
 
 <style>
-div.well:nth-child(1) {
+/*div.well:nth-child(1) {
   background:gold;
 }
 div.well:nth-child(2) {
@@ -16,7 +16,7 @@ div.well:nth-child(2) {
 }
 div.well:nth-child(3) {
    background:#cd7f32;
-}
+}*/
 body {
   background-image:url('{{asset("user/img/voet.jpg")}}');
   background-repeat: no-repeat;
@@ -75,7 +75,7 @@ body {
                 <label style='margin-bottom:10px; margin-top:10px'>Topscorers</label>
               </div>
             </div>
-            <div class='row' style='text-align:center; padding-top:15px;'>
+            <!-- <div class='row' style='text-align:center; padding-top:15px;'>
             @foreach($spelers as $speler)
                 @if($speler->doelpunten_saldo !== 0)
                 <div class="well col-md-3" style='border-radius:50%; margin-left:70px'>
@@ -86,8 +86,40 @@ body {
                     <small>{{ $speler->teams->slug }}</small><br>
                 </div>
                 @endif
-            @endforeach
-          </div>  
+              @endforeach
+            </div>   -->
+            <div class="medala row" style='text-align:center'>
+              <div class="coin gold col-md3" style='margin-left:90px'>
+                <p>
+                @if($spelers[0]->doelpunten_saldo !== 0)            
+                  <img class="img-circle" src="/storage/{{ $spelers[0]->foto }}" alt="{{$spelers[0]->naam}}" width="60" height="60"><br>
+                  <strong>{{$spelers[0]->naam}}</strong><br>
+                  <strong>{{ $spelers[0]->doelpunten_saldo }} doelpunten</strong><br>
+                  <small>{{ $spelers[0]->teams->slug }}</small><br>
+                @endif
+                </p>
+              </div>
+              <div class="coin silver " style='margin-left:90px'>
+                <p>
+                 @if($spelers[1]->doelpunten_saldo !== 1)             
+                     <img class="img-circle" src="/storage/{{ $spelers[1]->foto }}" alt="{{$spelers[1]->naam}}" width="60" height="60"><br>
+                     <strong>{{$spelers[1]->naam}}</strong><br>
+                     <strong>{{ $spelers[1]->doelpunten_saldo }} doelpunten</strong><br>
+                     <small>{{ $spelers[1]->teams->slug }}</small><br>
+                @endif
+                </p>
+              </div>
+              <div class="coin bronze " style='margin-left:90px'>
+                <p>
+                  @if($spelers[2]->doelpunten_saldo !== 2)              
+                    <img class="img-circle" src="/storage/{{ $spelers[2]->foto }}" alt="{{$spelers[2]->naam}}" width="60" height="60"><br>
+                    <strong>{{$spelers[2]->naam}}</strong><br>
+                    <strong>{{ $spelers[2]->doelpunten_saldo }} doelpunten</strong><br>
+                    <small>{{ $spelers[2]->teams->slug }}</small><br>
+                @endif
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -95,4 +127,150 @@ body {
   </div>
   <a href="#" class="back-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
 </div>
+@endsection
+
+@section('footerSection')
+<style>
+.coin p{
+  font-family: georgia;
+  font-style: italic;
+  position: absolute;
+  font-size: 28px;
+  z-index: 700;
+  top: -19px;
+  left: 19px;
+  margin-top:40px;
+  margin-left:10px;
+  }
+
+.coin.bronze p{  color: black;}
+.coin.silver p{  color: black;}
+.coin.gold p{  color: black;}
+
+.coin{
+  cursor: pointer;
+  content: "";
+  width: 250px; 
+  height: 250px;
+  display: inline-block;
+  position: relative;
+  margin: 5px;
+  margin-top:25px;
+  top: 6px;
+  border-radius: 50%;
+  z-index: 500;
+  box-shadow:  2px 2px 2px 1px rgba(0, 0, 0, .1);
+  }
+
+.coin:after{
+  content: "";
+  width: 240px; 
+  height: 240px;
+  display: block;
+  top: 4px;
+  left: 4px;
+  position: absolute;
+  border-radius: 50%;
+  z-index: 600;
+  }
+
+.coin:before{
+  content: "";
+  width: 250px; 
+  height: 250px;
+  display: block;
+  position: absolute;
+  border-radius: 50%;
+  z-index: 500;
+  }
+
+.coin:hover{
+  top: -1px;
+  transition: all .5s ease-in-out;
+  box-shadow:  0px 0px 5px 1px rgba(0, 0, 0, .2);
+  }
+
+.bronze{
+  background: linear-gradient(45deg,  rgba(223,182,103,1) 0%,rgba(249,243,232,1) 56%,rgba(231,192,116,1) 96%); 
+  }
+
+.bronze:before{
+  background: linear-gradient(135deg,  #d19c35 0%,#f7e6c5 50%,#e8b558 100%);
+  border: 1px solid #e6b86a;
+  }
+
+.bronze:after{
+  background: linear-gradient(45deg,  rgba(223,182,103,1) 0%,rgba(249,243,232,1) 56%,rgba(231,192,116,1) 96%);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-bottom: 1px solid rgba(209,156,53,0.3);
+  border-right: 1px solid rgba(209,156,53,0.5);
+  box-shadow: inset 0px 0px 2px 2px rgba(153, 106, 26, .05);
+  }
+
+.bronze:hover:after{
+  background: linear-gradient(45deg,  rgba(223,182,103,1) 0%,rgba(249,243,232,1) 41%,rgba(231,192,116,1) 96%);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-bottom: 1px solid rgba(209,156,53,0.3);
+  border-right: 1px solid rgba(209,156,53,0.5);
+  box-shadow: inset 0px 0px 2px 2px rgba(153, 106, 26, .05);
+  }
+
+.silver{
+  background: linear-gradient(45deg,  rgba(160,160,160,1) 0%,rgba(232,232,232,1) 56%);
+  }
+
+.silver:before{
+  background: linear-gradient(45deg,  rgba(181,181,181,1) 0%,rgba(252,252,252,1) 56%,rgba(232,232,232,1) 96%);
+  border: 1px solid rgba(181,181,181,1);
+  }
+
+
+.silver:after{
+  background: linear-gradient(45deg,  rgba(181,181,181,1) 0%,rgba(252,252,252,1) 56%,rgba(232,232,232,1) 96%);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-bottom: 1px solid rgba(160,160,160,0.3);
+  border-right: 1px solid rgba(160,160,160,0.5);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, .05);
+  }
+
+.silver:hover:after{
+  background: linear-gradient(45deg,  rgba(181,181,181,1) 0%,rgba(252,252,252,1) 38%,rgba(232,232,232,1) 96%);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-bottom: 1px solid rgba(160,160,160,0.3);
+  border-right: 1px solid rgba(160,160,160,0.5);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, .05);
+  }
+
+.gold{
+background: linear-gradient(45deg,  rgba(242,215,12,1) 0%,rgba(255,255,255,1) 56%,rgba(252,235,0,1) 96%);
+}
+
+.gold:before{
+  background: linear-gradient(45deg,  rgba(242,215,12,1) 0%,rgba(255,255,255,1) 56%,rgba(252,235,0,1) 96%);
+  border: 1px solid rgba(242,215,12,1);
+  }
+
+
+.gold:after{
+  background: linear-gradient(45deg,  rgba(242,215,12,1) 0%,rgba(255,255,255,1) 56%,rgba(252,235,0,1) 96%);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-bottom: 1px solid rgba(242,215,12,0.3);
+  border-right: 1px solid rgba(242,215,12,0.3);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, .05);
+  }
+
+.gold:hover:after{
+  background: linear-gradient(45deg,  rgba(242,215,12,1) 3%,rgba(255,255,255,1) 39%,rgba(252,235,0,1) 100%);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-bottom: 1px solid rgba(242,215,12,0.3);
+  border-right: 1px solid rgba(242,215,12,0.3);
+  box-shadow: inset 0px 0px 2px 2px rgba(150, 150, 150, .05);
+  }
+  </style>
 @endsection

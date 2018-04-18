@@ -1,9 +1,42 @@
 @extends('user/layouts/app')
 
-@section('bg-img', asset('user/img/wedstrijden-bg.jpg'))
-@section('title', $wedstrijden->team1_score.' - '.$wedstrijden->team2_score)
 
-@section('subtitle', $wedstrijden->teams[0]->naam.' vs '.$wedstrijden->teams[1]->naam)
+@section('headSection')
+<style>
+.navbar-brand > img:nth-child(1){
+  position:relative;
+  top:-15px;
+}
+#mainNav{
+  background-color: black;
+  opacity:0.6;
+}
+.pull-right{
+  position:relative;
+  top: -15px;
+}
+.pull-left{
+  position:relative;
+  top: -15px;
+}
+.box-body > div:nth-child(1){
+  position:relative;
+  padding-top: 125px;
+}
+header {
+  display:none;
+}
+body {
+  background-image:url('{{asset("user/img/wed12.jpg")}}');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.well {
+opacity:0.8;
+border-radius:55px;
+}
+</style>
+@endsection
 @section('main-content')
 <!-- {{$wedstrijden}} -->
 <a href="#" class='back-to-top'><i class="glyphicon glyphicon-chevron-up"></i></a>
@@ -11,20 +44,24 @@
 
   <!-- general form elements -->
   <div class='container'>
-     <h3>Opmerkingen bij de wedstrijd</h3>
-     <br>
-     <br>
      <div class="box-body">
      @if(App\Model\admin\opmerkingen::where('wedstrijden_id', $wedstrijden->id)->first())
       <div class="row">
-        <div class='col-md-6'>
-           <img src="/storage/{{ $wedstrijden->teams[0]->logo }}" style='width:100px; height:100px; margin-bottom: 15px;'>
+        <div class='col-md-5'>
+           <img src="/storage/{{ $wedstrijden->teams[0]->logo }}" style='width:100px; height:100px; margin-bottom: 15px;'><label class='pull-right'  style='font-size:100px;'>{{$wedstrijden->team1_score}}</label>
         </div>
-        <div class='col-md-6'>
+        <div class='col-md-2'> 
+           <img src="{{ asset('user/img/vs.png')}}" style='width:100px; height:100px;padding-top:25px; margin-bottom: 15px;'>
+        </div>
+        <div class='col-md-5'><label class='pull-left'  style='font-size:100px'>{{$wedstrijden->team2_score}}</label> 
            <img src="/storage/{{ $wedstrijden->teams[1]->logo }}" style='width:100px; height:100px; margin-bottom: 15px;'>
         </div>
       </div>
-      <h2>Goalen</h2>
+      <div class="row">
+      <div class='col-md-offset-5 col-md-2 well' style='background:lightgreen; border-radius:45px; '>
+        <h2 style='text-align: center;'>Goalen</h2>
+      </div>
+     </div>
       <br>
         <div class="row">
           <div class='well col-md-offset-1 col-md-4' style='text-align: center;''>
@@ -34,12 +71,11 @@
                 @if(!($wedstrijden->opmerkingen[$i]->gescoord_door == null))
                   @foreach($wedstrijden->teams[0]->spelers as $speler)
                     @if($speler->naam == $wedstrijden->opmerkingen[$i]->gescoord_door) 
-                      <h3>{{ $wedstrijden->opmerkingen[$i]->aantal_gescoord }} * {{ $wedstrijden->opmerkingen[$i]->gescoord_door }}</h3>
-                      <img src="/storage/{{ $speler->foto }}" style='width:45px; height:45px; float:left;border-radius:50%;margin-bottom: 15px;margin-left: 150px;'>
-                      <br>
+                      <img src="/storage/{{ $speler->foto }}" style='width:45px; height:45px; float:left;border-radius:50%;margin-left: 150px;'><br>
+                      <h3 style='margin-top:25px'>{{ $wedstrijden->opmerkingen[$i]->gescoord_door }}</h3>
+                      <label style='margin-bottom: 15px'>{{ $wedstrijden->opmerkingen[$i]->aantal_gescoord }} @if($wedstrijden->opmerkingen[$i]->aantal_gescoord == 1) doelpunt @else doelpunten @endif</label><br>
                     @endif
                   @endforeach
-                  <br>
                 @endif
                 
             @endfor
@@ -51,18 +87,20 @@
               @if(!($wedstrijden->opmerkingen[$i]->gescoord_door == null))
                 @foreach($wedstrijden->teams[1]->spelers as $speler)
                   @if($speler->naam == $wedstrijden->opmerkingen[$i]->gescoord_door)
-                    <h3>{{ $wedstrijden->opmerkingen[$i]->aantal_gescoord }} * {{ $wedstrijden->opmerkingen[$i]->gescoord_door }}</h3>
-                    <img src="/storage/{{ $speler->foto }}" style='width:45px; height:45px; float:left;border-radius:50%;margin-bottom: 15px;margin-left: 150px;'>
-                    <br><br>
+                    <img src="/storage/{{ $speler->foto }}" style='width:45px; height:45px; float:left;border-radius:50%;margin-left: 150px;'><br>
+                      <h3 style='margin-top:25px'>{{ $wedstrijden->opmerkingen[$i]->gescoord_door }}</h3>
+                      <label style='margin-bottom: 15px'>{{ $wedstrijden->opmerkingen[$i]->aantal_gescoord }} @if($wedstrijden->opmerkingen[$i]->aantal_gescoord == 1) doelpunt @else doelpunten @endif</label><br>
                   @endif
                 @endforeach 
                 @endif
             @endfor
           </div>
         </div>
-        <br>
-        <h2>Kaarten</h2>
-        <br>
+        <div class="row">
+      <div class='col-md-offset-5 col-md-2 well' style='background:lightgreen; border-radius:45px; '>
+        <h2 style='text-align: center;'>Kaarten</h2>
+      </div>
+     </div>
         <div class='row'>
           <div class="well col-md-offset-1 col-md-4"> 
             <h3>{{ $wedstrijden->teams[0]->naam }}</h3>
@@ -134,9 +172,11 @@
             @endfor
           </div>
         </div>
-        <br>
-        <h2>Wissels</h2>
-        <br>
+        <div class="row">
+      <div class='col-md-offset-5 col-md-2 well' style='background:lightgreen; border-radius:45px; '>
+        <h2 style='text-align: center;'>Wissels</h2>
+      </div>
+     </div>
         <div class="row">
           <div class='well col-md-offset-1 col-md-4' >
             <h3>{{ $wedstrijden->teams[0]->naam }}</h3>

@@ -1,7 +1,7 @@
    <!-- Navigation -->
     <nav class="navbar navbar-expand-sm navbar-light fixed-top" id="mainNav" >
       <div class="container">
-        <a class="navbar-brand" href="/index">Voetbal Tracker</a>
+        <a class="navbar-brand" href="/index"><img src="{{asset('user/img/vt.png')}}" style='height:65px; width:65px'></a>
          <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fa fa-bars"></i>
@@ -53,14 +53,14 @@
           <!-- Slide One - Set the background image for this slide in the line below -->
           <div class="carousel-item active" style="background-image:url('{{asset('user/img/slide-2.jpg')}}')">
             <div class="carousel-caption d-none d-md-block">
-              <h3>Voetbal Tracker</h3>
+              <h3><a href="/index" class="pull-left"><img src="{{asset('user/img/vt.png')}}" style='height:245px; width:245px'></a></h3>
               <p>Volg jouw team</p>
             </div>
           </div>
           <!-- Slide Two - Set the background image for this slide in the line below -->
           <div class="carousel-item" style="background-image:url('{{asset('user/img/slide-1.jpg')}}')">
             <div class="carousel-caption d-none d-md-block">
-              <h3>V T</h3>
+              <h3><a href="/index" class="pull-left"><img src="{{asset('user/img/vt2.png')}}" style='height:245px; width:245px;opacity:0.5'></a></h3>
               <p>Voor de trouwe supporter</p>
             </div>
           </div>

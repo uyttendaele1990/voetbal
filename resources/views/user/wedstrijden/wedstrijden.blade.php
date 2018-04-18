@@ -1,30 +1,50 @@
 @extends('user/layouts/app')
 
-@section('bg-img', asset('user/img/wedstrijden-bg.jpg'))
-
-@section('title', 'Wedstrijden')
-
-@section('subtitle', 'Alle wedstrijden van het seizoen')
 @section('headSection')
-<!-- css styling voor de tooltip -->
 <style>
-    .lol1:hover .lol {
-        display: inline-block;
-    }
-    .lol {
-        border-radius: 15px;
-        text-align:center;
-        width: 26%;
-        height: 220%;
-        opacity: 0.9;
-        color: #fff;
-        display:none;
-        position: absolute;
-        bottom: 50%;
-        left: 50%;
-        transform:translateX(-50%);
-        margin-bottom: 15px;
-    }
+    .navbar-brand > img:nth-child(1){
+  position:relative;
+  top:-15px;
+}
+#mainNav{
+  background-color: black;
+  opacity:0.6;
+}
+.content-wrapper > div:nth-child(1) {
+  position:relative;
+  padding-top: 125px;
+}
+.lol1:hover .lol {
+    display: inline-block;
+}
+.lol {
+    border-radius: 15px;
+    text-align:center;
+    width: 26%;
+    height: 100%;
+    opacity: 0.9;
+    color: #fff;
+    display:none;
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform:translateX(-50%);
+    margin-bottom: 15px;
+}
+header {
+  display:none;
+}
+body {
+  background-image:url('{{asset("user/img/wed12.jpg")}}');
+  background-repeat: no-repeat;
+  background-size: cover;
+   background-attachment: fixed;
+   background-position-y: -350px;
+}
+.well {
+    opacity:0.8;
+    border-radius:25px;
+}
 </style>
 @endsection
 @section('main-content')
@@ -36,9 +56,11 @@
     @foreach ($wedstrijden as $wedstrijd)
      @if($wedstrijd->status == 1)
         <div class='row'>
-            <div class="col-md-offset-3 col-md-6" >
+            <div class="col-md-3"></div>        
+            <div class="col-md-6 well">
                 <div = class="lol1"> 
-                    <span class="lol" style='background: green;padding-top:14px;'>
+                    <h2>
+                    <span class="lol" style='background: green;padding-top:19px;'>
                         {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
                     </span>
                     <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: green;'>                
@@ -51,8 +73,8 @@
                     <div class='col-md-5' style="text-align:left;">
                         {{ $wedstrijd->teams[1]->naam }}
                     </div>
-                    
                     </a>
+                    </h2>
                 </div>
             </div>           
         </div>  
@@ -62,12 +84,14 @@
     @foreach ($wedstrijden as $wedstrijd)
      @if($wedstrijd->status == 0)
         <div class='row'>
-            <div class="col-md-offset-3 col-md-6" >
+            <div class="col-md-offset-3 col-md-6 well">
                 <div = class="lol1"> 
-                    <span class="lol" style='background: black;padding-top:3px;'>Wedstrijd nog niet gespeeld</span>         
+                    <h2>
+                    <span class="lol" style='background: black;padding-top:8px;'>Wedstrijd nog niet gespeeld</span>         
                     <div class='col-md-5' style="float: left; text-align:right;">{{ $wedstrijd->teams[0]->naam }}</div>
                     <div class='col-md-5' style="float: right; text-align:left;">{{ $wedstrijd->teams[1]->naam }}</div>
                     <div class='col-md-2' style="float: none;overflow: hidden;"><center> vs </center></div>
+                </h2>
                 </div>
             </div>           
         </div>  
