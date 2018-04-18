@@ -5,20 +5,37 @@
 @section('title', 'Statistieken')
 
 @section('subtitle', 'alles op 1 pagina, nog zo gemakkelijk')
+@section('headSection')
 
+<style>
+div.well:nth-child(1) {
+  background:gold;
+}
+div.well:nth-child(2) {
+   background:silver;
+}
+div.well:nth-child(3) {
+   background:#cd7f32;
+}
+body {
+  background-image:url('{{asset("user/img/voet.jpg")}}');
+  background-repeat: no-repeat;
+   background-position-y: 500px;
+   background-position-x: -65px;
+    background-size: cover;
+}
+</style>
+@endsection
 @section('main-content')
 <div class="content-wrapper">
 	<div class = 'container'>
   	<div class="box box-primary">
       <div class="box-header with-border">
-         <div>
-           <h2 class="box-title" style='margin: 5px';>Statistieken</h2>
-        </div>
     <!-- general form elements -->
         <div class='box' >
           <div class="box-body">
-            <table id="example1" class="table table-bordered table-striped">
-              <thead>
+            <table id="example1" class="table table-bordered table-hover">
+              <thead class="thead-light">
               <tr>
                 <th>Nr</th>
                 <th>naam</th>
@@ -38,7 +55,7 @@
               @foreach($teams as $team)
                 <tr>
                   <td>{{ $loop->index+1 }}</td>
-                  <td>{{ $team->naam }}</td>
+                  <td><a href="/teams/{{$team->id}}">{{ $team->naam }}</a></td>
                   <td><small> {{$team->slug}} </small></td>
                   <td><img src="/storage/{{ $team->logo }}" style='width:30px; height:30px; float:left;'></td>
                   <td>{{ $team->aantal_wedstrijden}}</td>
@@ -53,31 +70,24 @@
               @endforeach
               </tbody>
             </table>
-            <div class="well col-md-offset-3 col-md-6" style='text-align:center; margin-top:30px;'>
-              <label style='margin-bottom:10px'>Topscorers van de competitie</label>
-              <div class='row'>
-                <div class="col-md-offset-2 col-md-1"> 
-                  @foreach($spelers as $speler)
-                    <small class='pull-right' style='margin-right: 10px;'> {{ $loop->index+1 }}. </small><br>
-                  @endforeach
-                </div>
-                <div class="col-md-3">
-                  @foreach($spelers as $speler)
-                    <strong>{{$speler->naam}}</strong><br>
-                  @endforeach
-                </div>
-                <div class="col-md-2">
-                  @foreach($spelers as $speler)
-                    <strong class="pull-left" style='margin-left: 15px;'>{{ $speler->doelpunten_saldo }}</strong><br>
-                  @endforeach
-                </div>
-                <div class="col-md-3">
-                  @foreach($spelers as $speler)
-                    <small class="pull-left" style='margin-left: 15px;'>{{ $speler->teams->slug }}</small><br>
-                  @endforeach
-                </div>
+            <div class="row">
+              <div class="alert-success col-md-offset-5 col-md-2" style='text-align:center; margin-top:30px;border-radius:25px;'>
+                <label style='margin-bottom:10px; margin-top:10px'>Topscorers</label>
               </div>
             </div>
+            <div class='row' style='text-align:center; padding-top:15px;'>
+            @foreach($spelers as $speler)
+                @if($speler->doelpunten_saldo !== 0)
+                <div class="well col-md-3" style='border-radius:50%; margin-left:70px'>
+                    <strong> {{ $loop->index+1 }}. </strong><br>              
+                    <strong>{{$speler->naam}}</strong><br>
+                    <img class="img-circle" src="/storage/{{ $speler->foto }}" alt="{{$speler->naam}}" width="60" height="60"><br>
+                    <strong>{{ $speler->doelpunten_saldo }} doelpunten</strong><br>
+                    <small>{{ $speler->teams->slug }}</small><br>
+                </div>
+                @endif
+            @endforeach
+          </div>  
           </div>
         </div>
       </div>

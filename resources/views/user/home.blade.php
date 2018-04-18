@@ -1,10 +1,4 @@
-@extends('user/layouts/app')
-
-@section('bg-img', asset('user/img/home-bg.jpg'))
-
-@section('title', 'Voetbal tracker')
-
-@section('subtitle', 'Nu nog gemakkelijker om jouw favoriete team te volgen')
+@extends('user/layouts/app2')
 @section('headSection')
 <style>
 	/*Cookie Consent Begin*/
@@ -59,7 +53,7 @@
 	$(document).ready(function(){   
     setTimeout(function () {
         $("#cookieConsent").fadeIn(200);
-     }, 1000);
+     }, 1000), {passive:true};
     $("#closeCookieConsent, .cookieConsentOK").click(function() {
         $("#cookieConsent").fadeOut(200);
     }); 
@@ -68,16 +62,13 @@
 </script>
 @endsection
 @section('main-content')
-<div class='container'> 
-	<a href="#" class="back-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
-	
-
-	<h2 style='text-align: center;'>
+<div class='container' style='text-align: center;'> 
 	@guest
+	<h2 >
 	<div id="cookieConsent">
     <div id="closeCookieConsent">x</div>
-    Deze website gebruikt cookies. <a target="_blank" href="/terms">Terms of agreement</a>. <a class="cookieConsentOK">Ik ga ermee akkoord</a></div>
- 	  	Bezoek onze site als:
+    Deze website maakt gebruik van cookies. <a target="_blank" href="/terms">Terms of agreement</a>. <a class="cookieConsentOK">Ik ga ermee akkoord</a></div>
+ 	  	Bezoek deze site als:
  	</h2>
  	<br>
  	
@@ -102,13 +93,15 @@
 		</span>
 	</div>
 	@else
-	<div style='font-size: 250%;margin-bottom:25px;'>
+	<div style='font-size: 150%;margin-bottom:25px;'>
 	 Welkom {{ Auth::user()->name }}
 	</div>
 	 @if(Auth::user()->google)
-	 <a href='{{ route("profile.edit", Auth::user()->id)}}'>
-	  <div class="well" style='color:red'> Gelieve uw wachtwoord aan te passen, u hebt een random wachtwoord gekregen</div>
-	 </a>
+	 <h2>
+		 <a href='{{ route("profile.edit", Auth::user()->id)}}'>
+		  <div class="well" style='color:red'> Gelieve uw wachtwoord aan te passen, u hebt een random wachtwoord gekregen</div>
+		 </a>
+	 </h2>
 	  @endif
 	  @if((App\Model\admin\admin::where('seizoen', 1)->first()))
 	 	 <div class='well' style='text-align:center; margin-top:25px;'>
@@ -124,7 +117,7 @@
 	 	 	<br>
 	 	 	<ol>
 	 	    @foreach($topscorers as $top)
-	 	 		<li><img src="/storage/{{$top->foto}}" style='width:75px; height:75px;border-radius:50%'><text style='font-size: 175%;'>{{$top->naam}}</text> met <text style='font-size: 150%;'>{{$top->doelpunten_saldo}}</text> goalen  <small>{{$top->team}}</small></li>
+	 	 		<li><img src="/storage/{{$top->foto}}" style='width:75px; height:75px;border-radius:50%'><text style='font-size: 175%;'>{{$top->naam}}</text> met <text style='font-size: 150%;'>{{$top->doelpunten_saldo}}</text> goalen  <small>{{$top->teams->slug}}</small></li>
 	 	 		<br>
 	 	 		<br>
 	 	 	@endforeach

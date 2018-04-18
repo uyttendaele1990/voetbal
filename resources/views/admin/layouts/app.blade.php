@@ -1,4 +1,3 @@
-<!-- Deze pagina is de basis voor al mijn views aan de admin side -->
 <!DOCTYPE html>
 <html lang='en'>
 <head>

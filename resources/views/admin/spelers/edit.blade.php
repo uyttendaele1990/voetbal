@@ -1,5 +1,5 @@
 <!-- de map app extenden die de basis vormt van alle paginas aan de admin side -->
-@extends('admin/layouts/app2')
+@extends('admin/layouts/app')
 <!-- de main content sectie openen en erin zetten wat je wil tonen op deze pagina -->
 @section('headSection')
 <link class="jsbin" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/html" />

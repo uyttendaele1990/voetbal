@@ -42,15 +42,16 @@
                         {{ $wedstrijd->team1_score }} vs {{ $wedstrijd->team2_score }}
                     </span>
                     <a href="/wedstrijden/{{$wedstrijd->id}}" style='color: green;'>                
-                    <div class='col-md-5' style="float: left; text-align:right;">
+                    <div class='col-md-5' style="text-align:right;">
                         {{ $wedstrijd->teams[0]->naam }}
                     </div>
-                    <div class='col-md-5' style="float: right; text-align:left;">
-                        {{ $wedstrijd->teams[1]->naam }}
-                    </div>
-                    <div class='col-md-2' style="float: none;overflow: hidden;">
+                    <div class='col-md-2' style="overflow: hidden;">
                         <center> vs </center>
                     </div>
+                    <div class='col-md-5' style="text-align:left;">
+                        {{ $wedstrijd->teams[1]->naam }}
+                    </div>
+                    
                     </a>
                 </div>
             </div>           

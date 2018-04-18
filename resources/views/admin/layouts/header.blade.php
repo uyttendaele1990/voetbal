@@ -17,7 +17,7 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-                    <!-- User Account: style can be found in dropdown.less -->
+          
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="/storage/{{Auth::user()->avatar}}" class="user-image" alt="User Image">
@@ -35,6 +35,9 @@
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
+                <div class="pull-left">
+                    <a class="btn btn-default btn-flat" href="{{ route('admin.edit', Auth::user()->id) }}">Edit</a>
+                </div>
                 <div class="pull-right">
                     <a class="btn btn-default btn-flat" href="{{ route('admin.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
                     <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">

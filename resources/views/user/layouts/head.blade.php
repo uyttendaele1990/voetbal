@@ -1,5 +1,5 @@
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -57,17 +57,17 @@
             $( ".back-to-top" ).click(function() {
                 $('html','body').animate({
                     scrollTop: 0
-                    }, 5000);
-            });
+                    }, 5000), {passive:true};
+            }), {passive:true};
             
             $(window).scroll(function() {
                 if ($(this).scrollTop() > 50) {        // If page is scrolled more than 50px
-                    btt.fadeIn(200);    // Fade in the arrow
+                    btt.fadeIn(200), {passive:true};    // Fade in the arrow
                 } else {
-                    btt.fadeOut(200);   // Else fade out the arrow
+                    btt.fadeOut(200), {passive:true};   // Else fade out the arrow
                 }
-            });
-        });
+            }), {passive:true};
+        }), {passive:true};
 
     </script>
     @section('headSection')

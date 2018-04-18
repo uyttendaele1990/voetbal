@@ -10,20 +10,20 @@ use Illuminate\Support\Facades\Storage;
 use App\Mail\UpdateEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
-// use App\Model\admin\spelers;
+use App\Model\admin\spelers;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $topscorers= DB::table('spelers')
-                    ->select('naam', 'foto', 'doelpunten_saldo')
-                    ->orderBy('doelpunten_saldo', 'desc')
-                    ->leftJoin('teams', 'spelers.teams_id', '=', 'teams.id')
-                    ->select('spelers.*', 'teams.naam as team')
-                    ->limit(3)
-                    ->get();
-        // $spelers = spelers::select(['naam','foto','doelpunten_saldo', 'teams_id'])->with('teams')->orderBy('doelpunten_saldo','desc')->take(3)->get();
+        // $topscorers= DB::table('spelers')
+        //             ->select('naam', 'foto', 'doelpunten_saldo')
+        //             ->orderBy('doelpunten_saldo', 'desc')
+        //             ->leftJoin('teams', 'spelers.teams_id', '=', 'teams.id')
+        //             ->select('spelers.*', 'teams.naam as team')
+        //             ->limit(3)
+        //             ->get();
+        $topscorers = spelers::select(['naam','foto','doelpunten_saldo', 'teams_id'])->with('teams')->orderBy('doelpunten_saldo','desc')->take(3)->get();
         // foreach($spelers as $speler){
         //   return $speler->teams->wedstrijden;dd(); 
         // }

@@ -1,9 +1,9 @@
 @if(Auth::user()->name == "admin" || Auth::user()->id == $user->id )
-@extends('admin/layouts/app2')
+@extends('admin/layouts/app')
 @section('headSection')
-<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<link class="jsbin" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
 <meta charset=utf-8 />
 <!--[if IE]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -69,18 +69,14 @@
           <img src="/storage/{{ $user->avatar }}" id="test" style='width:150px; height:150px; float:left;border-radius:50%;margin-top: 15px; margin-bottom: 15px;'>
           <input id="image" name='avatar' onchange="readURL(this)" type="file" style='margin-bottom: 25px;'> 
         </div>
-        <input type='checkbox' id='check' name="check" value='1' onclick='wachtwoord()'><small>Wachtwoord veranderen</small>
+        <input type='checkbox' id='check' name="check" value='1' onclick='wachtwoord()'>  <label for='check'>Wachtwoord veranderen</label>
         <div class="form-group">
-          <label for="team">Wachtwoord</label>
-          <br>
           <input class="form-control" id='pw1' disabled name='password' placeholder="wachtwoord" type="password">
         </div> 
         <div class="form-group">
-          <label for="team">wachtwoord herhalen </label>
-          <br>
-          <input class="form-control" id='pw2' disabled name='password_confirmation' placeholder="wachtwoord" type="password">
+          <input class="form-control" id='pw2' disabled name='password_confirmation' placeholder="wachtwoord herhalen" type="password">
         </div>
-        <div><input type='checkbox' id='seizoen' name='seizoen' @if($user->seizoen == 1) checked @endif ><label for='seizoen'>Seizoen geïndigd</label> </div>
+        <div><input type='checkbox' id='seizoen' name='seizoen' @if($user->seizoen == 1) checked @endif >  <label for='seizoen'>Seizoen geïndigd</label> </div>
         <br>
         <button type="submit" class="btn btn-primary">Verzenden</button>
       </div>

@@ -1,24 +1,22 @@
-@extends('admin/layouts/app3')
+@extends('admin/layouts/app')
 @section('headSection')
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="{{ asset('admin/bower_components/select2/dist/css/select2.min.css') }}">
 <script>
   // de variabelen voor de checkWissel functies 
    var wissel1 =   document.getElementsByName('opt1');
    var wissel2 =   document.getElementsByName('opt2');
    var i = 0;
    var y = 0;
+ 
    // indien er iemand uit team1 word geselecteerd dan laten we bij de wissels alleen spelers zien uit opt1 (team1) en de anedre opt blijft onzichtbaar
    // alsook moet er een soort nummering zijn om door de array van wissel1 en wissel2 te loopen
    // deze nummering word ook verminderd van waarde indien er een element word gedelete, zie(functie remove_random_functie_naam)
    // die if stond eerst als if ( i < 3 ) maar dat gaf errors doordat i ook in de checkwissel2 word geincrementeerd,
    // en dat is nodig om de array value juist te hebben, wissel[i] 
-  function checkWissel1 (){
-    if( i < y + 3 ){
+  function checkWissel1(){
+    if( i < 6 ){
       wissel1[i].style.display = "block";
       wissel2[i].style.display = "none";
-      i++;
       } else { 
       alert('Je kan maximum 3 invallers hebben per team. Gelieve dit aan te passen');
       {
@@ -28,17 +26,14 @@
       // remove_random_functie_naam('+ i +');
     }
   } 
-  function checkWissel2 (){ 
-    if( y < 3 ){
+  function checkWissel2(){ 
+    if( i < 6 ){
       wissel1[i].style.display = "none";
       wissel2[i].style.display = "block";
-      i++;
-      y++;
     } else {
        alert('Je kan maximum 3 invallers hebben per team. Gelieve dit aan te passen');
        {
          event.preventDefault();
-
        }
        // remove_random_functie_naam('+ i +')
     }
@@ -57,31 +52,40 @@
 
   // de max value zetten (tov het aantal doelpunten al gescoord in de wedstrijd en de goalen die al ingevuld zijn)
   function scoreMax(){
-     goal[d].setAttribute("max", +score1);
+     goal[d].setAttribute("max", +score1)
   }
   function scoreMax1(){
-      goal[d].setAttribute("max", +score2);
+      goal[d].setAttribute("max", +score2)
   }
-
   //functie om een team te tonen om de goalen in te vullen (als team1 gescoord heeft begint team1 met invullen)
    function showHide(){
       if(score1 > 0){  
           // vorige value van opslaan en aftrekken van de score om zo het totaal van de team score te herberekenen die nog kan worden ingevoerd
-          s1 = goal[+d].value;
+          s1 = goal[d].value;
           score1 = score1 - s1;
            d++;
+           goal[d].setAttribute("max", +score1) //fix
            // zichtbaar/onzichtbaar maken van de optgroups, zodat enkel team2 zichtbaar is wanneer team1 al zijn goalen heeft ingevuld
           if(score1 == 0){
               opt4[d].style.display='block';
               opt3[d].style.display='none';
+              goal[d].setAttribute("max", +score2)  //fix
+              if(score2 == 0){
+                 if(confirm('Je hebt alle scores al ingegeven, Heb je een fout gemaakt?') ){
+                  location.reload(); 
+                 }else{
+                  event.preventDefault();
+                 } 
+              }
           }else{
             // onzichtbaar houden van de optgroup zolang dat team1 nog goalen moet invullen
               opt4[d].style.display='none';
           }
       } else {
-          s1 = goal[+d].value;
+          s1 = goal[d].value;
           score2 = score2 - s1;
           d++;
+          goal[d].setAttribute("max", +score2) //fix
           opt3[d].style.display='none';
           if(score2 == 0 ){
               if(confirm('Je hebt alle scores al ingegeven, Heb je een fout gemaakt?') ){
@@ -108,7 +112,7 @@ function education_fields() {
     var divtest = document.createElement("div");
   divtest.setAttribute("class", "form-group removeclass"+room);
   var rdiv = 'removeclass'+room;
-    divtest.innerHTML = '<div class="row"><div class="col-sm-3 nopadding"> <div class="form-group"> <select class="form-control" name="gele_kaarten[]" data-placeholder="Selecteer een speler" style="width: 100%;"><option disabled hidden selected>gele kaarten</option> <optgroup label="{{ $spelers1[0]->teams->naam }}" name="opt4"> @foreach ($spelers1 as $speler) <option>{{$speler->naam}}</option> @endforeach <optgroup label="{{ $spelers2[0]->teams->naam }}" name="opt4"> @foreach ($spelers2 as $speler) <option>{{$speler->naam}}</option> @endforeach </select></div></div><div class="col-sm-3 nopadding"><div class="input-group"><input type="number" class="form-control" id="geel" name="aantal_geel[]" min="0" max="2"  placeholder="aantal"><div class="input-group-btn"><button class="btn btn-success" type="button"  onclick="education_fields();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><button class="btn btn-danger" type="button" onclick="remove_education_fields('+ room +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div></div></div></div><div class="clear"></div></div>';
+    divtest.innerHTML = '<div class="row"><div class="col-sm-3 nopadding"> <div class="form-group"> <select class="form-control" name="gele_kaarten[]" data-placeholder="Selecteer een speler" style="width: 100%;"><option disabled hidden selected>gele kaarten</option> <optgroup label="{{ $wedstrijd->teams[0]->naam }}"> @foreach ($wedstrijd->teams[0]->spelers as $speler) <option>{{$speler->naam}}</option> @endforeach <optgroup label="{{ $wedstrijd->teams[1]->naam }}"> @foreach ($wedstrijd->teams[1]->spelers as $speler) <option>{{$speler->naam}}</option> @endforeach </select></div></div><div class="col-sm-3 nopadding"><div class="input-group"><input type="number" class="form-control" id="geel" name="aantal_geel[]" min="0" max="2"  placeholder="aantal"><div class="input-group-btn"><button class="btn btn-success" type="button"  onclick="education_fields();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><button class="btn btn-danger" type="button" onclick="remove_education_fields('+ room +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div></div></div></div><div class="clear"></div></div>';
     
     objTo.appendChild(divtest)
 }
@@ -125,19 +129,20 @@ function education_magic() {
     var divtest = document.createElement("div");
   divtest.setAttribute("class", "form-group vanishfunctie"+broom);
   var rdiv = 'vanishfunctie'+broom;
-    divtest.innerHTML = '<div class="row"><div class="col-md-offset-3 col-sm-3 nopadding"><div class="form-group"><select class="form-control" name="gescoord_door[]" style="width: 100%;"><option disabled hidden selected>gescoord door</option><optgroup name="opt3" onclick="scoreMax()" label="{{ $spelers1[0]->teams->naam }}" @if($wedstrijd->team1_score == 0) hidden @endif > @foreach ($spelers1 as $speler)<option>{{$speler->naam}}</option> @endforeach </optgroup><optgroup name="opt4" onclick="scoreMax1()" label="{{ $spelers2[0]->teams->naam }}" @if($wedstrijd->team2_score == 0) hidden @endif > @foreach ($spelers2 as $speler) <option>{{$speler->naam}}</option> @endforeach </optgroup></select></div></div><div class="col-sm-3 nopadding"><div class="input-group"><input type="number" class="score form-control" name="aantal_gescoord[]" min="0" placeholder="aantal"><div class="input-group-btn"><button class="btn btn-success" type="button"  onclick="education_magic(); showHide();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></div></div></div></div><div class="clear"></div></div>';
+    divtest.innerHTML = '<div class="row"><div class="col-md-offset-3 col-sm-3 nopadding"><div class="form-group"><select class="form-control" name="gescoord_door[]" style="width: 100%;"><option disabled hidden selected>gescoord door</option><optgroup name="opt3" onclick="scoreMax()" label="{{ $wedstrijd->teams[0]->naam }}" @if($wedstrijd->team1_score == 0) hidden @endif > @foreach ($wedstrijd->teams[0]->spelers as $speler)<option>{{$speler->naam}}</option> @endforeach </optgroup><optgroup name="opt4" onclick="scoreMax1()" label="{{ $wedstrijd->teams[1]->naam }}" @if($wedstrijd->team2_score == 0) hidden @endif > @foreach ($wedstrijd->teams[1]->spelers as $speler) <option>{{$speler->naam}}</option> @endforeach </optgroup></select></div></div><div class="col-sm-3 nopadding"><div class="input-group"><input type="number" class="score form-control" name="aantal_gescoord[]" min="0" placeholder="aantal"><div class="input-group-btn"><button class="btn btn-success" type="button"  onclick="education_magic(); showHide();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></div></div></div></div><div class="clear"></div></div>';
     
     objTo.appendChild(divtest)
 }
 
 function random_functie_naam() {
+        i++;
         vroom++;
         var objTo = document.getElementById('random_functie_naam')
         var divtest = document.createElement("div");
         divtest.setAttribute("class", "form-group randomnaam"+vroom);
         var rdiv = 'randomnaam'+vroom;
 
-         divtest.innerHTML = '<div class="row"><div class="col-md-offset-3 col-sm-3 nopadding"><div class="form-group"><select class="form-control" name="wissel[]" id="wissel" style="width: 100%;"><option disabled hidden selected>Gewisseld</option><optgroup onclick="checkWissel1()" label="{{ $spelers1[0]->teams->naam }}"> @foreach ($spelers1 as $speler) <option>{{$speler->naam}}</option> @endforeach </optgroup><optgroup onclick="checkWissel2()" label="{{ $spelers2[0]->teams->naam }}"> @foreach ($spelers2 as $speler) <option>{{$speler->naam}}</option> @endforeach </optgroup></select></div></div><div class="col-sm-3 nopadding"><div class="input-group" ><select class="form-control" name="wissel_speler[]" id="gewisseld" style="width: 100%;"><option disabled hidden selected>Gewisseld voor</option><optgroup name="opt1" label="{{ $spelers1[0]->teams->naam }}" style="display:none"> @foreach ($spelers1 as $speler) <option>{{$speler->naam}}</option> @endforeach </optgroup><optgroup name="opt2" label="{{ $spelers2[0]->teams->naam }}"  style="display:none"> @foreach ($spelers2 as $speler) <option>{{$speler->naam}}</option> @endforeach </optgroup></select><div class="input-group-btn"><button class="btn btn-success" type="button"  onclick="random_functie_naam();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><button class="btn btn-danger" type="button" onclick="remove_random_functie_naam('+ vroom +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div></div></div></div><div class="clear"></div></div>';
+         divtest.innerHTML = '<div class="row"><div class="col-md-offset-3 col-sm-3 nopadding"><div class="form-group"><select class="form-control" name="wissel[]" id="wissel" style="width: 100%;"><option disabled hidden selected>Gewisseld</option><optgroup onclick="checkWissel1()" label="{{ $wedstrijd->teams[0]->naam }}"> @foreach ($wedstrijd->teams[0]->spelers as $speler) <option>{{$speler->naam}}</option> @endforeach </optgroup><optgroup onclick="checkWissel2()" label="{{ $wedstrijd->teams[1]->naam }}"> @foreach ($wedstrijd->teams[1]->spelers as $speler) <option>{{$speler->naam}}</option> @endforeach </optgroup></select></div></div><div class="col-sm-3 nopadding"><div class="input-group" ><select class="form-control" name="wissel_speler[]" id="gewisseld" style="width: 100%;"><option disabled hidden selected>Gewisseld voor</option><optgroup name="opt1" label="{{ $wedstrijd->teams[0]->naam }}"> @foreach ($wedstrijd->teams[0]->spelers as $speler) <option>{{$speler->naam}}</option> @endforeach </optgroup><optgroup name="opt2" label="{{ $wedstrijd->teams[1]->naam }}"> @foreach ($wedstrijd->teams[1]->spelers as $speler) <option>{{$speler->naam}}</option> @endforeach </optgroup></select><div class="input-group-btn"><button class="btn btn-success" type="button"  onclick="random_functie_naam();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><button class="btn btn-danger" type="button" onclick="remove_random_functie_naam('+ vroom +');"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </button></div></div></div></div><div class="clear"></div></div>';
         
         objTo.appendChild(divtest)
    }
@@ -165,11 +170,10 @@ function remove_random_functie_naam(rid) {
 @endsection
 
 @section('main-content')
-
 <div class="content-wrapper">
   <div class="box box-default">
     <div class="box-header with-border">
-      <h3 class="box-title">Opmerkingen bij {{$spelers1[0]->teams->naam}} {{ $wedstrijd->team1_score }} - {{ $wedstrijd->team2_score }} {{$spelers2[0]->teams->naam}}</h3>
+      <h3 class="box-title">Opmerkingen bij {{$wedstrijd->teams[0]->naam}} {{ $wedstrijd->team1_score }} - {{ $wedstrijd->team2_score }} {{$wedstrijd->teams[1]->naam}}</h3>
      <!-- /.box-header -->
     </div>
     @include('includes.messages')
@@ -185,14 +189,14 @@ function remove_random_functie_naam(rid) {
             <div class="form-group">
               <select class="form-control" name="gescoord_door[]" style="width: 100%;">
                 <option hidden selected value= >gescoord door</option>
-                <optgroup name="opt3" onclick="scoreMax()" label="{{ $spelers1[0]->teams->naam }}" @if($wedstrijd->team1_score == 0) hidden @endif >
-                @foreach ($spelers1 as $speler)
-                  <option>{{$speler->naam}}</option>
+                <optgroup name="opt3"  label="{{ $wedstrijd->teams[0]->naam }}" @if($wedstrijd->team1_score == 0) hidden @endif >
+                @foreach ($wedstrijd->teams[0]->spelers as $speler)
+                  <option onclick="scoreMax()">{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
-                <optgroup name="opt4" onclick='scoreMax1()' label="{{ $spelers2[0]->teams->naam }}" @if(($wedstrijd->team2_score == 0) or ($wedstrijd->team1_score > 0)) hidden @endif >
-                @foreach ($spelers2 as $speler)
-                  <option>{{$speler->naam}}</option>
+                <optgroup name="opt4"  label="{{ $wedstrijd->teams[1]->naam }}" @if(($wedstrijd->team2_score == 0) or ($wedstrijd->team1_score > 0)) hidden @endif >
+                @foreach ($wedstrijd->teams[1]->spelers as $speler)
+                  <option onclick='scoreMax1()'>{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
               </select>
@@ -200,7 +204,7 @@ function remove_random_functie_naam(rid) {
           </div>
           <div class="col-sm-3 nopadding" >
             <div class="input-group">
-              <input type="number" class="score form-control" name="aantal_gescoord[]" min="0" placeholder="aantal" value= >
+              <input type="number" class="score form-control" name="aantal_gescoord[]" min="0" @if($wedstrijd->team1_score == 0) max='{{$wedstrijd->team2_score}}'  @else max='{{$wedstrijd->team1_score}}' @endif placeholder="aantal" value= >
               <div class="input-group-btn">
                 <button class="btn btn-success" type="button"  onclick="education_magic(); showHide();">
                   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -221,13 +225,13 @@ function remove_random_functie_naam(rid) {
               <select class="form-control" name='gele_kaarten[]' data-placeholder="Selecteer een speler" style="width: 100%;">
                 <!-- bij gebrek aan een beter idee doe ik mijn placeholder zo -->
                 <option hidden selected value= >gele kaarten</option>
-                <optgroup label="{{ $spelers1[0]->teams->naam }}">
-                @foreach ($spelers1 as $speler)
+                <optgroup label="{{ $wedstrijd->teams[0]->naam }}">
+                @foreach ($wedstrijd->teams[0]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
-                <optgroup label="{{ $spelers2[0]->teams->naam }}">
-                @foreach ($spelers2 as $speler)
+                <optgroup label="{{ $wedstrijd->teams[1]->naam }}">
+                @foreach ($wedstrijd->teams[1]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
@@ -250,13 +254,13 @@ function remove_random_functie_naam(rid) {
             <div class="form-group">
               <select class="form-control select2" multiple="multiple" id="mooi" name='rode_kaarten[]' style="width: 100%;" >
                 <option hidden selected value= >Geen Rode Kaarten </option>
-                <optgroup label="{{ $spelers1[0]->teams->naam }}">
-                @foreach ($spelers1 as $speler)
+                <optgroup label="{{ $wedstrijd->teams[0]->naam }}">
+                @foreach ($wedstrijd->teams[0]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
-                <optgroup label="{{ $spelers2[0]->teams->naam }}">
-                @foreach ($spelers2 as $speler)
+                <optgroup label="{{ $wedstrijd->teams[1]->naam }}">
+                @foreach ($wedstrijd->teams[1]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
@@ -273,13 +277,13 @@ function remove_random_functie_naam(rid) {
               <select class="form-control" name="wissel[]" id='wissel'  style="width: 100%;">
                 <option hidden selected value= >Gewisseld</option>
                 <!-- onclick functie om alleen de wisselspelers van hetzelfde team te tonen -->
-                <optgroup onclick="checkWissel1()" label="{{ $spelers1[0]->teams->naam }}">
-                @foreach ($spelers1 as $speler)
+                <optgroup onclick="checkWissel1()" label="{{ $wedstrijd->teams[0]->naam }}">
+                @foreach ($wedstrijd->teams[0]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
-                <optgroup onclick='checkWissel2()' label="{{ $spelers2[0]->teams->naam }}">
-                @foreach ($spelers2 as $speler)
+                <optgroup onclick='checkWissel2()' label="{{ $wedstrijd->teams[1]->naam }}">
+                @foreach ($wedstrijd->teams[1]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
@@ -290,13 +294,13 @@ function remove_random_functie_naam(rid) {
             <div class="input-group" >
               <select class="form-control" name="wissel_speler[]" id='gewisseld' style="width: 100%;">
                 <option hidden selected value= >Gewisseld voor</option>
-                <optgroup name='opt1' label="{{ $spelers1[0]->teams->naam }}" style='display:none'>
-                @foreach ($spelers1 as $speler)
+                <optgroup name='opt1' label="{{ $wedstrijd->teams[0]->naam }}">
+                @foreach ($wedstrijd->teams[0]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
-                <optgroup name='opt2' label="{{ $spelers2[0]->teams->naam }}"  style='display:none'>
-                @foreach ($spelers2 as $speler)
+                <optgroup name='opt2' label="{{ $wedstrijd->teams[1]->naam }}">
+                @foreach ($wedstrijd->teams[1]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
@@ -321,4 +325,21 @@ function remove_random_functie_naam(rid) {
     </form>
   </div>
 </div>
+@endsection
+@section('footerSection')
+<!-- jQuery 3 -->
+<!-- Bootstrap 3.3.7 -->
+<!-- Select2 -->
+<script src="{{ asset('admin/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+
+
+<!-- Page script -->
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    
+  })
+</script>
 @endsection

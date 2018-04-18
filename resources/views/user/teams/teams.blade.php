@@ -41,8 +41,8 @@
     <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
+              <table id="example1" class="table table-bordered table-hover">
+                <thead class="thead-light">
                   <tr>
                     <th>Nr</th>
                     <th>Naam</th>
@@ -73,7 +73,7 @@
                             else{
                               event.preventDefault();
                             }">
-                          <span class="glyphicon glyphicon-envelope" style='color:green'></span>
+                          <span class="glyphicon glyphicon-envelope" style='color:red'></span>
                         </a>
                       </td>
                     
