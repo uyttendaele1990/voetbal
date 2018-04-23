@@ -1,14 +1,16 @@
 @extends('admin/layouts/app')
 @section('headSection')
-<link rel="stylesheet" href="{{ asset('admin/bower_components/select2/dist/css/select2.min.css') }}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script>
+   // $('document').ready(function(){})
+   // window.onload = () =>{
   // de variabelen voor de checkWissel functies 
-   var wissel1 =   document.getElementsByName('opt1');
-   var wissel2 =   document.getElementsByName('opt2');
+   var wissel1 = document.getElementsByName('opt1');
+   var wissel2 = document.getElementsByName('opt2');
    var i = 0;
    var y = 0;
- 
-   // indien er iemand uit team1 word geselecteerd dan laten we bij de wissels alleen spelers zien uit opt1 (team1) en de anedre opt blijft onzichtbaar
+ // }
+   // indien er iemand uit team1 word geselecteerd dan laten we bij de wissels alleen spelers zien uit opt1 (team1) en de andere opt blijft onzichtbaar
    // alsook moet er een soort nummering zijn om door de array van wissel1 en wissel2 te loopen
    // deze nummering word ook verminderd van waarde indien er een element word gedelete, zie(functie remove_random_functie_naam)
    // die if stond eerst als if ( i < 3 ) maar dat gaf errors doordat i ook in de checkwissel2 word geincrementeerd,
@@ -26,6 +28,7 @@
       // remove_random_functie_naam('+ i +');
     }
   } 
+  
   function checkWissel2(){ 
     if( i < 6 ){
       wissel1[i].style.display = "none";
@@ -52,10 +55,10 @@
 
   // de max value zetten (tov het aantal doelpunten al gescoord in de wedstrijd en de goalen die al ingevuld zijn)
   function scoreMax(){
-     goal[d].setAttribute("max", +score1)
+     goal[d].setAttribute("max", +score1);
   }
   function scoreMax1(){
-      goal[d].setAttribute("max", +score2)
+      goal[d].setAttribute("max", +score2);
   }
   //functie om een team te tonen om de goalen in te vullen (als team1 gescoord heeft begint team1 met invullen)
    function showHide(){
@@ -64,12 +67,12 @@
           s1 = goal[d].value;
           score1 = score1 - s1;
            d++;
-           goal[d].setAttribute("max", +score1) //fix
+           goal[d].setAttribute("max", +score1); //fix
            // zichtbaar/onzichtbaar maken van de optgroups, zodat enkel team2 zichtbaar is wanneer team1 al zijn goalen heeft ingevuld
-          if(score1 == 0){
+           if(score1 == 0){
               opt4[d].style.display='block';
               opt3[d].style.display='none';
-              goal[d].setAttribute("max", +score2)  //fix
+              goal[d].setAttribute("max", +score2);  //fix
               if(score2 == 0){
                  if(confirm('Je hebt alle scores al ingegeven, Heb je een fout gemaakt?') ){
                   location.reload(); 
@@ -77,7 +80,7 @@
                   event.preventDefault();
                  } 
               }
-          }else{
+           }else{
             // onzichtbaar houden van de optgroup zolang dat team1 nog goalen moet invullen
               opt4[d].style.display='none';
           }
@@ -165,6 +168,12 @@ function remove_random_functie_naam(rid) {
 
 #mooi {
   border-radius: 5px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color:red;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+  color:white;
 }
 </style>
 @endsection
@@ -327,14 +336,9 @@ function remove_random_functie_naam(rid) {
 </div>
 @endsection
 @section('footerSection')
-<!-- jQuery 3 -->
-<!-- Bootstrap 3.3.7 -->
-<!-- Select2 -->
-<script src="{{ asset('admin/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
-
-
-<!-- Page script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
+
   $(function () {
     //Initialize Select2 Elements
     $('.select2').select2()

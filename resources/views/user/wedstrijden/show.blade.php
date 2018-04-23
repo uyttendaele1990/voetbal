@@ -35,6 +35,13 @@ body {
 opacity:0.8;
 border-radius:55px;
 }
+img.displayed {
+    margin-left: auto;
+    margin-right: auto;
+    width:45px;
+    height:45px;
+    border-radius:50%; 
+  }
 </style>
 @endsection
 @section('main-content')
@@ -71,8 +78,8 @@ border-radius:55px;
                 @if(!($wedstrijden->opmerkingen[$i]->gescoord_door == null))
                   @foreach($wedstrijden->teams[0]->spelers as $speler)
                     @if($speler->naam == $wedstrijden->opmerkingen[$i]->gescoord_door) 
-                      <img src="/storage/{{ $speler->foto }}" style='width:45px; height:45px; float:left;border-radius:50%;margin-left: 150px;'><br>
-                      <h3 style='margin-top:25px'>{{ $wedstrijden->opmerkingen[$i]->gescoord_door }}</h3>
+                      <img class='displayed' src="/storage/{{ $speler->foto }}"><br>
+                      <h3 style='margin-top:5px'>{{ $wedstrijden->opmerkingen[$i]->gescoord_door }}</h3>
                       <label style='margin-bottom: 15px'>{{ $wedstrijden->opmerkingen[$i]->aantal_gescoord }} @if($wedstrijden->opmerkingen[$i]->aantal_gescoord == 1) doelpunt @else doelpunten @endif</label><br>
                     @endif
                   @endforeach
@@ -87,8 +94,8 @@ border-radius:55px;
               @if(!($wedstrijden->opmerkingen[$i]->gescoord_door == null))
                 @foreach($wedstrijden->teams[1]->spelers as $speler)
                   @if($speler->naam == $wedstrijden->opmerkingen[$i]->gescoord_door)
-                    <img src="/storage/{{ $speler->foto }}" style='width:45px; height:45px; float:left;border-radius:50%;margin-left: 150px;'><br>
-                      <h3 style='margin-top:25px'>{{ $wedstrijden->opmerkingen[$i]->gescoord_door }}</h3>
+                    <img class='displayed' src="/storage/{{ $speler->foto }}"><br>
+                      <h3 style='margin-top:5px'>{{ $wedstrijden->opmerkingen[$i]->gescoord_door }}</h3>
                       <label style='margin-bottom: 15px'>{{ $wedstrijden->opmerkingen[$i]->aantal_gescoord }} @if($wedstrijden->opmerkingen[$i]->aantal_gescoord == 1) doelpunt @else doelpunten @endif</label><br>
                   @endif
                 @endforeach 

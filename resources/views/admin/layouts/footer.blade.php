@@ -1,6 +1,6 @@
 <!-- dit is de footer die op elke pagina verschijnt -->
   <footer class="main-footer" style='text-align:center;'>
-    <strong>Copyright &copy; 2018 <a href="/index">UK</a></strong> All rights
+    <strong>Copyright &copy; 2018 <a href="#">UK</a></strong> All rights
     reserved.
   </footer>
 
@@ -17,8 +17,6 @@
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 
-<!-- jQuery 3 -->
-<script src="{{ asset('admin/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{ asset('admin/bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

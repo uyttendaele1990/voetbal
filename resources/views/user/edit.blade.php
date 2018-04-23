@@ -58,14 +58,10 @@
         </div>
         <input type='checkbox' id='check' name="check" value='1' onclick='wachtwoord()'><small>Wachtwoord veranderen</small>
         <div class="form-group">
-          <label for="team">Wachtwoord</label>
-          <br>
           <input class="form-control" id='pw1' disabled name='password' placeholder="wachtwoord" type="password">
         </div> 
         <div class="form-group">
-          <label for="team">wachtwoord herhalen </label>
-          <br>
-          <input class="form-control" id='pw2' disabled name='password_confirmation' placeholder="wachtwoord" type="password">
+          <input class="form-control" id='pw2' disabled name='password_confirmation' placeholder="wachtwoord bevestigen" type="password">
         </div>
         <div class="form-group">
           <label>Foto</label>

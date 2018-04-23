@@ -6,8 +6,18 @@
 
 @section('subtitle', 'alles op 1 pagina, nog zo gemakkelijk')
 @section('headSection')
-
+<link rel="stylesheet" href="{{ asset('admin/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
 <style>
+
+#example1_wrapper > div:nth-child(1){
+  display:none;
+}
+#example1_wrapper > div:nth-child(3){
+  display:none;
+}
+table{
+ margin-left:-50px;
+}
 /*div.well:nth-child(1) {
   background:gold;
 }
@@ -20,9 +30,9 @@ div.well:nth-child(3) {
 body {
   background-image:url('{{asset("user/img/voet.jpg")}}');
   background-repeat: no-repeat;
-   background-position-y: 500px;
-   background-position-x: -65px;
-    background-size: cover;
+  background-position-y: 500px;
+  background-position-x: -65px;
+  background-size: cover;
 }
 </style>
 @endsection
@@ -61,7 +71,7 @@ body {
                   <td>{{ $team->aantal_wedstrijden}}</td>
                   <td>{{ $team->goalen_voor }}</td>
                   <td>{{ $team->goalen_tegen }}</td>
-                  <td>{{ $totaal= $team->goalen_voor - $team->goalen_tegen }} </td>
+                  <td>{{ $team->doelsaldo }} </td>
                   <td>{{ $team->wedstrijden_gewonnen }}</td>
                   <td>{{ $team->wedstrijden_gelijk }}</td>
                   <td>{{ $team->wedstrijden_verloren }}</td>
@@ -101,7 +111,7 @@ body {
               </div>
               <div class="coin silver " style='margin-left:90px'>
                 <p>
-                 @if($spelers[1]->doelpunten_saldo !== 1)             
+                 @if($spelers[1]->doelpunten_saldo !== 0)             
                      <img class="img-circle" src="/storage/{{ $spelers[1]->foto }}" alt="{{$spelers[1]->naam}}" width="60" height="60"><br>
                      <strong>{{$spelers[1]->naam}}</strong><br>
                      <strong>{{ $spelers[1]->doelpunten_saldo }} doelpunten</strong><br>
@@ -111,7 +121,7 @@ body {
               </div>
               <div class="coin bronze " style='margin-left:90px'>
                 <p>
-                  @if($spelers[2]->doelpunten_saldo !== 2)              
+                  @if($spelers[2]->doelpunten_saldo !== 0)              
                     <img class="img-circle" src="/storage/{{ $spelers[2]->foto }}" alt="{{$spelers[2]->naam}}" width="60" height="60"><br>
                     <strong>{{$spelers[2]->naam}}</strong><br>
                     <strong>{{ $spelers[2]->doelpunten_saldo }} doelpunten</strong><br>
@@ -130,6 +140,24 @@ body {
 @endsection
 
 @section('footerSection')
+<!-- alles inladen wat enkel op deze pagina gebruikt zal worden -->
+<!-- DataTables -->
+<script src="{{ asset('admin/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('admin/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+  })
+</script>
 <style>
 .coin p{
   font-family: georgia;
@@ -148,7 +176,6 @@ body {
 .coin.gold p{  color: black;}
 
 .coin{
-  cursor: pointer;
   content: "";
   width: 250px; 
   height: 250px;

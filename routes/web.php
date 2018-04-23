@@ -83,7 +83,3 @@ Auth::routes();
 // google login/register routes 
 Route::get('login/google', 'Auth\LoginController@redirectToProvider');
 Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
-
-Route::get('/index', function(){
-	return view('user/index');
-});

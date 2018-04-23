@@ -1,4 +1,3 @@
-  
     <!-- Footer -->
     <footer class='footer'>
       <hr>
@@ -10,6 +9,5 @@
         </div>
       </div>
     </footer>
-
     @section('footerSection')
       @show

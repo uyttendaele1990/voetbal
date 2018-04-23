@@ -8,7 +8,8 @@
 }
 #mainNav{
   background-color: black;
-  opacity:0.6;
+  opacity:0.8;
+  position:sticky;
 }
 .content-wrapper > div:nth-child(1) {
   position:relative;
@@ -22,6 +23,23 @@
     text-align:center;
     width: 26%;
     height: 100%;
+    opacity: 0.9;
+    color: #fff;
+    display:none;
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform:translateX(-50%);
+    margin-bottom: 15px;
+}
+.lol2:hover .lol3 {
+    display: inline-block;
+}
+.lol3 {
+    border-radius: 15px;
+    text-align:center;
+    width: 26%;
+    height: 140%;
     opacity: 0.9;
     color: #fff;
     display:none;
@@ -85,9 +103,9 @@ body {
      @if($wedstrijd->status == 0)
         <div class='row'>
             <div class="col-md-offset-3 col-md-6 well">
-                <div = class="lol1"> 
+                <div = class="lol2"> 
                     <h2>
-                    <span class="lol" style='background: black;padding-top:8px;'>Wedstrijd nog niet gespeeld</span>         
+                    <span class="lol3" style='background: black;padding-top:8px;'>Word gespeeld op {{$wedstrijd->gespeeld_op}}</span>         
                     <div class='col-md-5' style="float: left; text-align:right;">{{ $wedstrijd->teams[0]->naam }}</div>
                     <div class='col-md-5' style="float: right; text-align:left;">{{ $wedstrijd->teams[1]->naam }}</div>
                     <div class='col-md-2' style="float: none;overflow: hidden;"><center> vs </center></div>

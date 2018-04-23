@@ -1,7 +1,7 @@
    <!-- Navigation -->
     <nav class="navbar navbar-expand-sm navbar-light fixed-top" id="mainNav" >
       <div class="container">
-        <a class="navbar-brand" href="/index"><img src="{{asset('user/img/vt.png')}}" style='height:65px; width:65px'></a>
+        <a class="navbar-brand" href="/"><img src="{{asset('user/img/vt.png')}}" style='height:65px; width:65px'></a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fa fa-bars"></i>
@@ -25,10 +25,20 @@
                 <a class="nav-link" href="{{ route('register') }}">Registreer</a>
               </li>
             @else
-             <li class="nav-item">
-              <a class="nav-link" href="/teams">Teams</a>
-             </li>
-             <li class="nav-item">
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Teams</a>
+                <ul class="dropdown-menu" style='opacity:0.8;border-radius:4px'>
+                  <li>
+                    <a href="/teams">Teams</a>
+                  </li>
+                   @foreach(App\Model\admin\teams::all() as $team)
+                  <li>
+                  <a href="/teams/{{$team->id}}">{{$team->naam}}</a>
+                  </li>
+                @endforeach
+                </ul>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{{ route('profile.edit', Auth::user()->id)}}">{{ Auth::user()->name }}</a>
               </li>
               <li class="nav-item">

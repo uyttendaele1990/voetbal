@@ -5,11 +5,7 @@
 
     <title>Voetbal tracker</title>
     <!-- jquery voor de back to top -->
-    <script
-              src="https://code.jquery.com/jquery-3.3.1.js"
-              integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-              crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <!-- Optional theme -->
@@ -26,7 +22,15 @@
     <!-- Custom styles for this template -->
     <link href="{{ asset('user/css/clean-blog.min.css') }}" rel="stylesheet">
     <style>
-        .back-to-top {
+
+.dropdown-menu{
+        font-size:15px;
+}
+.dropdown-menu > li:hover{
+    font-size:25px;
+    
+}
+.back-to-top {
     position: fixed;
     bottom: 20px;
     right: 20px;

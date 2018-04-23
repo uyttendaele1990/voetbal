@@ -10,6 +10,12 @@ class WedstrijdController extends Controller
     public function index()
     {
     	$wedstrijden = wedstrijden::select('*')->with('teams')->orderBy('gespeeld_op', 'DESC')->get();
+        foreach($wedstrijden as $wedstrijd){
+            if($wedstrijd->status == 0){
+                $datum = date_parse($wedstrijd->gespeeld_op);
+                 $wedstrijd->gespeeld_op = $datum['day'].'/'.$datum['month'];
+            }
+        }
         return view('user/wedstrijden/wedstrijden', compact('wedstrijden'));
     }
 

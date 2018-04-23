@@ -31,6 +31,12 @@ class TeamController extends Controller
         $team = teams::where('id', $id)->first();
         $teams = teams::all();
         $wedstrijden = $team->wedstrijden;
+        foreach($wedstrijden as $wedstrijd){
+            if($wedstrijd->status == 0){
+                $datum = date_parse($wedstrijd->gespeeld_op);
+                 $wedstrijd->gespeeld_op = $datum['day'].'/'.$datum['month'];
+            }
+        }
         return view('user/teams/personal', compact('team', 'teams', 'wedstrijden'));
     }
 
