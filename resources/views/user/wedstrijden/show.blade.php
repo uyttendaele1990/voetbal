@@ -9,7 +9,7 @@
 }
 #mainNav{
   background-color: black;
-  opacity:0.6;
+  opacity:0.8;
 }
 .pull-right{
   position:relative;

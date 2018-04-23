@@ -21,7 +21,7 @@ body {
 #mainNav{
     position:fixed;
   background-color: black;
-  opacity:0.6;
+  opacity:0.9;
 }
 .lol1:hover .lol {
     display: inline-block;

@@ -9,7 +9,7 @@
 #mainNav{
   position:fixed;
   background-color: black;
-  opacity:0.6;
+  opacity:0.8;
 }
 .box-body > div:nth-child(1){
   position:relative;

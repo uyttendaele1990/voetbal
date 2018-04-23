@@ -63,6 +63,16 @@ body {
     opacity:0.8;
     border-radius:25px;
 }
+h1 {
+ background-color:grey;
+ width:200px;
+ height:50px;
+ padding-top:10px;
+ border-radius:10px;
+ color:white;
+ background-color:black;
+ opacity:0.8;
+}
 </style>
 @endsection
 @section('main-content')

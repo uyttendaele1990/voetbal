@@ -18,7 +18,7 @@ header {
 #mainNav{
     position:fixed;
   background-color: black;
-  opacity:0.6;
+  opacity:0.8;
 }
 div.col-md-3 {
     border-radius:25px;
