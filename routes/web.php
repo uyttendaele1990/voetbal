@@ -34,7 +34,13 @@ Route::group(['namespace' => 'User', 'middleware' => 'auth:web'], function(){
 		Route::put('profile/update/{id}', 'HomeController@update')->name('profile.update');
 		// Profiel edit pagina
 		Route::get('profile/edit/{id}', 'HomeController@edit')->name('profile.edit');
+		// Vue route
+		Route::post('/getAllTeams', 'TeamController@getAllTeams');
+		Route::post('/getUser', 'HomeController@getUser');
+		Route::post('/saveLike', 'TeamController@saveLike');
+		Route::post('/saveMail', 'MailController@saveMail');
 });
+
 
 								//Admin routes
 
@@ -47,7 +53,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function(){
 		// Opmerkingen opslaan
 		Route::post('admin/opmerkingen/create/', 'OpmerkingenController@store')->name('opmerkingen.store');
 		// Opmerkingen pagina
-		Route::get('admin/wedstrijden/opmerkingen/{id}', 'WedstrijdController@opmerkingen');
+		Route::get('admin/wedstrijden/opmerkingen/{id}', 'WedstrijdController@opmerkingen')->name('opmerkingen');
 		// Alle routes mbt de wedstrijden
 		Route::resource('admin/wedstrijden', 'WedstrijdController');
 		// De statistieken pagina, mss overbodig voor de adminside?
@@ -70,7 +76,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function(){
 		Route::delete('admin/opmerkingen/{id}', 'OpmerkingenController@destroy')->name('opmerkingen.destroy');
 		// Alle routes mbt de admins
 		Route::resource('admin/admin', 'AdminController');
-		// admin logout
+		// Admin logout
 		Route::post('admin/logout', 'Auth\LoginController@logout')->name('admin.logout');
 });
 // Deze moeten buiten de group namespace staan omdat die ook de auth:admin middleware gebruikt
@@ -80,6 +86,6 @@ Route::post('admin/login', 'Admin\Auth\LoginController@login');
 
 // De auth routes voor de user side (login registrer, ...)
 Auth::routes();
-// google login/register routes 
+// Google login/register routes 
 Route::get('login/google', 'Auth\LoginController@redirectToProvider');
 Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');

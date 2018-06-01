@@ -15,8 +15,30 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('teams', require('./components/teams.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data:{
+    	teams:{},
+        user:{}
+    },
+    mounted(){
+    	axios.post('/getAllTeams')
+    		.then(response => {
+    			this.teams = response.data;
+		    console.log(this.teams);
+		  })
+		  .catch(function (error) {
+		    console.log(error);
+		  }),
+          axios.post('/getUser')
+            .then(response => {
+                this.user = response.data;
+            console.log(this.user);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    }
 });

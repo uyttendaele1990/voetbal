@@ -1,6 +1,6 @@
 @extends('user/layouts/app')
 @section('headSection')
-<!-- ik kreeg mijn emails niet in orde, lang op zitten sukkelen met for loops en foreachs geprobeerd maar ik kreeg het niet zoals ik het wou, uiteindelijk maar besloten om het overtollige gewoon onzichtbaar te maken... -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
 .navbar-brand > img:nth-child(1){
   position:relative;
@@ -30,8 +30,6 @@ div.col-md-12 {
   height:250px;
   width: 250px;
   background-size: cover;
-  margin-bottom:75px;
-  margin-left:45px;
   background-repeat: no-repeat;
 }
 div.col-md-4:nth-child(1){
@@ -45,10 +43,14 @@ div.col-md-4:nth-child(3){
 }
 div.col-md-4 {
   text-align:center;
+  margin-bottom:55px;
 }
 div.col-md-4 > a {
 margin-bottom:15px;
  opacity:0.9;
+}
+div.col-md-4 div {
+  right:15px;
 }
 </style>
 <script>
@@ -65,10 +67,11 @@ function checkTeam(id){
 <div class="content-wrapper">
   <!-- general form elements -->
   <div class='container'>
-    <div class="box box-primary">
-      @foreach ($teams as $team)
+    <div class="box box-primary" id='app'>
+        @foreach ($teams as $team)
       <div class="col-md-4" >
-        @if(Auth::user()->emails->where('team_id', $team->id)->first())                      
+       <div class='row'>
+         @if(Auth::user()->emails->where('team_id', $team->id)->first())                      
            <form id='delete-form-{{$team->id}}' action="{{ route('email.destroy', $team->id) }}" method='post' style='display:none;'>
             {{ csrf_field() }}
             {{ method_field('DELETE')}}
@@ -83,15 +86,25 @@ function checkTeam(id){
                 else{
                   event.preventDefault();
                 }">
-              Schrijf uit<span class="glyphicon glyphicon-envelope" style='margin-left:15px'></span>
+              Stop<span class="glyphicon glyphicon-envelope" style='margin-left:15px'></span>
             </a>                      
           @else
-         <a  class='btn btn-success' href="/email/{{ $team->id}}" style='border-radius:10px;'>Volg<span class="glyphicon glyphicon-envelope" style='margin-left:15px'></span></a>
+          <a class='btn btn-success' href="/email/{{ $team->id}}" style='border-radius:10px;'>
+          Volg
+          <span class="glyphicon glyphicon-envelope" style='margin-left:15px'></span>
+         </a>         
           @endif
+          <teams v-for='value in teams'
+          v-if='value.id == {{$team->id}}'
+        :id=value.id
+        :key=value.index
+        :likes=value.likes.length
+        :email=value.email
+        ></teams></div>
       <div onclick='checkTeam({{$team->id}})' class="col-md-12" alt='{{$team->naam}}' style='background-image:url("/storage/{{ $team->logo }}");'>
         </div>
       </div>
-      @endforeach
+     @endforeach        
     </div>
 </div>
 <a href="#" class="back-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
@@ -99,26 +112,7 @@ function checkTeam(id){
 @endsection
 
 @section('footerSection')
+<script src='{{ asset("js/app.js")}}'></script>
+<!-- ik heb de js cdn van bootstrap nog eens moeten herhalen deze word normaal gezen geladen in de header maar vue (app.js) breekte mijn dropdown van mijn navbar daarom dat ik dit erachter heb gezet -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 @endsection
-
-
-<!--  @if(Auth::user()->emails->where('team_id', $team->id)->first())                      
-           <form id='delete-form-{{$team->id}}' action="{{ route('email.destroy', $team->id) }}" method='post' style='display:none;'>
-            {{ csrf_field() }}
-            {{ method_field('DELETE')}}
-           </form><center>
-            <a class='btn btn-danger' style='position: absolute;bottom: 0;border-radius:10px' href="{{ route('wedstrijden.index')}}" onclick="
-                if(confirm('Ben je zeker dat je deze ploeg niet meer wilt volgen?'))
-                {
-                  event.preventDefault();
-                  // het id meegeven
-                  document.getElementById('delete-form-{{$team->id }}').submit();
-                }
-                else{
-                  event.preventDefault();
-                }">
-              <span class="glyphicon glyphicon-envelope" style='color:red;'></span>
-            </a>                      
-          @else
-         <a  class='btn btn-success' href="/email/{{ $team->id}}" style='position: absolute;bottom: 0;border-radius:10px'><span class="glyphicon glyphicon-envelope" ></span></a></center>
-          @endif -->

@@ -104,7 +104,10 @@ h1 {
                     </a>
                     </h2>
                 </div>
-            </div>           
+            </div>
+          <div class="col-md-offset-1 col-md-2 well" style='text-align: center'>
+            <strong>{{ $wedstrijd->gespeeld_op }}</strong>
+          </div>             
         </div>  
         <br>
       @endif         

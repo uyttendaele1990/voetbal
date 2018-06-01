@@ -22,6 +22,7 @@
 </script>
 @endsection
 @section('main-content')
+@if((App\Model\admin\admin::where('seizoen', 0)->first()))
 <div class="content-wrapper">
   <!-- general form elements -->
   <div class="box box-primary">
@@ -85,4 +86,14 @@
     </form>
   </div>
 </div>
+@else 
+<div class="content-wrapper">
+  <!-- general form elements -->
+  <div class="box box-primary">
+    <div class='well' style='text-align:center; background-color:red'>
+      Het seizoen is geëindigd en dus is het niet mogelijk om wedstrijd toe te voegen.
+    </div>
+  </div>
+</div>
+@endif
 @endsection

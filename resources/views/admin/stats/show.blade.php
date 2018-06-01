@@ -8,7 +8,9 @@
 	<div class="box box-primary">
     <div class="box-header with-border">
        <div>
-         <h2 class="box-title" style='margin: 5px';>Statistieken</h2>
+          <ol class="breadcrumb" style='text-align:center'>
+            <li><a href="{{route('stats.index')}}">Statistieken</a></li>
+          </ol>
       </div>
   <!-- general form elements -->
     <div class='box' >

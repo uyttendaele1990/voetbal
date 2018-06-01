@@ -179,9 +179,14 @@ function remove_random_functie_naam(rid) {
 @endsection
 
 @section('main-content')
+@if((App\Model\admin\admin::where('seizoen', 0)->first()))
 <div class="content-wrapper">
   <div class="box box-default">
-    <div class="box-header with-border">
+    <div class="box-header with-border" style='text-align:center'>
+      <ol class="breadcrumb">
+        <li><a href="{{route('wedstrijden.index')}}">Wedstrijden</a></li>
+        <li><a href="{{route('opmerkingen', $wedstrijd->id)}}">Opmerkingen</a></li>
+      </ol>
       <h3 class="box-title">Opmerkingen bij {{$wedstrijd->teams[0]->naam}} {{ $wedstrijd->team1_score }} - {{ $wedstrijd->team2_score }} {{$wedstrijd->teams[1]->naam}}</h3>
      <!-- /.box-header -->
     </div>
@@ -286,12 +291,12 @@ function remove_random_functie_naam(rid) {
               <select class="form-control" name="wissel[]" id='wissel'  style="width: 100%;">
                 <option hidden selected value= >Gewisseld</option>
                 <!-- onclick functie om alleen de wisselspelers van hetzelfde team te tonen -->
-                <optgroup onclick="checkWissel1()" label="{{ $wedstrijd->teams[0]->naam }}">
+                <optgroup onchange="checkWissel1()" label="{{ $wedstrijd->teams[0]->naam }}">
                 @foreach ($wedstrijd->teams[0]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
-                <optgroup onclick='checkWissel2()' label="{{ $wedstrijd->teams[1]->naam }}">
+                <optgroup onchange="checkWissel2()" label="{{ $wedstrijd->teams[1]->naam }}">
                 @foreach ($wedstrijd->teams[1]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach
@@ -324,6 +329,69 @@ function remove_random_functie_naam(rid) {
         </div>
         <div class="clear"></div>
         <div id="random_functie_naam"></div>
+<!-- Indien ik deze code wil gebruiken moet ik de database en de controller wel aanpassen alsook een andere naam geven aan wissel team 2,
+  Maar dit is een mogelijke oplossing voor mijn probleem dat ik had in alle browsers behalve mozilla namelijk dat mijn checkwissel functie niet werd getriggerd.
+                  <div class="row" style='padding-bottom: 15px;'>
+                    <h3 style='text-align:center;'>Wissels {{$wedstrijd->teams[0]->naam}}</h3>
+                    <br>
+                    <div class="col-md-offset-3 col-sm-3 nopadding">
+                      <div class="form-group">
+                        <select class="form-control" name="wissel[]" id='wissel'  style="width: 100%;">
+                          @foreach ($wedstrijd->teams[0]->spelers as $speler)
+                            <option>{{$speler->naam}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-3 nopadding">
+                      <div class="input-group" >
+                        <select class="form-control" name="wissel_speler[]" id='gewisseld' style="width: 100%;">
+                          <option hidden selected value= >Gewisseld voor</option>
+                          @foreach ($wedstrijd->teams[0]->spelers as $speler)
+                            <option>{{$speler->naam}}</option>
+                          @endforeach
+                        </select>
+                        <div class="input-group-btn">
+                          <button class="btn btn-success" type="button"  onclick="random_functie_naam();"> 
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div id="random_functie_naam"></div>
+
+                  <div class="row" style='padding-bottom: 15px;'>
+                    <h3 style='text-align:center;'>Wissels {{$wedstrijd->teams[1]->naam}}</h3>
+                    <br>
+                    <div class="col-md-offset-3 col-sm-3 nopadding">
+                      <div class="form-group">
+                        <select class="form-control" name="wissel[]" id='wissel'  style="width: 100%;">
+                          @foreach ($wedstrijd->teams[1]->spelers as $speler)
+                            <option>{{$speler->naam}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-3 nopadding">
+                      <div class="input-group" >
+                        <select class="form-control" name="wissel_speler[]" id='gewisseld' style="width: 100%;">
+                          <option hidden selected value= >Gewisseld voor</option>
+                          @foreach ($wedstrijd->teams[1]->spelers as $speler)
+                            <option>{{$speler->naam}}</option>
+                          @endforeach
+                        </select>
+                        <div class="input-group-btn">
+                          <button class="btn btn-success" type="button"  onclick="random_functie_naam();"> 
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div id="random_functie_naam"></div> -->
       </div>
       <!-- verborgen input zodat de wedstrijd id ook word meegestuurd -->
       <input class="hidden" name='id' value='{{$wedstrijd->id}}'>  
@@ -334,6 +402,16 @@ function remove_random_functie_naam(rid) {
     </form>
   </div>
 </div>
+@else 
+<div class="content-wrapper">
+  <!-- general form elements -->
+  <div class="box box-primary">
+    <div class='well' style='text-align:center; background-color:red'>
+      Het seizoen is geëindigd en dus is het niet mogelijk om wedstrijd details in te vullen.
+    </div>
+  </div>
+</div>
+@endif
 @endsection
 @section('footerSection')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>

@@ -8,14 +8,18 @@
   <!-- general form elements -->
   <div class="box box-primary">
     <div class="box-header with-border">
-      <h2 class="box-title";>Teams</h2>      
+      <ol class="breadcrumb" style='text-align:center'>
+        <li><a href="{{route('teams.index')}}">Teams</a></li>
+      </ol>     
       <button type='button' class='btn btn-box-tool' data-widget='collapse' data-toggle='tooltip' title='Collapse'>
     </div>
     <!-- /.box-header -->
     <!-- form start -->
     <div class="box">
             <div class="box-header">
+              @if((App\Model\admin\admin::where('seizoen', 1)->first()))
               <a class='col-md-offset-5 btn btn-success' href='{{ route("teams.create") }}'>Team Toevoegen</a>
+              @endif
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -37,6 +41,7 @@
                       <td><img src="/storage/{{ $team->logo }}" style='width:40px; height:40px; float:left;'></td>
                       <td>{{ $team->slug }}</td>
                       <td>
+                        @if((App\Model\admin\admin::where('seizoen', 1)->first()))
                         <a href="{{ route('teams.edit', $team->id) }}">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a>
@@ -55,19 +60,13 @@
                                 }">
                             <span class="glyphicon glyphicon-trash"></span>
                         </a>
+                        @else
+                          seizoen is bezig, geen acties mogelijk
+                        @endif
                       </td>  
                     </tr>
                   @endforeach
                 </tbody>
-                <tfoot>
-                    <tr>
-                      <th>Id</th>
-                      <th>Team naam</th>
-                      <th>Logo</th>
-                      <th>Afkorting</th>
-                      <th>Acties</th>
-                    </tr>
-                </tfoot>
               </table>
             </div>
             <!-- /.box-body -->

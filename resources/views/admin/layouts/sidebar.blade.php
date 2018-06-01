@@ -17,7 +17,7 @@
         <li class="header">Admin Panel</li>
         <li>
           <a href="{{ route('admin.home') }}">
-            <i class="fa fa-home"></i> <span>Home</span>
+            <i class="fa fa-home"></i> <span>Dashboard</span>
           </a>
         </li>
         <li>
@@ -33,25 +33,24 @@
         </li>
         @endif
         @if((App\Model\admin\admin::where('seizoen', 1)->first()))
-        <li>
-          <a href="{{ route('teams.index') }}">
-            <i class="fa fa-users"></i> <span>Teams</span>
-          </a>
-        </li>
+          <li>
+            <a href="{{ route('teams.index') }}">
+              <i class="fa fa-users"></i> <span>Teams</span>
+            </a>
+         </li>
+        @else
+         <li class="treeview">
+           <a href="{{ route('wedstrijden.index') }}">
+             <i class="fa fa-futbol-o"></i>
+             <span>Wedstrijden</span>
+           </a>
+         </li>
         @endif
         <li>
           <a href="{{ route('spelers.index') }}">
             <i class="fa fa-user"></i> <span>Spelers</span>
           </a>
         </li>
-        @if(!(App\Model\admin\admin::where('seizoen', 1)->first()))
-        <li class="treeview">
-          <a href="{{ route('wedstrijden.index') }}">
-            <i class="fa fa-futbol-o"></i>
-            <span>Wedstrijden</span>
-          </a>
-        </li>
-        @endif
         <li>
           <a href="{{ route('stats.index') }}">
             <i class="fa fa-bar-chart"></i> <span>Statistieken</span>

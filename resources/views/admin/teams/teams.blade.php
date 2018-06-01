@@ -27,11 +27,15 @@
 </script>
 @endsection
 @section('main-content')
+@if((App\Model\admin\admin::where('seizoen', 1)->first()))
 <div class="content-wrapper">
   <!-- general form elements -->
   <div class="box box-primary">
     <div class="box-header with-border">
-      <h3 class="box-title">Teams</h3>
+      <ol class="breadcrumb" style='text-align:center'>
+        <li><a href="{{route('teams.index')}}">Teams</a></li>
+        <li><a href="{{route('teams.create')}}">Create</a></li>
+      </ol>
     </div>
     @include('includes.messages')
     <!-- /.box-header -->
@@ -64,4 +68,14 @@
     </form>
   </div>
 </div>
+@else 
+<div class="content-wrapper">
+  <!-- general form elements -->
+  <div class="box box-primary">
+    <div class='well' style='text-align:center; background-color:red'>
+      Het seizoen is begonnen en dus is het niet mogelijk om een team toe te voegen.
+    </div>
+  </div>
+</div>
+@endif
 @endsection

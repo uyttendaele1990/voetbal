@@ -32,14 +32,14 @@
                     <a href="/teams">Teams</a>
                   </li>
                    @foreach(App\Model\admin\teams::all() as $team)
-                  <li>
-                  <a href="/teams/{{$team->id}}">{{$team->naam}}</a>
-                  </li>
-                @endforeach
+                      <li>
+                      <a href="/teams/{{$team->id}}">{{$team->naam}}</a>
+                      </li>
+                   @endforeach
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ route('profile.edit', Auth::user()->id)}}">{{ Auth::user()->name }}</a>
+                <a class="nav-link" href="{{ route('profile.edit', Auth::user()->id)}}">{{ Auth::user()->name }} <!-- <img src="/storage/{{Auth::user()->avatar}}" class="user-image" alt="User Image" style='height:40px; width:40px;border-radius:50%'> --></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>

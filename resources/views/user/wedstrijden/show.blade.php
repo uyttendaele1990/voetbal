@@ -55,7 +55,7 @@ img.displayed {
      @if(App\Model\admin\opmerkingen::where('wedstrijden_id', $wedstrijden->id)->first())
       <div class="row">
         <div class='col-md-5'>
-           <img src="/storage/{{ $wedstrijden->teams[0]->logo }}" style='width:100px; height:100px; margin-bottom: 15px;'><label class='pull-right'  style='font-size:100px;'>{{$wedstrijden->team1_score}}</label>
+           <img src="/storage/{{ $wedstrijden->teams[0]->logo }}" style='width:100px; height:100px; margin-bottom: 15px;'><label class='pull-right'  style='font-size:100px;'>{{$wedstrijden->team1_score}}</label>          
         </div>
         <div class='col-md-2'> 
            <img src="{{ asset('user/img/vs.png')}}" style='width:100px; height:100px;padding-top:25px; margin-bottom: 15px;'>
@@ -81,11 +81,15 @@ img.displayed {
                       <img class='displayed' src="/storage/{{ $speler->foto }}"><br>
                       <h3 style='margin-top:5px'>{{ $wedstrijden->opmerkingen[$i]->gescoord_door }}</h3>
                       <label style='margin-bottom: 15px'>{{ $wedstrijden->opmerkingen[$i]->aantal_gescoord }} @if($wedstrijden->opmerkingen[$i]->aantal_gescoord == 1) doelpunt @else doelpunten @endif</label><br>
+                      <div hidden>{{ $check = 0 }} </div>
                     @endif
                   @endforeach
                 @endif
-                
             @endfor
+            @if($check !== 0)
+              <strong>niet gescoord</strong>
+            @endif
+            <div style hidden>{{$check= 1}} </div>
           </div>
           <div class='well col-md-offset-2 col-md-4' style='text-align: center;''>
             <h3>{{ $wedstrijden->teams[1]->naam }}</h3>
@@ -97,10 +101,15 @@ img.displayed {
                     <img class='displayed' src="/storage/{{ $speler->foto }}"><br>
                       <h3 style='margin-top:5px'>{{ $wedstrijden->opmerkingen[$i]->gescoord_door }}</h3>
                       <label style='margin-bottom: 15px'>{{ $wedstrijden->opmerkingen[$i]->aantal_gescoord }} @if($wedstrijden->opmerkingen[$i]->aantal_gescoord == 1) doelpunt @else doelpunten @endif</label><br>
+                      <div hidden> {{ $check = 0 }}</div>
                   @endif
                 @endforeach 
                 @endif
             @endfor
+            @if($check !== 0)
+              <strong>niet gescoord</strong>
+            @endif
+            <div style hidden>{{$check= 1}} </div>
           </div>
         </div>
         <div class="row">
@@ -127,6 +136,7 @@ img.displayed {
                 @endif
                 @if(!($wedstrijden->opmerkingen[$i]->gele_kaarten == null))
                  <label>{{ $wedstrijden->opmerkingen[$i]->gele_kaarten }}</label>
+                 <div hidden>{{ $check = 0 }} </div>
                 @endif
                 <br>
                @endif
@@ -138,10 +148,15 @@ img.displayed {
                   @if($speler->naam == $wedstrijden->opmerkingen[$i]->rode_kaarten)
                     <img src="/user/img/rood.jpg" style='width:15px; height: 20px;'>         
                     <label>{{$wedstrijden->opmerkingen[$i]->rode_kaarten}}</label>
+                    <div hidden>{{ $check = 0 }} </div>
                   @endif
                 @endif
               @endforeach
             @endfor
+            @if($check !== 0)
+              <strong>geen kaarten</strong>
+            @endif
+            <div style hidden>{{$check= 1}} </div>
           </div>
           <div class="well col-md-offset-2 col-md-4">
             <h3>{{ $wedstrijden->teams[1]->naam }}</h3>
@@ -161,6 +176,7 @@ img.displayed {
                 @endif
                 @if(!($wedstrijden->opmerkingen[$i]->gele_kaarten == null))
                  <label>{{ $wedstrijden->opmerkingen[$i]->gele_kaarten }}</label>
+                 <div hidden>{{ $check = 0 }} </div>
                 @endif
                 <br>
                @endif
@@ -173,10 +189,15 @@ img.displayed {
                   @if($speler->naam == $wedstrijden->opmerkingen[$i]->rode_kaarten)
                     <img src="/user/img/rood.jpg" style='width:15px; height: 25px;'>         
                     <label>{{ $wedstrijden->opmerkingen[$i]->rode_kaarten }}</label>
+                    <div hidden>{{ $check = 0 }} </div>
                   @endif
               @endif 
               @endforeach
             @endfor
+            @if($check !== 0)
+              <strong>geen kaarten</strong>
+            @endif
+            <div style hidden>{{$check= 1}} </div>
           </div>
         </div>
         <div class="row">
@@ -194,11 +215,16 @@ img.displayed {
                   @foreach($wedstrijden->teams[0]->spelers as $speler)
                     @if($speler->naam == $wedstrijden->opmerkingen[$i]->wissel) 
                       <label style='color:red;'> {{ $wedstrijden->opmerkingen[$i]->wissel }} </label>  <img src="/user/img/wissel.png" style='width:25px; height: 15px;'> <label style='color:green;'> {{ $wedstrijden->opmerkingen[$i]->wissel_speler }} </label>
+                      <div hidden>{{ $check = 0 }} </div>
                     @endif
                   @endforeach
                 @endif
             </div>
             @endfor
+            @if($check !== 0)
+              <strong>geen wissels</strong>
+            @endif
+            <div style hidden>{{$check= 1}} </div>
           </div>
           <div class='well col-md-offset-2 col-md-4' >
             <h3>{{ $wedstrijden->teams[1]->naam }}</h3>
@@ -209,11 +235,15 @@ img.displayed {
                   @foreach($wedstrijden->teams[1]->spelers as $speler)
                     @if($speler->naam ==$wedstrijden->opmerkingen[$i]->wissel) 
                       <label style='color:red;'> {{ $wedstrijden->opmerkingen[$i]->wissel }} </label>  <img src="/user/img/wissel.png" style='width:25px; height: 15px;'> <label style='color:green;'> {{ $wedstrijden->opmerkingen[$i]->wissel_speler }} </label>
+                      <div hidden>{{ $check = 0 }} </div>
                     @endif
                   @endforeach
                 @endif
             </div>
             @endfor
+            @if($check !== 0)
+              <strong>geen wissels</strong>
+            @endif
           </div>
         </div>
       <div class="row">
@@ -223,7 +253,7 @@ img.displayed {
         </div>
       </div>
       @else
-      <div>Een wedstrijd waar niet zoveel over te vertellen valt, geen details beschikbaar</div>
+      <div class='well' style='top:75px;'><label>Geen wedstrijddetails beschikbaar</label></div>
       @endif
     </div>
   </div>

@@ -8,7 +8,12 @@
   <!-- general form elements -->
   <div class="box box-primary">
     <div class="box-header" style='text-align:center;'>
+      <ol class="breadcrumb">
+        <li><a href="{{route('wedstrijden.index')}}">Wedstrijden</a></li>
+      </ol>
+      @if((App\Model\admin\admin::where('seizoen', 0)->first()))
        <a class='btn btn-success' href='{{ route("wedstrijden.create") }}'>Wedstrijd toevoegen</a>
+       @endif
     </div>
     <div class="box-header with-border">
        <div>
@@ -41,49 +46,57 @@
                     <td style='text-align:center;'>{{ $wedstrijd->team2_score }}</td>
                     <td>{{ $wedstrijd->teams[1]->naam }}</td>
                     <td>
-                     @if(App\Model\admin\opmerkingen::where('wedstrijden_id', $wedstrijd->id)->first())
-                        <form id='delete-form-{{$wedstrijd->id}}' action="{{ route('opmerkingen.destroy', $wedstrijd->id) }}" method='post' style='display:none;'>
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE')}}
-                      </form>
-                      <a href="{{ route('wedstrijden.index')}}" onclick="
-                        if(confirm('Ben je zeker dat je de opmerking wilt deleten?'))
-                          {
-                            event.preventDefault();
-                            // het id meegeven
-                            document.getElementById('delete-form-{{$wedstrijd->id }}').submit();
-                          }
-                          else{
-                            event.preventDefault();
-                          }">
-                        <span class="glyphicon glyphicon-trash"></span>
-                      </a>
-                     @else
-                        <a href="wedstrijden/opmerkingen/{{$wedstrijd->id}}">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </a>
+                      @if((App\Model\admin\admin::where('seizoen', 0)->first()))
+                        @if(App\Model\admin\opmerkingen::where('wedstrijden_id', $wedstrijd->id)->first())
+                           <form id='delete-form-{{$wedstrijd->id}}' action="{{ route('opmerkingen.destroy', $wedstrijd->id) }}" method='post' style='display:none;'>
+                           {{ csrf_field() }}
+                           {{ method_field('DELETE')}}
+                         </form>
+                         <a href="{{ route('wedstrijden.index')}}" onclick="
+                           if(confirm('Ben je zeker dat je de opmerking wilt deleten?'))
+                             {
+                               event.preventDefault();
+                               // het id meegeven
+                               document.getElementById('delete-form-{{$wedstrijd->id }}').submit();
+                             }
+                             else{
+                               event.preventDefault();
+                             }">
+                           <span class="glyphicon glyphicon-trash"></span>
+                         </a>
+                        @else
+                           <a href="wedstrijden/opmerkingen/{{$wedstrijd->id}}">
+                               <span class="glyphicon glyphicon-plus"></span>
+                           </a>
+                         @endif
+                      @else
+                        seizoen is geïndigd
                       @endif
                     </td>
                     <td>
-                      <a href="{{ route('wedstrijden.edit', $wedstrijd->id) }}">
-                        <span class="glyphicon glyphicon-edit"></span>
-                      </a>
-                      <form id='delete-form2-{{$wedstrijd->id}}' action="{{ route('wedstrijden.destroy', $wedstrijd->id) }}" method='post' style='display:none;'>
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE')}}
-                      </form>
-                      <a href="{{ route('wedstrijden.index')}}" onclick="
-                        if(confirm('Ben je zeker dat je deze wedstrijd wilt deleten?'))
-                          {
-                            event.preventDefault();
-                            // het id meegeven
-                            document.getElementById('delete-form2-{{$wedstrijd->id }}').submit();
-                          }
-                          else{
-                            event.preventDefault();
-                          }">
-                        <span class="glyphicon glyphicon-trash"></span>
-                      </a>
+                      @if((App\Model\admin\admin::where('seizoen', 0)->first()))
+                        <a href="{{ route('wedstrijden.edit', $wedstrijd->id) }}">
+                          <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        <form id='delete-form2-{{$wedstrijd->id}}' action="{{ route('wedstrijden.destroy', $wedstrijd->id) }}" method='post' style='display:none;'>
+                          {{ csrf_field() }}
+                          {{ method_field('DELETE')}}
+                        </form>
+                        <a href="{{ route('wedstrijden.index')}}" onclick="
+                          if(confirm('Ben je zeker dat je deze wedstrijd wilt deleten?'))
+                            {
+                              event.preventDefault();
+                              // het id meegeven
+                              document.getElementById('delete-form2-{{$wedstrijd->id }}').submit();
+                            }
+                            else{
+                              event.preventDefault();
+                            }">
+                          <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                        @else
+                          geen acties mogelijk
+                        @endif
                     </td>    
                   </tr>
                   @endif

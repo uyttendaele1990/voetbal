@@ -62,13 +62,14 @@
 </script>
 @endsection
 @section('main-content')
-<div class='container' style='text-align: center;'> 
+<div class='container' style='text-align: center;'>
+<br>
 	@guest
 	<h2 >
 	<div id="cookieConsent">
     <div id="closeCookieConsent">x</div>
     Deze website maakt gebruik van cookies. <a target="_blank" href="/terms">Terms of agreement</a>. <a class="cookieConsentOK">Ik ga ermee akkoord</a></div>
- 	  	Bezoek deze site als:
+    <div>Bezoek deze site als:</div> 	
  	</h2>
  	<br>
  	
@@ -99,13 +100,13 @@
 	 @if(Auth::user()->google)
 	 <h2>
 		 <a href='{{ route("profile.edit", Auth::user()->id)}}'>
-		  <div class="well" style='color:red'> Gelieve uw wachtwoord aan te passen, u hebt een random wachtwoord gekregen</div>
+		  <div style='background:red; border-radius:25px;padding:15px'> Gelieve uw wachtwoord aan te passen, u hebt een random wachtwoord gekregen</div>
 		 </a>
 	 </h2>
 	  @endif
 	  @if((App\Model\admin\admin::where('seizoen', 1)->first()))
-	 	 <div class='well' style='text-align:center; margin-top:25px;'>
-	 	 	<h1>Seizoen {{date('Y')-1}} - {{date('Y')}}</h1>
+	 	 <div class='well' style='text-align:center; margin-top:25px;background:lightgrey;border-radius:36px'>
+	 	 	<h1 style='padding-top:15px'>Seizoen {{date('Y')-1}} - {{date('Y')}}</h1>
 	 	 	<hr>
 	 	 	<div>
 	 	 		<h2>competitie winnaar:<h2><br><span style='font-size: 200%;'> <a href='teams/{{$winnaar[0]->id}}'>{{$winnaar[0]->naam}}  

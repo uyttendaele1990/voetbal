@@ -16,7 +16,7 @@ header {
   top:-15px;
 }
 #mainNav{
-    position:fixed;
+  position:fixed;
   background-color: black;
   opacity:0.8;
 }
@@ -36,7 +36,7 @@ body {
   border-radius:15px;
 }
 .imagesl {
-  margin-left:1px;
+
 }
 label {
   font-size:30px;

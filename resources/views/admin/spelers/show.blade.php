@@ -9,7 +9,9 @@
   <!-- general form elements -->
   <div class="box box-primary">
     <div class="box-header with-border">
-      <h2 class="box-title">Spelers</h2>
+      <ol class="breadcrumb" style='text-align:center'>
+        <li><a href="{{route('spelers.index')}}">Spelers</a></li>
+      </ol>
       
       <button type='button' class='btn btn-box-tool' data-widget='collapse' data-toggle='tooltip' title='Collapse'>
     </div>

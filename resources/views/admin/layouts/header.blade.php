@@ -21,7 +21,7 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="/storage/{{Auth::user()->avatar}}" class="user-image" alt="User Image">
-              <span class="hidden-xs">{{ ucfirst(Auth::user()->naam)}}</span>
+              <span class="hidden-xs">{{ ucfirst(Auth::user()->name)}}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -29,14 +29,14 @@
                 <img src="/storage/{{Auth::user()->avatar}}" class="img-circle" alt="User Image">
 
                 <p>
-                  {{ ucfirst(Auth::user()->naam) }}
+                  {{ ucfirst(Auth::user()->name) }}
                   <small>Member since {{Auth::user()->created_at->toFormattedDateString()}}</small>
                 </p>
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                    <a class="btn btn-default btn-flat" href="{{ route('admin.edit', Auth::user()->id) }}">Edit</a>
+                    <a class="btn btn-default btn-flat" href="{{ route('admin.edit', Auth::user()->id) }}">Profiel</a>
                 </div>
                 <div class="pull-right">
                     <a class="btn btn-default btn-flat" href="{{ route('admin.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>

@@ -31,11 +31,15 @@
 </script>
 @endsection
 @section('main-content')
+@if((App\Model\admin\admin::where('seizoen', 0)->first()))
 <div class="content-wrapper">
   <!-- general form elements -->
   <div class="box box-primary">
-    <div class="box-header with-border">
-      <h3 class="box-title">Wedstrijden</h3>
+    <div class="box-header with-border" style='text-align:center'>
+      <ol class="breadcrumb">
+        <li><a href="{{route('wedstrijden.index')}}">Wedstrijden</a></li>
+        <li><a href="{{route('wedstrijden.edit', $wedstrijd->id)}}">Edit</a></li>
+      </ol>
     </div>
     @include('includes.messages')
     <!-- /.box-header -->
@@ -105,6 +109,16 @@
     </form>
   </div>
 </div>
+@else 
+<div class="content-wrapper">
+  <!-- general form elements -->
+  <div class="box box-primary">
+    <div class='well' style='text-align:center; background-color:red'>
+      Het seizoen is geëindigd en dus is het niet mogelijk om een wedstrijd aan te passen.
+    </div>
+  </div>
+</div>
+@endif
 @endsection
 
 @section('footerSection')

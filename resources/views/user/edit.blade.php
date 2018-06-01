@@ -1,8 +1,8 @@
 @section('bg-img', asset('user/img/home-bg.jpg'))
 
-@section('title', Auth::user()->name )
+@section('title', 'Profiel pagina' )
 
-@section('subtitle', 'Welkom')
+@section('subtitle', Auth::user()->name)
 
 @extends('user/layouts/app')
 <!-- de main content sectie openen en erin zetten wat je wil tonen op deze pagina -->

@@ -30,7 +30,10 @@
   <!-- general form elements -->
   <div class="box box-primary">
     <div class="box-header with-border">
-      <h3 class="box-title">Teams</h3>
+      <ol class="breadcrumb" style='text-align:center'>
+        <li><a href="{{route('user.index')}}">Users</a></li>
+        <li><a href="{{route('user.edit', $user->id)}}">Edit</a></li>
+      </ol>
     </div>
     @include('includes.messages')
     <!-- /.box-header -->

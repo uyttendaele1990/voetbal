@@ -35,4 +35,17 @@ class MailController extends Controller
         }
         return redirect()->back();
     }
+
+    public function saveMail(request $request){
+        $check = Email::where(['user_id' => Auth::user()->id, 'team_id'=>$request->id])->first();
+        if($check){
+            Email::where(['user_id' => Auth::user()->id, 'team_id'=>$request->id])->delete();
+            return 'deleted';
+        } else {
+            $mail= new Email;
+            $mail->user_id = Auth::user()->id;
+            $mail->team_id= $request->id;
+            $mail->save();
+        }
+    }
 }

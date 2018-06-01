@@ -41,6 +41,12 @@ body {
 	<div class = 'container'>
   	<div class="box box-primary">
       <div class="box-header with-border">
+        @if((App\Model\admin\admin::where('seizoen', 1)->first()))
+         <div class='well' style='text-align:center; margin-top:25px;background:orange;border-radius:24px'>
+          <h1>Seizoen {{date('Y')-1}} - {{date('Y')}} is geëindigd</h1>
+          <hr>
+        </div>
+        @endif 
     <!-- general form elements -->
         <div class='box' >
           <div class="box-body">
@@ -68,14 +74,14 @@ body {
                   <td><a href="/teams/{{$team->id}}">{{ $team->naam }}</a></td>
                   <td><small> {{$team->slug}} </small></td>
                   <td><img src="/storage/{{ $team->logo }}" style='width:30px; height:30px; float:left;'></td>
-                  <td>{{ $team->aantal_wedstrijden}}</td>
+                  <td><strong>{{ $team->aantal_wedstrijden}}</strong></td>
                   <td>{{ $team->goalen_voor }}</td>
                   <td>{{ $team->goalen_tegen }}</td>
-                  <td>{{ $team->doelsaldo }} </td>
+                  <td>{{ $team->doelsaldo }}</td>
                   <td>{{ $team->wedstrijden_gewonnen }}</td>
                   <td>{{ $team->wedstrijden_gelijk }}</td>
                   <td>{{ $team->wedstrijden_verloren }}</td>
-                  <td>{{ $team->punten }}</td>
+                  <td><strong>{{ $team->punten }}</strong></td>
                 </tr>
               @endforeach
               </tbody>
@@ -129,6 +135,19 @@ body {
                 @endif
                 </p>
               </div>
+            </div>
+            <div class="row">
+              <div class='col-md-3'></div>
+              <div class='well col-md-6' style='text-align:center; margin-top:50px;opacity:0.8; border-radius:25px;background:lightgreen'>
+              Aantal teams : <strong>{{ App\Model\admin\teams::all()->count() }}</strong><br>
+              Wedstrijden gespeeld : <strong>{{ $wedstrijden->count() }}</strong> <br>
+              Wedstrijden komend : <strong>{{ App\Model\admin\wedstrijden::all()->count() - $wedstrijden->count() }}</strong> <br>
+              Aantal goalen gescoord : <strong>{{ $totaal }}</strong><br>
+              Gemiddelde aantal goalen per wedstrijd : <strong>{{ round($totaal/$wedstrijden->count(), 2) }}</strong><br>
+              gele kaarten : <strong>{{ App\Model\admin\opmerkingen::whereNotNull('gele_kaarten')->count()}}</strong><br>
+              rode kaarten : <strong>{{ App\Model\admin\opmerkingen::whereNotNull('rode_kaarten')->count()}}</strong><br>
+              </div>
+              <div class='col-md-3'></div>
             </div>
           </div>
         </div>

@@ -106,10 +106,14 @@ class HomeController extends Controller
         return view('user/edit', compact('user'));
     }
 
-    public function terms(){
+    public function terms()
+    {
       return view('terms');
     }
-
+    public function getUser()
+    {
+      return $user = User::with('emails')->where('id', Auth::user()->id)->get();
+    }
 }
 
 

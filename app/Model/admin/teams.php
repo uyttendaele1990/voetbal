@@ -30,10 +30,11 @@ class teams extends Model
     {
     	return $this->hasMany('App\Model\admin\spelers');
     }
-
     public function email()
     {
         return $this->hasMany('App\Model\user\Email', 'team_id');
     }
-    
+    public function likes(){
+        return $this->hasMany('App\Model\user\like', 'team_id');
+    }
 }
