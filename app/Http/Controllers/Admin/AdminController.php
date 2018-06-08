@@ -133,8 +133,10 @@ class AdminController extends Controller
 
             if($request->seizoen){
                 $user->seizoen = 1;
-            } else {
+            } elseif(Auth::user()->name == 'admin') {
                 $user->seizoen = 0;
+            } else {
+                 $user->seizoen = NULL;
             }
 
             if(($request->check) || ($request->email !== $user->email)){

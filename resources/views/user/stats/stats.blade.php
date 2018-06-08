@@ -143,7 +143,9 @@ body {
               Wedstrijden gespeeld : <strong>{{ $wedstrijden->count() }}</strong> <br>
               Wedstrijden komend : <strong>{{ App\Model\admin\wedstrijden::all()->count() - $wedstrijden->count() }}</strong> <br>
               Aantal goalen gescoord : <strong>{{ $totaal }}</strong><br>
+              @if($wedstrijden->count() !== 0)
               Gemiddelde aantal goalen per wedstrijd : <strong>{{ round($totaal/$wedstrijden->count(), 2) }}</strong><br>
+              @endif
               gele kaarten : <strong>{{ App\Model\admin\opmerkingen::whereNotNull('gele_kaarten')->count()}}</strong><br>
               rode kaarten : <strong>{{ App\Model\admin\opmerkingen::whereNotNull('rode_kaarten')->count()}}</strong><br>
               </div>

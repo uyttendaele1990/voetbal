@@ -79,7 +79,9 @@
         <div class="form-group">
           <input class="form-control" id='pw2' disabled name='password_confirmation' placeholder="wachtwoord herhalen" type="password">
         </div>
-        <div><input type='checkbox' id='seizoen' name='seizoen' @if($user->seizoen == 1) checked @endif >  <label for='seizoen'>Seizoen geïndigd</label> </div>
+        @if($user->name == 'admin')
+          <div><input type='checkbox' id='seizoen' name='seizoen' @if($user->seizoen == 1) checked @endif >  <label for='seizoen'>Seizoen geïndigd</label> </div>
+        @endif
         <br>
         <button type="submit" class="btn btn-primary">Verzenden</button>
       </div>
