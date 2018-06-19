@@ -1,6 +1,6 @@
 <!-- dit is de footer die op elke pagina verschijnt -->
   <footer class="main-footer" style='text-align:center;'>
-    <strong>Copyright &copy; 2018 <a href="#">UK</a></strong> All rights
+    <strong>Copyright &copy; <?= date("Y") ?> UK</strong> All rights
     reserved.
   </footer>
 

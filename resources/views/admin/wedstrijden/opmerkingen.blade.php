@@ -291,12 +291,12 @@ function remove_random_functie_naam(rid) {
               <select class="form-control" name="wissel[]" id='wissel'  style="width: 100%;">
                 <option hidden selected value= >Gewisseld</option>
                 <!-- onclick functie om alleen de wisselspelers van hetzelfde team te tonen -->
-                <optgroup onchange="checkWissel1()" label="{{ $wedstrijd->teams[0]->naam }}">
+                <optgroup onclick="checkWissel1()" label="{{ $wedstrijd->teams[0]->naam }}">
                 @foreach ($wedstrijd->teams[0]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach
                 </optgroup>
-                <optgroup onchange="checkWissel2()" label="{{ $wedstrijd->teams[1]->naam }}">
+                <optgroup onclick="checkWissel2()" label="{{ $wedstrijd->teams[1]->naam }}">
                 @foreach ($wedstrijd->teams[1]->spelers as $speler)
                   <option>{{$speler->naam}}</option>
                 @endforeach

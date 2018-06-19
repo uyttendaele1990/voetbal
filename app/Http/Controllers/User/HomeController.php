@@ -24,10 +24,7 @@ class HomeController extends Controller
         //             ->limit(3)
         //             ->get();
         $topscorers = spelers::select(['naam','foto','doelpunten_saldo', 'teams_id'])->with('teams')->orderBy('doelpunten_saldo','desc')->take(3)->get();
-        // foreach($spelers as $speler){
-        //   return $speler->teams->wedstrijden;dd(); 
-        // }
-        $winnaar = DB::select('select * from teams ORDER BY punten DESC, aantal_wedstrijden DESC,wedstrijden_gewonnen DESC, doelsaldo DESC LIMIT 1');
+        $winnaar = DB::select('select * from teams ORDER BY punten DESC, doelsaldo DESC, aantal_wedstrijden DESC,wedstrijden_gewonnen DESC LIMIT 1');
         return view('user/home', compact('winnaar', 'topscorers'));
     }
 

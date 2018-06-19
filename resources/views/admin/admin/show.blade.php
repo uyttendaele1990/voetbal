@@ -104,8 +104,8 @@
 @else
 @section('main-content')
 <div class="content-wrapper">
-  <div> U hebt geen toestemming om op deze pagina te komen </div>
-  <a class='btn btn-danger' href='../admin/home'>Home</a>
+  <div class='well' style='background:red'> U hebt geen toestemming om op deze pagina te komen </div>
+  <center><a class='btn btn-danger' href='../admin/home'>Home</a></center>
 </div>
 @endsection
 @endif
